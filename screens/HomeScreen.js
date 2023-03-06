@@ -26,11 +26,27 @@ export default function Home({ navigation }) {
 
 const styles = StyleSheet.create({
     container: {
-      flex: 1,
-  
-      backgroundColor: "#F4F5F9",
-      alignItems: "center",
-      justifyContent: "space-between",
-      marginBottom: 30,
-    },
+        flex: 1,
+    
+        backgroundColor: "#F4F5F9",
+        alignItems: "center",
+        justifyContent: "space-between",
+        marginBottom: 30,
+      },
+      header: {
+        alignItems: "center",
+        paddingTop: 30,
+        paddingBottom: 3,
+        backgroundColor: "#ffffff",
+        width: "100%",
+        borderBottomWidth: 1,
+        borderBottomColor: "#ABABAB",
+
+
+      },
+      title: {
+        fontFamily: "BelweBold",
+        fontSize: 21,
+        color: '#3A7D44',
+      },
 })
