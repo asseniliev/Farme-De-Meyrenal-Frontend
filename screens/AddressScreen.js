@@ -1,3 +1,5 @@
+const licalIP = "10.0.1.183";
+
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -11,16 +13,17 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import MapView, { Polygon } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
-import { SetContour } from "../reducers/contours";
+import { SetDeliveryAddress } from "../reducers/users";
 import * as Location from "expo-location";
-
-const licalIP = "10.0.1.183";
 
 //const contourData = require("./modules/contour");
 //console.log("Contour = " + contour[0]);
 
 export default function AddressScreen({ navigation }) {
   const [deliveryAddress, setDelivreryAddress] = useState("");
+  const [deliveryCity, setDeliveryCity] = useState("");
+  const [deliveryLat, setDeliveryLat] = useState(0);
+  const [deliveryLon, setDeliveryLon] = useState(0);
   const [initLat, setInitLat] = useState(0);
   const [initLon, setInitLon] = useState(0);
   const deliveryInfo =
@@ -37,14 +40,10 @@ export default function AddressScreen({ navigation }) {
   ];
 
   const [polygonCoords, setPolygonCoords] = useState(polygonCoords1);
-  const [localPosition, setLocalPosition] = useState(null);
 
   useEffect(() => {
     fetch(`http://${licalIP}:3000/locations/contours`)
-      //fetch(`http://192.168.1.11:3000/locations/contours`)
       .then((response) => response.json())
-      //.then((data) => dispatch(SetContour(data)));
-      //then((data) => console.log("Coordinates = " + JSON.stringify(data)))
       .then((data) => {
         setPolygonCoords(data.polygonCoords);
       });
@@ -61,14 +60,25 @@ export default function AddressScreen({ navigation }) {
           //setLocalPosition(location.coords);
           fetch(url)
             .then((response) => response.json())
-            .then((data) => setDelivreryAddress(data.address));
+            .then((data) => {
+              setDelivreryAddress(data.address);
+              setDeliveryCity(data.city);
+              setDeliveryLat(location.coords.latitude);
+              setDeliveryLon(location.coords.longitude);
+            });
         });
       }
     })();
   }
 
-  function handleNext() {
-    //store the address into redux;
+  function handleOnNext() {
+    const addressData = {
+      lat: deliveryLat,
+      lon: deliveryLon,
+      address: deliveryAddress,
+      city: deliveryCity,
+    };
+    dispatch(SetDeliveryAddress(addressData));
     navigation.navigate("AccessDetails");
   }
 
@@ -117,7 +127,7 @@ export default function AddressScreen({ navigation }) {
 
       <View style={styles.bottomSection}>
         <TouchableOpacity
-          onPress={() => handleNext()}
+          onPress={() => handleOnNext()}
           style={styles.buttonFull}
         >
           <Text style={styles.textButton}>Validez l'adresse de livraison</Text>

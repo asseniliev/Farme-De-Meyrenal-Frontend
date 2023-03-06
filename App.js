@@ -5,6 +5,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import AddressScreen from "./screens/AddressScreen";
 import AddressDetailsScreen from "./screens/AccessDetailsScreen";
+import PersonalDataScreen from "./screens/PersonalDataScreen";
+import UserCreationScreen from "./screens/UserCreationScreen";
 
 import OnBoard from "./screens/OnBoard";
 import LogScreen from "./screens/LogScreen";
@@ -13,10 +15,10 @@ import HomeScreen from "./screens/HomeScreen";
 // initialization of the store
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
-import contour from "./reducers/contours"; //thihs is the reducer to be used
+import user from "./reducers/users"; //thihs is the reducer to be used
 
 const store = configureStore({
-  reducer: { contour },
+  reducer: { user },
 });
 // end of initialization
 
@@ -27,11 +29,13 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="OnBoard" component={OnBoard} />
-          <Stack.Screen name="Log" component={LogScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
+          {/* <Stack.Screen name="OnBoard" component={OnBoard} />
+            <Stack.Screen name="Log" component={LogScreen} />
+            <Stack.Screen name="Home" component={HomeScreen} /> */}
           <Stack.Screen name="Address" component={AddressScreen} />
           <Stack.Screen name="AccessDetails" component={AddressDetailsScreen} />
+          <Stack.Screen name="PersonalData" component={PersonalDataScreen} />
+          <Stack.Screen name="UserCreation" component={UserCreationScreen} />
         </Stack.Navigator>
       </NavigationContainer>
     </Provider>
