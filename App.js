@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
@@ -14,11 +15,22 @@ const store = configureStore({
   reducer: { contour },
 });
 // end of initialization
+=======
+import React from "react";
+import { NavigationContainer } from "@react-navigation/native";
+import { createNativeStackNavigator } from "@react-navigation/native-stack";
+import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
+
+import OnBoard from "./screens/OnBoard";
+import LogScreen from "./screens/LogScreen";
+import HomeScreen from "./screens/HomeScreen";
+>>>>>>> 3f608e08a2402630161a7121137b3032d7b8f267
 
 const Stack = createNativeStackNavigator();
 
 export default function App() {
   return (
+<<<<<<< HEAD
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
@@ -57,3 +69,14 @@ const styles = StyleSheet.create({
     height: "5%",
   },
 });
+=======
+    <NavigationContainer>
+      <Stack.Navigator screenOptions={{ headerShown: false }}>
+        <Stack.Screen name="OnBoard" component={OnBoard} />
+        <Stack.Screen name="Log" component={LogScreen} />
+        <Stack.Screen name="Home" component={HomeScreen} />
+      </Stack.Navigator>
+    </NavigationContainer>
+  );
+}
+>>>>>>> 3f608e08a2402630161a7121137b3032d7b8f267
