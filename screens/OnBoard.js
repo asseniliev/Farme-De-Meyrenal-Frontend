@@ -23,7 +23,7 @@ export default function Carousel({ navigation }) {
         keyExtractor={(item) => item.id}
       />
       <TouchableOpacity
-        onPress={() => navigation.navigate("LogScreen")}
+        onPress={() => navigation.navigate("Log")}
         style={Styles.button}
       >
         <Text style={Styles.textButton}>Passer</Text>

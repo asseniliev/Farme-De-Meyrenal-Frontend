@@ -8,16 +8,21 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Styles from "../components/Styles";
+//font hook
+import { useFonts } from "expo-font";
 
-export default function Home({ navigation }) {
+export default function Log({ navigation }) {
+  const [fontsLoaded] = useFonts({ BelweBold: require("../assets/fonts/BelweBold.otf"), });
+  if (!fontsLoaded) return null;
+
   return (
-    
-        <View style={styles.container}>
-      
-      <View style={styles.header}><Text style={styles.title}>Ferme de Mereynal</Text></View>
-      <Image source={require('../assets/fla1.jpg')} style={styles.image} />
+    <View style={styles.container}>
+      <View style={styles.header}>
+        <Text style={styles.title}>{'  '}ferme de {"\n"} mereynal</Text>
+      </View>
+      <Image source={require("../assets/fla1.jpg")} style={styles.image} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("")}
+        onPress={() => navigation.navigate("Home")}
         style={Styles.button}
       >
         <Text style={Styles.textButton}>Créer un nouveau compte</Text>
@@ -41,14 +46,13 @@ export default function Home({ navigation }) {
       >
         <Text style={Styles.textButton}>Contacter Flavien</Text>
       </TouchableOpacity>
-      </View>
-    
+    </View>
   );
 }
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    
+
     backgroundColor: "#F4F5F9",
     alignItems: "center",
     justifyContent: "space-between",
@@ -59,16 +63,16 @@ const styles = StyleSheet.create({
   },
   image: {
     width: "100%",
-    height: "40%"
+    height: "40%",
   },
   line: {
-    backgroundColor: '#ABABAB',
+    backgroundColor: "#ABABAB",
     height: 1,
-    width: "80%"
+    width: "80%",
   },
   title: {
-    fontFamily: "BelweBold"
-  }
-
-  
+    fontFamily: "BelweBold",
+    fontSize: 21,
+    color: '#3A7D44',
+  },
 });
