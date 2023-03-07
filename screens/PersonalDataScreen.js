@@ -1,5 +1,3 @@
-const licalIP = "10.0.1.183";
-
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -15,30 +13,31 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { SetCredentials } from "../reducers/users";
+import { setPersonalData } from "../reducers/users";
 
 export default function AddressScreen({ navigation }) {
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [repeatPassword, setRepeatPassword] = useState("");
+  const [firstName, setFirstName] = useState("");
+  const [lastName, setLastName] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [errorText, setErrorText] = useState("");
 
   const dispatch = useDispatch();
 
   function handleOnNext() {
-    if (email === "") {
-      setErrorText("Insert a valid mail address");
-    } else if (password === "" || repeatPassword === "") {
-      setErrorText("Insert a valid password");
-    } else if (password !== repeatPassword) {
-      setErrorText("Passwords must match");
+    if (lastName === "") {
+      setErrorText("Insert a valid last name");
+    } else if (firstName === "") {
+      setErrorText("Insert a valid first name");
+    } else if (phoneNumber === "") {
+      setErrorText("Insert a phone number");
     } else {
-      const credentials = {
-        email: email,
-        password: password,
+      const personalData = {
+        firstName: firstName,
+        lastName: lastName,
+        phoneNumber: phoneNumber,
       };
-      dispatch(SetCredentials(credentials));
-      navigation.navigate("PersonalData");
+      dispatch(setPersonalData(personalData));
+      navigation.navigate("UserCreation");
     }
   }
 
@@ -55,21 +54,21 @@ export default function AddressScreen({ navigation }) {
         <View style={styles.middleSection}>
           <TextInput
             style={styles.input}
-            placeholder="Email"
-            onChangeText={(value) => setEmail(value)}
-            value={email}
+            placeholder="Last Name"
+            onChangeText={(value) => setLastName(value)}
+            value={lastName}
           />
           <TextInput
             style={styles.input}
-            placeholder="Password"
-            onChangeText={(value) => setPassword(value)}
-            value={password}
+            placeholder="First Name"
+            onChangeText={(value) => setFirstName(value)}
+            value={firstName}
           />
           <TextInput
             style={styles.input}
-            placeholder="Repeat password"
-            onChangeText={(value) => setRepeatPassword(value)}
-            value={repeatPassword}
+            placeholder="Phone number"
+            onChangeText={(value) => setPhoneNumber(value)}
+            value={phoneNumber}
           />
           <Text style={styles.errorText}>{errorText}</Text>
         </View>
