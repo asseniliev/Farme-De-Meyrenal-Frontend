@@ -24,12 +24,14 @@ export default function UserCreationScreen({ navigation }) {
       .then((data) => {
         //console.log(data);
         if (data.result) {
-          let message = "Account summary:\n";
-          message += "Name / FirstName:\n";
-          message += `${data.user.lastName} / ${data.user.firstName}`;
-          setMessage("You must received a mail for confirming your signup");
-        } else {
+          let message = "New account is almost created.\n";
+          message += `A mail was sent to mailbox ${data.user.email} :\n`;
+          message +=
+            "You must click on the provided link to finalize the account activation.";
           setMessage(message);
+        } else {
+          console.log(data);
+          setMessage(data.error);
         }
       });
   }, []);
@@ -70,7 +72,7 @@ const styles = StyleSheet.create({
   text: {
     paddingHorizontal: 10,
     marginBottom: 5,
-    fontSize: 26,
+    fontSize: 20,
     lineHeight: 40,
   },
   image: {

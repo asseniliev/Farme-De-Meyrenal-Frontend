@@ -29,9 +29,9 @@ export default function App() {
     <Provider store={store}>
       <NavigationContainer>
         <Stack.Navigator screenOptions={{ headerShown: false }}>
-          {/* <Stack.Screen name="OnBoard" component={OnBoard} />
-            <Stack.Screen name="Log" component={LogScreen} />
-            <Stack.Screen name="Home" component={HomeScreen} /> */}
+          <Stack.Screen name="OnBoard" component={OnBoard} />
+          <Stack.Screen name="Log" component={LogScreen} />
+          <Stack.Screen name="Home" component={HomeScreen} />
           <Stack.Screen name="Address" component={AddressScreen} />
           <Stack.Screen name="AccessDetails" component={AddressDetailsScreen} />
           <Stack.Screen name="PersonalData" component={PersonalDataScreen} />
