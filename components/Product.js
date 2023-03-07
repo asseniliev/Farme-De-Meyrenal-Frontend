@@ -5,14 +5,30 @@ import {
     Image,
     TouchableOpacity,
   } from "react-native";
+import { useSelector, useDispatch } from "react-redux";
+import { increment, decrement } from "../reducers/productCounter";
 
-export default Product = () => {
+export default Product = (props) => {
+
+
+  const compteur = useSelector((state) => {
+    if(state.productCounter.value[props.title]) return state.productCounter.value[props.title].quantity; 
+    return 0;
+});
+  
+
+
+	const dispatch = useDispatch();
+	const incrementBtn = () => { dispatch(increment({id: props.id, title: props.title} ))};
+    
+	const decrementBtn = () => { dispatch(decrement({id: props.id, title: props.title} ))};
+
     return (
         <View style={styles.product1}>
         <View style={styles.bigContent}>
           <View style={styles.imageContainer}>
             <Image
-              source={require("../assets/potimarron.jpg")}
+              source={{uri: props.imageUrl}}
               style={styles.image}
             />
             <TouchableOpacity onPress={() => console.log("Logo pressed")}>
@@ -23,27 +39,29 @@ export default Product = () => {
             </TouchableOpacity>
           </View>
           <View style={styles.textContainer}>
-            <Text style={styles.productName}>Potimarrons</Text>
+            <Text style={styles.productName}>{props.title}</Text>
             <View style={styles.priceUnit}>
-              <Text style={styles.price}>07.50€/</Text>
-              <Text style={styles.unit}>Piece</Text>
+              <Text style={styles.price}>{props.price}€/</Text>
+              <Text style={styles.unit}>{props.priceUnit}</Text>
             </View>
           </View>
         </View>
         <View style={styles.quantityContainer}>
-          <TouchableOpacity style={styles.minus}>
+          <TouchableOpacity style={styles.minus} onPress={() => decrementBtn()}>
             <Image
               source={require("../assets/logoMinusGrey.png")}
               style={styles.logo}
+              
             />
           </TouchableOpacity>
           <View style={styles.quantity}>
-            <Text>0</Text>
+            <Text>{compteur}</Text>
           </View>
-          <TouchableOpacity style={styles.plus}>
+          <TouchableOpacity style={styles.plus} onPress={() => incrementBtn()}>
             <Image
               source={require("../assets/logoPlus.png")}
               style={styles.logo}
+              
             />
           </TouchableOpacity>
         </View>

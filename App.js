@@ -16,9 +16,9 @@ import HomeScreen from "./screens/HomeScreen";
 import { Provider } from "react-redux";
 import { configureStore } from "@reduxjs/toolkit";
 import user from "./reducers/users"; //thihs is the reducer to be used
-
+import productCounter from "./reducers/productCounter"; 
 const store = configureStore({
-  reducer: { user },
+  reducer: { user, productCounter },
 });
 // end of initialization
 

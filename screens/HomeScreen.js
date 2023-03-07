@@ -7,15 +7,30 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  ScrollView,
 } from "react-native";
 import { useFonts } from "expo-font";
 import Product from "../components/Product";
+import { useEffect, useState } from "react";
 
 export default function Home({ navigation }) {
+
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
+  const [productList, setProductList] = useState([])
+  useEffect(() => {
+    fetch('http://10.0.1.23:3000/products').then((response) => response.json()).then((data) => {
+      setProductList(data.result)
+      });
+  }, []);
+  
+  const products = productList.map((dat, i)=> {
+    return <Product imageUrl={dat.imageUrl} title={dat.title} price={dat.price} priceUnit={dat.priceUnit} id={dat._id} key={i} />
+  })
+  
+  
 
   return (
     <View style={styles.container}>
@@ -24,14 +39,11 @@ export default function Home({ navigation }) {
           {"  "}ferme de {"\n"} mereynal
         </Text>
       </View>
-      <View style={styles.productContainerContainer}>
-        <View style={styles.productContainer}>
-          {/* <Product /> */}
-          <Product style={styles.product} />
-          <Product />
-          <Product />
+      <ScrollView style={styles.productContainerContainer}>
+        < View style={styles.productContainer}>
+          {products}
         </View>
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -62,8 +74,6 @@ const styles = StyleSheet.create({
   productContainerContainer: {
     flex: 1,
     width: '100%',
-    alignItems: "center",
-    justifyContent: "center",
   },
 
   productContainer: {
@@ -72,8 +82,6 @@ const styles = StyleSheet.create({
     paddingTop: 5,
     flexDirection: "row",
     marginHorizontal: 5,
-    //justifyContent: "space-around",
-    //justifyContent: "space-evenly",
   },
 
   product: {
