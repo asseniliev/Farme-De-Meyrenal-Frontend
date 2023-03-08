@@ -57,7 +57,8 @@ const BasketStack = createNativeStackNavigator();
 function BasketStackScreen() {
   return (
     <BasketStack.Navigator>
-      <BasketStack.Screen name="Summary" component={OrderSummaryScreen} />
+      <BasketStack.Screen name="ShoppingCart" component={ShoppingCart} options={{ headerShown: false }}/>
+      <BasketStack.Screen name="Summary" component={OrderSummaryScreen} options={{ headerShown: false }}/>
       {/* <BasketStack.Screen
         name="OrderSummary"
         component={UnderConstructionScreen}

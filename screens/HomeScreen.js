@@ -1,4 +1,4 @@
-const licalIP = "10.0.1.183";
+const licalIP = "10.0.1.23";
 
 import Styles from "../components/Styles";
 import {
@@ -51,10 +51,6 @@ export default function Home({ navigation }) {
           {"  "}ferme de {"\n"} mereynal
         </Text>
       </View>
-      <Button
-        onPress={() => navigation.navigate("ShoppingCart")}
-        title={"Button"}
-      />
       <ScrollView style={styles.productContainerContainer}>
         <View style={styles.productContainer}>{products}</View>
       </ScrollView>
@@ -77,6 +73,7 @@ const styles = StyleSheet.create({
     paddingBottom: 3,
     backgroundColor: "#ffffff",
     width: "100%",
+    height: 90,
     borderBottomWidth: 1,
     borderBottomColor: "#ABABAB",
   },
