@@ -11,6 +11,10 @@ import UserCreationScreen from "./screens/UserCreationScreen";
 import OrderEndScreen from "./screens/OrderEndScreen";
 import OrderSummaryScreen from "./screens/OrderSummaryScreen";
 import UnderConstructionScreen from "./screens/UnderConstructionScreen";
+import UserSignInScreen from "./screens/UserSignInScreen";
+import { persistStore, persistReducer } from "redux-persist";
+import { PersistGate } from "redux-persist/integration/react";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import OnBoard from "./screens/OnBoard";
 import LogScreen from "./screens/LogScreen";
@@ -19,13 +23,29 @@ import { useState } from "react";
 
 // initialization of the store
 import { Provider } from "react-redux";
-import { configureStore } from "@reduxjs/toolkit";
+import {
+  configureStore,
+  combineReducers,
+  getDefaultMiddleware,
+} from "@reduxjs/toolkit";
 import user from "./reducers/users"; //thihs is the reducer to be used
-import productCounter from "./reducers/productCounter"; 
+import productCounter from "./reducers/productCounter";
+
+const reducers = combineReducers({ user, productCounter });
+const persistConfig = {
+  key: "loggedUser",
+  storage: AsyncStorage,
+};
+
 const store = configureStore({
-  reducer: { user, productCounter },
+  //reducer: { user, productCounter },
+  reducer: persistReducer(persistConfig, reducers),
+  middleware: (getDefaultMiddleware) =>
+    getDefaultMiddleware({ serializableCheck: false }),
 });
 // end of initialization
+
+const persistor = persistStore(store);
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -35,12 +55,12 @@ const BasketStack = createNativeStackNavigator();
 function BasketStackScreen() {
   return (
     <BasketStack.Navigator>
-      <BasketStack.Screen name="Basket" component={OrderSummaryScreen} />
-      <BasketStack.Screen
-        name="UnderConstruction"
+      <BasketStack.Screen name="Summary" component={OrderSummaryScreen} />
+      {/* <BasketStack.Screen
+        name="OrderSummary"
         component={UnderConstructionScreen}
-      />
-      <BasketStack.Screen name="OrderEnd" component={OrderEndScreen} />
+      /> */}
+      <BasketStack.Screen name="Complete" component={OrderEndScreen} />
     </BasketStack.Navigator>
   );
 }
@@ -57,7 +77,7 @@ function TabNavigator() {
 
           if (route.name === "Home") {
             iconName = "home";
-          } else if (route.name === "BasketTab") {
+          } else if (route.name === "Basket") {
             iconName = "shopping-basket";
           } else if (route.name === "Account") {
             iconName = "user";
@@ -82,8 +102,7 @@ function TabNavigator() {
       })}
     >
       <Tab.Screen name="Home" component={HomeScreen} />
-      <Tab.Screen name="BasketTab" component={BasketStackScreen} />
-      <Tab.Screen name="Account" component={OrderEndScreen} />
+      <Tab.Screen name="Basket" component={BasketStackScreen} />
     </Tab.Navigator>
   );
 }
@@ -91,24 +110,30 @@ function TabNavigator() {
 export default function App() {
   return (
     <Provider store={store}>
-      <NavigationContainer>
-        <Stack.Navigator screenOptions={{ headerShown: false }}>
-          <Stack.Screen name="OnBoard" component={OnBoard} />
-          <Stack.Screen name="Log" component={LogScreen} />
-          <Stack.Screen name="Home" component={HomeScreen} />
-          <Stack.Screen name="Address" component={AddressScreen} />
-          <Stack.Screen name="AccessDetails" component={AddressDetailsScreen} />
-          <Stack.Screen name="PersonalData" component={PersonalDataScreen} />
-          <Stack.Screen name="UserCreation" component={UserCreationScreen} />
-          <Stack.Screen name="OrderSummary" component={OrderSummaryScreen} />
-          <Stack.Screen name="OrderEnd" component={OrderEndScreen} />
-          <Stack.Screen name="TabNavigator" component={TabNavigator} />
-          <Stack.Screen
-            name="UnderConstruction"
-            component={UnderConstructionScreen}
-          />
-        </Stack.Navigator>
-      </NavigationContainer>
+      <PersistGate persistor={persistor}>
+        <NavigationContainer>
+          <Stack.Navigator screenOptions={{ headerShown: false }}>
+            {/* <Stack.Screen name="OnBoard" component={OnBoard} /> */}
+            <Stack.Screen name="Log" component={LogScreen} />
+            <Stack.Screen name="HomeTab" component={TabNavigator} />
+            <Stack.Screen name="Address" component={AddressScreen} />
+            <Stack.Screen
+              name="AccessDetails"
+              component={AddressDetailsScreen}
+            />
+            <Stack.Screen name="PersonalData" component={PersonalDataScreen} />
+            <Stack.Screen name="UserCreation" component={UserCreationScreen} />
+            <Stack.Screen name="Summary" component={OrderSummaryScreen} />
+            <Stack.Screen name="Complete" component={OrderEndScreen} />
+            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen name="UserSignIn" component={UserSignInScreen} />
+            <Stack.Screen
+              name="UnderConstruction"
+              component={UnderConstructionScreen}
+            />
+          </Stack.Navigator>
+        </NavigationContainer>
+      </PersistGate>
     </Provider>
   );
 }

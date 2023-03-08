@@ -2,6 +2,7 @@ import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
   value: {
+    id: "",
     email: "",
     password: "",
     firstName: "",
@@ -13,6 +14,7 @@ const initialState = {
       address: "",
       city: "",
     },
+    accesstoken: "",
   },
 };
 
@@ -29,6 +31,7 @@ export const userSlice = createSlice({
       // console.log(state.value);
     },
     SetCredentials: (state, action) => {
+      state.value.id = action.payload.id;
       state.value.email = action.payload.email;
       state.value.password = action.payload.password;
       // console.log("State: ");
@@ -41,9 +44,21 @@ export const userSlice = createSlice({
       // console.log("State: ");
       // console.log(state.value);
     },
+    resetPersonalData: (state) => {
+      state.value = initialState.value;
+    },
+    setLoggedUser: (state, action) => {
+      state.value = action.payload;
+      console.log(state.value);
+    },
   },
 });
 
-export const { SetDeliveryAddress, SetCredentials, setPersonalData } =
-  userSlice.actions;
+export const {
+  SetDeliveryAddress,
+  SetCredentials,
+  setPersonalData,
+  resetPersonalData,
+  setLoggedUser,
+} = userSlice.actions;
 export default userSlice.reducer;

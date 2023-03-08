@@ -19,7 +19,7 @@ import * as Location from "expo-location";
 //const contourData = require("./modules/contour");
 //console.log("Contour = " + contour[0]);
 
-export default function AddressScreen({ navigation }) {
+export default function UserSigninScreen({ navigation }) {
   const [deliveryAddress, setDelivreryAddress] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
   const [deliveryLat, setDeliveryLat] = useState(0);

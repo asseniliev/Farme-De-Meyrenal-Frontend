@@ -1,3 +1,5 @@
+const licalIP = "10.0.1.183";
+
 import Styles from "../components/Styles";
 import {
   Button,
@@ -14,23 +16,31 @@ import Product from "../components/Product";
 import { useEffect, useState } from "react";
 
 export default function Home({ navigation }) {
-
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
-  const [productList, setProductList] = useState([])
+  const [productList, setProductList] = useState([]);
   useEffect(() => {
-    fetch('http://10.0.1.23:3000/products').then((response) => response.json()).then((data) => {
-      setProductList(data.result)
+    fetch(`http://${licalIP}:3000/products`)
+      .then((response) => response.json())
+      .then((data) => {
+        setProductList(data.result);
       });
   }, []);
-  
-  const products = productList.map((dat, i)=> {
-    return <Product imageUrl={dat.imageUrl} title={dat.title} price={dat.price} priceUnit={dat.priceUnit} id={dat._id} key={i} />
-  })
-  
-  
+
+  const products = productList.map((dat, i) => {
+    return (
+      <Product
+        imageUrl={dat.imageUrl}
+        title={dat.title}
+        price={dat.price}
+        priceUnit={dat.priceUnit}
+        id={dat._id}
+        key={i}
+      />
+    );
+  });
 
   return (
     <View style={styles.container}>
@@ -40,9 +50,7 @@ export default function Home({ navigation }) {
         </Text>
       </View>
       <ScrollView style={styles.productContainerContainer}>
-        < View style={styles.productContainer}>
-          {products}
-        </View>
+        <View style={styles.productContainer}>{products}</View>
       </ScrollView>
     </View>
   );
@@ -73,7 +81,7 @@ const styles = StyleSheet.create({
   },
   productContainerContainer: {
     flex: 1,
-    width: '100%',
+    width: "100%",
   },
 
   productContainer: {
@@ -85,6 +93,6 @@ const styles = StyleSheet.create({
   },
 
   product: {
-    margin: 10
-  }
+    margin: 10,
+  },
 });
