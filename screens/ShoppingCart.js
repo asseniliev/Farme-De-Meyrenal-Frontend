@@ -1,5 +1,5 @@
 import Styles from "../components/Styles";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import { StyleSheet, Text, View, ScrollView, TouchableOpacity } from "react-native";
 import { useFonts } from "expo-font";
 import Product from "../components/Product";
 import { useEffect, useState } from "react";
@@ -13,20 +13,6 @@ export default function ShoppingCart({ navigation }) {
 
   const shoppingCart = useSelector((state) => state.productCounter.value);
   console.log('shopping cart >', shoppingCart)
-
-  // const [ products, setProducts ] = useState([])
-
-  // useEffect(() => {
-  //   const arr = Object.entries(shoppingCart).map(
-  //     ([title, { id, imageUrl, price, priceUnit }]) => setProducts([...products, {
-  //       title,
-  //       id,
-  //       imageUrl,
-  //       price,
-  //       priceUnit,
-  //     }])
-  //   );
-  // }, [shoppingCart]);
 
   const products = shoppingCart.map((data, i) => {
       console.log('data', data);
@@ -52,6 +38,11 @@ export default function ShoppingCart({ navigation }) {
       <ScrollView style={styles.productContainerContainer}>
         <View style={styles.productContainer}>{products}</View>
       </ScrollView>
+      <View style={styles.buttonContainer} >
+        <TouchableOpacity styles={Styles.button} ><Text style={Styles.textButton}>Button 1</Text></TouchableOpacity>
+        <TouchableOpacity styles={Styles.button} ><Text style={Styles.textButton}>Button 2</Text></TouchableOpacity>
+        
+      </View>
     </View>
   );
 }
@@ -94,5 +85,10 @@ const styles = StyleSheet.create({
 
   product: {
     margin: 10,
+  },
+
+  buttonContainer: {
+    flexDirection: "row",
+    justifyContent: "space-evenly"
   },
 });
