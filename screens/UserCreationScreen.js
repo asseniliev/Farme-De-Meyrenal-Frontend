@@ -5,6 +5,7 @@ import { Text, View, Image, StyleSheet } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
+import { resetPersonalData } from "../reducers/users";
 
 export default function UserCreationScreen({ navigation }) {
   const [message, setMessage] = useState(
@@ -12,6 +13,7 @@ export default function UserCreationScreen({ navigation }) {
   );
 
   const user = useSelector((state) => state.user.value);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     //console.log(user);
@@ -29,6 +31,7 @@ export default function UserCreationScreen({ navigation }) {
           message +=
             "You must click on the provided link to finalize the account activation.";
           setMessage(message);
+          dispatch(resetPersonalData());
         } else {
           console.log(data);
           setMessage(data.error);
@@ -48,6 +51,12 @@ export default function UserCreationScreen({ navigation }) {
       <View style={styles.bottomSection}>
         <Text style={styles.text}>{message}</Text>
       </View>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("Log")}
+        style={styles.buttonFull}
+      >
+        <Text style={styles.textButton}>Return to Login Screen</Text>
+      </TouchableOpacity>
     </View>
   );
 }

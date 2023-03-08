@@ -3,17 +3,49 @@ const licalIP = "10.0.1.183";
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButton } from "react-native-paper";
 
 export default function OrderEndScreen({ navigation }) {
-  const user = useSelector((state) => state.user.value);
+  const address = useSelector((state) => {
+    if (state.users) return state.users.value.deliveryAddress.address;
+    else return "";
+  });
+
   const [payCash, setPayCash] = useState(true);
+  const [orderTotal, setOrderTotal] = useState(0);
+  const shoppingCart = useSelector((state) => state.productCounter.value);
+
+  useEffect(() => {
+    //console.log(shoppingCart);
+    let total = 0;
+    for (const product in shoppingCart) {
+      total += shoppingCart[product].quantity * shoppingCart[product].price;
+    }
+    setOrderTotal(total);
+  }, [shoppingCart]);
+
+  //Get next Thursday date
+  const today = new Date();
+  const currentDay = today.getDay();
+  const daysUntilThursday = 5 - currentDay + 7;
+  let nextThursday = new Date(
+    today.getFullYear(),
+    today.getMonth(),
+    today.getDate() + daysUntilThursday
+  );
+  const day = nextThursday.getDate().toString().padStart(2, "0");
+  const month = (nextThursday.getMonth() + 1).toString().padStart(2, "0"); // January is 0!
+  const year = nextThursday.getFullYear().toString().substr(-4);
+
+  const formattedDate = `${day}/${month}/${year}`;
+
+  //console.log(formattedDate);
 
   function handleOnPlaceOrder() {
     if (payCash) {
-      navigation.navigate("OrderEnd");
+      navigation.navigate("Complete");
     } else {
       navigation.navigate("UnderConstruction");
     }
@@ -28,13 +60,13 @@ export default function OrderEndScreen({ navigation }) {
       <View style={styles.topSection}>
         <View style={styles.summaryLine}>
           <Text style={styles.text}>TOTAL</Text>
-          <Text style={styles.text}>34.50 €</Text>
+          <Text style={styles.text}>{orderTotal} €</Text>
         </View>
         <Text style={styles.text}>Delivery Address:</Text>
-        <Text style={styles.text}>... Delivery address...</Text>
+        <Text style={styles.text}>{address}</Text>
         <View style={styles.summaryLine}>
           <Text style={styles.text}>Planned delivery date: </Text>
-          <Text style={styles.text}>25/02/2023</Text>
+          <Text style={styles.text}>{formattedDate}</Text>
         </View>
       </View>
       <View style={styles.middleSection}>
@@ -90,7 +122,6 @@ const styles = StyleSheet.create({
   middleSection: {
     flex: 1,
     width: "90%",
-    width: "90%",
     marginLeft: "5%",
     borderBottomColor: "grey",
     borderBottomWidth: 2,
@@ -104,7 +135,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   bottomSection: {
-    flex: 1,
+    flex: 0.6,
     width: "100%",
     justifyContent: "center",
   },
