@@ -1,5 +1,3 @@
-const licalIP = "10.0.1.183";
-
 import Styles from "../components/Styles";
 import {
   Button,
@@ -20,23 +18,24 @@ export default function Home({ navigation }) {
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
+
   const [productList, setProductList] = useState([]);
   useEffect(() => {
-    fetch(`http://${licalIP}:3000/products`)
+    fetch("http://10.0.1.23:3000/products")
       .then((response) => response.json())
       .then((data) => {
         setProductList(data.result);
       });
   }, []);
 
-  const products = productList.map((data, i) => {
+  const products = productList.map((dat, i) => {
     return (
       <Product
-        imageUrl={data.imageUrl}
-        title={data.title}
-        price={data.price}
-        priceUnit={data.priceUnit}
-        id={data._id}
+        imageUrl={dat.imageUrl}
+        title={dat.title}
+        price={dat.price}
+        priceUnit={dat.priceUnit}
+        id={dat._id}
         key={i}
       />
     );
@@ -51,10 +50,6 @@ export default function Home({ navigation }) {
           {"  "}ferme de {"\n"} mereynal
         </Text>
       </View>
-      <Button
-        onPress={() => navigation.navigate("ShoppingCart")}
-        title={"Button"}
-      />
       <ScrollView style={styles.productContainerContainer}>
         <View style={styles.productContainer}>{products}</View>
       </ScrollView>

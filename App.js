@@ -19,6 +19,8 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import OnBoard from "./screens/OnBoard";
 import LogScreen from "./screens/LogScreen";
 import HomeScreen from "./screens/HomeScreen";
+import ShoppingCart from "./screens/ShoppingCart";
+
 import { useState } from "react";
 
 // initialization of the store
@@ -113,9 +115,10 @@ export default function App() {
       <PersistGate persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            {/* <Stack.Screen name="OnBoard" component={OnBoard} /> */}
+            <Stack.Screen name="OnBoard" component={OnBoard} />
             <Stack.Screen name="Log" component={LogScreen} />
             <Stack.Screen name="HomeTab" component={TabNavigator} />
+            <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
             <Stack.Screen name="Address" component={AddressScreen} />
             <Stack.Screen
               name="AccessDetails"

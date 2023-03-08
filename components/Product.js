@@ -2,17 +2,24 @@ import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../reducers/productCounter";
 
-export default Product = (props) => {
+export default function Product(props) {
   const compteur = useSelector((state) => {
-    if (state.productCounter.value[props.title])
-      return state.productCounter.value[props.title].quantity;
-    return 0;
+    console.log("State counter:");
+    console.log(state.productCounter);
+    const product = state.productCounter.value.find((p) => p.id === props.id);
+    return product ? product.quantity : 0;
   });
 
   const dispatch = useDispatch();
   const incrementBtn = () => {
     dispatch(
-      increment({ id: props.id, title: props.title, price: props.price })
+      increment({
+        id: props.id,
+        title: props.title,
+        imageUrl: props.imageUrl,
+        price: props.price,
+        priceUnit: props.priceUnit,
+      })
     );
   };
 
@@ -59,7 +66,7 @@ export default Product = (props) => {
       </View>
     </View>
   );
-};
+}
 const styles = StyleSheet.create({
   product1: {
     flexBasis: "47%",

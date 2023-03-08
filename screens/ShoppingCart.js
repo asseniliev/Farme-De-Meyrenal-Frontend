@@ -1,48 +1,46 @@
-const licalIP = "10.0.1.183";
-
 import Styles from "../components/Styles";
-import {
-  Button,
-  StyleSheet,
-  Text,
-  View,
-  Image,
-  TextInput,
-  TouchableOpacity,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView } from "react-native";
 import { useFonts } from "expo-font";
 import Product from "../components/Product";
 import { useEffect, useState } from "react";
+import { useSelector } from "react-redux";
 
-export default function Home({ navigation }) {
+export default function ShoppingCart({ navigation }) {
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
-  const [productList, setProductList] = useState([]);
-  useEffect(() => {
-    fetch(`http://${licalIP}:3000/products`)
-      .then((response) => response.json())
-      .then((data) => {
-        setProductList(data.result);
-      });
-  }, []);
 
-  const products = productList.map((data, i) => {
+  const shoppingCart = useSelector((state) => state.productCounter.value);
+  console.log('shopping cart >', shoppingCart)
+
+  // const [ products, setProducts ] = useState([])
+
+  // useEffect(() => {
+  //   const arr = Object.entries(shoppingCart).map(
+  //     ([title, { id, imageUrl, price, priceUnit }]) => setProducts([...products, {
+  //       title,
+  //       id,
+  //       imageUrl,
+  //       price,
+  //       priceUnit,
+  //     }])
+  //   );
+  // }, [shoppingCart]);
+
+  const products = shoppingCart.map((data, i) => {
+      console.log('data', data);
     return (
       <Product
         imageUrl={data.imageUrl}
         title={data.title}
         price={data.price}
         priceUnit={data.priceUnit}
-        id={data._id}
+        id={data.id}
         key={i}
       />
     );
-  });
-  //console.log('home')
-  //console.log(products)
+  })
 
   return (
     <View style={styles.container}>
@@ -51,10 +49,6 @@ export default function Home({ navigation }) {
           {"  "}ferme de {"\n"} mereynal
         </Text>
       </View>
-      <Button
-        onPress={() => navigation.navigate("ShoppingCart")}
-        title={"Button"}
-      />
       <ScrollView style={styles.productContainerContainer}>
         <View style={styles.productContainer}>{products}</View>
       </ScrollView>
