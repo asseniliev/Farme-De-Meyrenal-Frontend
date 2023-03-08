@@ -28,14 +28,14 @@ export default function Home({ navigation }) {
       });
   }, []);
 
-  const products = productList.map((dat, i) => {
+  const products = productList.map((data, i) => {
     return (
       <Product
-        imageUrl={dat.imageUrl}
-        title={dat.title}
-        price={dat.price}
-        priceUnit={dat.priceUnit}
-        id={dat._id}
+        imageUrl={data.imageUrl}
+        title={data.title}
+        price={data.price}
+        priceUnit={data.priceUnit}
+        id={data._id}
         key={i}
       />
     );

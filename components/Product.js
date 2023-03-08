@@ -8,12 +8,12 @@ import {
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../reducers/productCounter";
 
-export default Product = (props) => {
+export default function Product(props) {
 
 
-  const compteur = useSelector((state) => {
-    if(state.productCounter.value[props.title]) return state.productCounter.value[props.title].quantity; 
-    return 0;
+const compteur = useSelector((state) => {
+  const product = state.productCounter.value.find((p) => p.id === props.id);
+  return product ? product.quantity : 0;
 });
   
 

@@ -1,46 +1,47 @@
 import Styles from "../components/Styles";
-import { StyleSheet, Text, View, ScrollView } from "react-native";
+import {
+  Button,
+  StyleSheet,
+  Text,
+  View,
+  Image,
+  TextInput,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import { useFonts } from "expo-font";
 import Product from "../components/Product";
 import { useEffect, useState } from "react";
-import { useSelector } from "react-redux";
 
-export default function ShoppingCart({ navigation }) {
+export default function Home({ navigation }) {
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
 
-  const shoppingCart = useSelector((state) => state.productCounter.value);
-  console.log('shopping cart >', shoppingCart)
+  const [productList, setProductList] = useState([]);
+  useEffect(() => {
+    fetch("http://10.0.1.23:3000/products")
+      .then((response) => response.json())
+      .then((data) => {
+        setProductList(data.result);
+      });
+  }, []);
 
-  // const [ products, setProducts ] = useState([])
-
-  // useEffect(() => {
-  //   const arr = Object.entries(shoppingCart).map(
-  //     ([title, { id, imageUrl, price, priceUnit }]) => setProducts([...products, {
-  //       title,
-  //       id,
-  //       imageUrl,
-  //       price,
-  //       priceUnit,
-  //     }])
-  //   );
-  // }, [shoppingCart]);
-
-  const products = shoppingCart.map((data, i) => {
-      console.log('data', data);
+  const products = productList.map((dat, i) => {
     return (
       <Product
-        imageUrl={data.imageUrl}
-        title={data.title}
-        price={data.price}
-        priceUnit={data.priceUnit}
-        id={data.id}
+        imageUrl={dat.imageUrl}
+        title={dat.title}
+        price={dat.price}
+        priceUnit={dat.priceUnit}
+        id={dat._id}
         key={i}
       />
     );
-  })
+  });
+  //console.log('home')
+  //console.log(products)
 
   return (
     <View style={styles.container}>
