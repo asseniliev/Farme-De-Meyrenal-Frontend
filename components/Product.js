@@ -19,7 +19,7 @@ export default Product = (props) => {
 
 
 	const dispatch = useDispatch();
-	const incrementBtn = () => { dispatch(increment({id: props.id, title: props.title} ))};
+	const incrementBtn = () => { dispatch(increment({id: props.id, title: props.title, imageUrl: props.imageUrl, price: props.price, priceUnit: props.priceUnit} ))};
     
 	const decrementBtn = () => { dispatch(decrement({id: props.id, title: props.title} ))};
 

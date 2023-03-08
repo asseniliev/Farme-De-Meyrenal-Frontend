@@ -1,47 +1,51 @@
 import Styles from "../components/Styles";
 import {
-  Button,
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
-  TouchableOpacity,
   ScrollView,
 } from "react-native";
 import { useFonts } from "expo-font";
 import Product from "../components/Product";
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
+import { useSelector } from "react-redux";
 
-export default function Home({ navigation }) {
+export default function ShoppingCart({ navigation }) {
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
 
-  const [productList, setProductList] = useState([]);
-  useEffect(() => {
-    fetch("http://10.0.1.23:3000/products")
-      .then((response) => response.json())
-      .then((data) => {
-        setProductList(data.result);
-      });
-  }, []);
+  const shoppingCart = useSelector((state) => state.productCounter.value);
 
-  const products = productList.map((dat, i) => {
-    return (
-      <Product
-        imageUrl={dat.imageUrl}
-        title={dat.title}
-        price={dat.price}
-        priceUnit={dat.priceUnit}
-        id={dat._id}
-        key={i}
-      />
-    );
-  });
-  //console.log('home')
-  //console.log(products)
+  let products = [];
+
+  useEffect(() => {
+
+    const arr = Object.entries(shoppingCart).map(([title, { id, imageUrl, price, priceUnit}]) => ({ title, id, imageUrl, price, priceUnit }));
+    
+    console.log(arr)
+    console.log('un texte fixe')
+
+    products = arr.map((data, i) => {
+      
+      return (
+        <Product
+          imageUrl={data.imageUrl}
+          title={data.title}
+          price={data.price}
+          priceUnit={data.priceUnit}
+          id={data.id}
+          key={i}
+        />
+      );
+    });
+
+    console.log(products)
+
+  }, [shoppingCart]);
+
+
 
   return (
     <View style={styles.container}>
@@ -50,10 +54,6 @@ export default function Home({ navigation }) {
           {"  "}ferme de {"\n"} mereynal
         </Text>
       </View>
-      <Button
-        onPress={() => navigation.navigate("ShoppingCart")}
-        title={"Button"}
-      />
       <ScrollView style={styles.productContainerContainer}>
         <View style={styles.productContainer}>{products}</View>
       </ScrollView>

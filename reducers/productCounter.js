@@ -1,7 +1,6 @@
 import { createSlice } from "@reduxjs/toolkit";
 const initialState = {
-	value: {}
-  
+  value: {},
 };
 
 export const counterSlice = createSlice({
@@ -9,22 +8,22 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     increment: (state, action) => {
-		const { id, title } = action.payload;
-		if (state.value[title]) state.value[title].quantity +=1;
-		else state.value[title]= {id:id, quantity: 1}
+      const { id, imageUrl, price, priceUnit, title } = action.payload;
+      if (state.value[title]) state.value[title].quantity += 1;
+      else state.value[title] = { id, imageUrl, price, priceUnit, quantity: 1 };
+      //console.log(state.value)
     },
-	
+
     decrement: (state, action) => {
-		const { id, title } = action.payload;
-		if (state.value[title]) {
-		if (state.value[title].quantity > 0) state.value[title].quantity -=1;
-		if (state.value[title].quantity === 0) delete state.value[title];
-		console.log(state.value);
-		}
+      const { title } = action.payload;
+      if (state.value[title]) {
+        if (state.value[title].quantity > 0) state.value[title].quantity -= 1;
+        if (state.value[title].quantity === 0) delete state.value[title];
+        //console.log(state.value);
       }
     },
   },
-)
+});
 
 export const { increment, decrement } = counterSlice.actions;
 export default counterSlice.reducer;
