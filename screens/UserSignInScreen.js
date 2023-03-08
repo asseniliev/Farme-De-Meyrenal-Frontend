@@ -30,10 +30,6 @@ export default function UserSignInScreen({ navigation }) {
   });
 
   function handleOnSignin() {
-    if (loggedUser) {
-      navigation.navigate("HomeTab");
-      return;
-    }
     if (email === "") {
       setErrorText("Insert a valid mail address");
     } else if (password === "") {
@@ -67,6 +63,7 @@ export default function UserSignInScreen({ navigation }) {
             navigation.navigate("HomeTab");
           } else {
             setErrorText(data.message);
+            setPassword("");
           }
         });
     }

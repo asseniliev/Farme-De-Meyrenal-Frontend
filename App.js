@@ -33,6 +33,8 @@ import {
 import user from "./reducers/users"; //thihs is the reducer to be used
 import productCounter from "./reducers/productCounter";
 
+//AsyncStorage.clear();
+
 const reducers = combineReducers({ user, productCounter });
 const persistConfig = {
   key: "loggedUser",
@@ -57,12 +59,25 @@ const BasketStack = createNativeStackNavigator();
 function BasketStackScreen() {
   return (
     <BasketStack.Navigator>
-      <BasketStack.Screen name="Summary" component={OrderSummaryScreen} />
+      <BasketStack.Screen
+        name="ShoppingCart"
+        component={ShoppingCart}
+        options={{ headerShown: false }}
+      />
+      <BasketStack.Screen
+        name="Summary"
+        component={OrderSummaryScreen}
+        options={{ headerShown: false }}
+      />
       {/* <BasketStack.Screen
         name="OrderSummary"
         component={UnderConstructionScreen}
       /> */}
-      <BasketStack.Screen name="Complete" component={OrderEndScreen} />
+      <BasketStack.Screen
+        name="Complete"
+        component={OrderEndScreen}
+        options={{ headerShown: false }}
+      />
     </BasketStack.Navigator>
   );
 }
@@ -105,6 +120,7 @@ function TabNavigator() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Basket" component={BasketStackScreen} />
+      <Tab.Screen name="Account" component={LogScreen} />
     </Tab.Navigator>
   );
 }
@@ -144,7 +160,7 @@ export default function App() {
 const styles = StyleSheet.create({
   iconsBar: {
     flex: 1,
-    height: 100,
+    height: 80,
     flexDirection: "row",
     paddingHorizontal: 10,
     justifyContent: "space-between",

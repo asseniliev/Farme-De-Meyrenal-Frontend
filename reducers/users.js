@@ -49,6 +49,7 @@ export const userSlice = createSlice({
     },
     setLoggedUser: (state, action) => {
       state.value = action.payload;
+      console.log("State logged user");
       console.log(state.value);
     },
   },

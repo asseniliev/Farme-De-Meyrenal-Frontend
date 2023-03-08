@@ -9,8 +9,21 @@ import {
 import slide from "../components/slide";
 import OnbordingItem from "../components/OnbordingItem";
 import Styles from "../components/Styles";
+import { useSelector } from "react-redux";
 
 export default function Carousel({ navigation }) {
+  const loggedUser = useSelector((data) => {
+    if (data.user) return data.user.value;
+    else return null;
+  });
+
+  function handleOnPress() {
+    if (loggedUser.accesstoken !== "") {
+      navigation.navigate("HomeTab");
+    } else {
+      navigation.navigate("Log");
+    }
+  }
   return (
     <View style={styles.container}>
       <FlatList
@@ -22,10 +35,7 @@ export default function Carousel({ navigation }) {
         bounces={false}
         keyExtractor={(item) => item.id}
       />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Log")}
-        style={Styles.button}
-      >
+      <TouchableOpacity onPress={() => handleOnPress()} style={Styles.button}>
         <Text style={Styles.textButton}>Passer</Text>
       </TouchableOpacity>
     </View>
@@ -39,5 +49,4 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     marginBottom: 30,
   },
-  
 });

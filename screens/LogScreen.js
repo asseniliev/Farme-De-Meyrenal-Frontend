@@ -10,27 +10,12 @@ import {
 import Styles from "../components/Styles";
 //font hook
 import { useFonts } from "expo-font";
-import { useSelector } from "react-redux";
 
 export default function Log({ navigation }) {
-  const loggedUser = useSelector((data) => {
-    if (data.user) return data.user.value;
-    else return null;
-  });
-
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) return null;
-
-  function handleOnSignIn() {
-    if (loggedUser) {
-      navigation.navigate("HomeTab");
-    } else {
-      navigation.navigate("UserSignIn");
-    }
-    //navigation.navigate("UserSignIn");
-  }
 
   return (
     <View style={styles.container}>
@@ -46,7 +31,10 @@ export default function Log({ navigation }) {
       >
         <Text style={Styles.textButton}>Créer un nouveau compte</Text>
       </TouchableOpacity>
-      <TouchableOpacity onPress={() => handleOnSignIn()} style={Styles.button}>
+      <TouchableOpacity
+        onPress={() => navigation.navigate("UserSignIn")}
+        style={Styles.button}
+      >
         <Text style={Styles.textButton}>Se connecter</Text>
       </TouchableOpacity>
       <View style={styles.line}></View>
