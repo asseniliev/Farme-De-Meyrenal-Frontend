@@ -1,15 +1,9 @@
-import {
-  StyleSheet,
-  Text,
-  View,
-  ScrollView,
-} from "react-native";
+import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import { useFonts } from "expo-font";
+import { useNavigation } from "@react-navigation/native";
 
-
-export default function Prsentation({ navigation }) {
+export default function Presentation({ navigation }) {
   const [fontsLoaded] = useFonts({
-    
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
@@ -17,10 +11,82 @@ export default function Prsentation({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>panier</Text>
+        <Text
+          style={styles.title1}
+          onPress={() => navigation.navigate("HomeScreen")}
+        >
+          {"  "}ferme de {"\n"} mereynal
+        </Text>
+        <Text style={styles.title2}>
+          mon exploitation{"\n"}
+          {"            "}permacole
+        </Text>
       </View>
-      <ScrollView style={styles.productContainerContainer}>
-        
+      <ScrollView style={styles.textContainer}>
+        <Image source={require("../assets/fla2.jpg")} style={styles.image} />
+        <Text style={styles.titre}>L’exploitation :</Text>
+        <Text style={styles.paragraphe}>
+          {" "}
+          Lorem ipsum dolor sit amet. Ea eligendi incidunt est facere velit aut
+          mollitia labore est libero ipsam At doloremque asperiores ad animi
+          molestias? Ut maiores maiores ad iure cupiditate ut quibusdam dolore
+          in consequatur quam nam voluptas debitis ut nostrum cupiditate. Quo
+          itaque corrupti ut nulla quas est deleniti labore qui placeat
+          reiciendis est consectetur officia.
+          {"\n"}
+          {"\n"}
+          Aut aperiam quam in libero fugit hic excepturi optio qui eligendi
+          corrupti. Eum aperiam voluptatem ea itaque enim in molestiae aliquid
+          in error dolores ea cupiditate autem sit internos optio. Id beatae
+          harum vel deleniti harum ex omnis itaque.
+          {"\n"}
+          {"\n"}
+          Et animi aperiam 33 autem aperiam et laboriosam nisi sed quia porro id
+          minima sequi est doloremque repudiandae rem sint inventore. Eum
+          accusantium molestias et obcaecati iusto aut amet exercitationem.
+        </Text>
+        <Text style={styles.titre}>Mes engagements :</Text>
+        <Text style={styles.paragraphe}>
+          {" "}
+          Lorem ipsum dolor sit amet. Ea eligendi incidunt est facere velit aut
+          mollitia labore est libero ipsam At doloremque asperiores ad animi
+          molestias? Ut maiores maiores ad iure cupiditate ut quibusdam dolore
+          in consequatur quam nam voluptas debitis ut nostrum cupiditate. Quo
+          itaque corrupti ut nulla quas est deleniti labore qui placeat
+          reiciendis est consectetur officia.
+          {"\n"}
+          {"\n"}
+          Aut aperiam quam in libero fugit hic excepturi optio qui eligendi
+          corrupti. Eum aperiam voluptatem ea itaque enim in molestiae aliquid
+          in error dolores ea cupiditate autem sit internos optio. Id beatae
+          harum vel deleniti harum ex omnis itaque.
+          {"\n"}
+          {"\n"}
+          Et animi aperiam 33 autem aperiam et laboriosam nisi sed quia porro id
+          minima sequi est doloremque repudiandae rem sint inventore. Eum
+          accusantium molestias et obcaecati iusto aut amet exercitationem.
+        </Text>
+        <Text style={styles.titre}>Mon histoire : </Text>
+        <Text style={styles.paragraphe}>
+          {" "}
+          Lorem ipsum dolor sit amet. Ea eligendi incidunt est facere velit aut
+          mollitia labore est libero ipsam At doloremque asperiores ad animi
+          molestias? Ut maiores maiores ad iure cupiditate ut quibusdam dolore
+          in consequatur quam nam voluptas debitis ut nostrum cupiditate. Quo
+          itaque corrupti ut nulla quas est deleniti labore qui placeat
+          reiciendis est consectetur officia.
+          {"\n"}
+          {"\n"}
+          Aut aperiam quam in libero fugit hic excepturi optio qui eligendi
+          corrupti. Eum aperiam voluptatem ea itaque enim in molestiae aliquid
+          in error dolores ea cupiditate autem sit internos optio. Id beatae
+          harum vel deleniti harum ex omnis itaque.
+          {"\n"}
+          {"\n"}
+          Et animi aperiam 33 autem aperiam et laboriosam nisi sed quia porro id
+          minima sequi est doloremque repudiandae rem sint inventore. Eum
+          accusantium molestias et obcaecati iusto aut amet exercitationem.
+        </Text>
       </ScrollView>
     </View>
   );
@@ -36,21 +102,45 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
-    paddingTop: 40,
+    paddingTop: 30,
     paddingBottom: 3,
     backgroundColor: "#ffffff",
     width: "100%",
     height: 90,
     borderBottomWidth: 1,
     borderBottomColor: "#ABABAB",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
   },
-  title: {
+  title1: {
     fontFamily: "BelweBold",
     fontSize: 21,
     color: "#3A7D44",
   },
-  productContainerContainer: {
+  title2: {
+    fontFamily: "BelweBold",
+    fontSize: 21,
+    color: "#F3A712",
+  },
+  image: {
+    width: "100%",
+    height: 250,
+    borderRadius: 5,
+  },
+  textContainer: {
     flex: 1,
     width: "100%",
+    padding: 30,
+  },
+  titre: {
+    fontFamily: "BelweBold",
+    fontSize: 30,
+    color: "#F3A712",
+    marginVertical: 15,
+  },
+  paragraphe: {
+    fontSize: 18,
+    color: "#501B16",
   },
 });

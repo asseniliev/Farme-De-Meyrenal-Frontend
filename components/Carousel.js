@@ -1,8 +1,10 @@
 import React, { useState } from "react";
 import { StyleSheet, View, Text, ScrollView, Image,TouchableOpacity } from "react-native";
+import { useNavigation } from '@react-navigation/native';
 
 const Carousel = () => {
   const [activeIndex, setActiveIndex] = useState(0);
+  const navigation = useNavigation();
   const slides = [
     {
       id: 1,
@@ -52,6 +54,7 @@ const Carousel = () => {
           key={slide.id}
           style={[styles.slide, slide.style]}
           onPress={() => navigation.navigate(slide.screenName)} // navigation vers l'écran spécifié
+          activeOpacity={1}
         >
           {slide.image && (
             <Image source={slide.image} style={styles.slideImage} />

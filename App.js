@@ -57,6 +57,24 @@ const persistor = persistStore(store);
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
 
+const HomeStack = createNativeStackNavigator();
+
+function HomeStackScreen() {
+  return (
+    <HomeStack.Navigator>
+      <HomeStack.Screen
+        name="HomeScreen"
+        component={HomeScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="PresentationScreen"
+        component={PresentationScreen}
+        options={{ headerShown: false }}
+      />
+    </HomeStack.Navigator>
+  );
+}
 const BasketStack = createNativeStackNavigator();
 
 function BasketStackScreen() {
@@ -133,7 +151,7 @@ function TabNavigator() {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={HomeScreen} />
+      <Tab.Screen name="Home" component={HomeStackScreen} />
       <Tab.Screen name="Basket" component={BasketStackScreen} />
       <Tab.Screen name="Account" component={accountScreen} />
     </Tab.Navigator>
@@ -149,7 +167,7 @@ export default function App() {
             <Stack.Screen name="OnBoard" component={OnBoard} />
             <Stack.Screen name="Log" component={LogScreen} />
             <Stack.Screen name="HomeTab" component={TabNavigator} />
-            <Stack.Screen name="ShoppingCart" component={ShoppingCart} />
+            {/* <Stack.Screen name="ShoppingCart" component={ShoppingCart} /> */}
             <Stack.Screen name="Address" component={AddressScreen} />
             <Stack.Screen
               name="AccessDetails"
