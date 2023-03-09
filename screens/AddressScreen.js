@@ -7,11 +7,14 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
+
+import { Fragment } from "react";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
-import MapView, { Polygon } from "react-native-maps";
+import MapView, { Polygon, Marker } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
 import { SetDeliveryAddress } from "../reducers/users";
 import * as Location from "expo-location";
@@ -19,13 +22,13 @@ import * as Location from "expo-location";
 //const contourData = require("./modules/contour");
 //console.log("Contour = " + contour[0]);
 
-export default function UserSigninScreen({ navigation }) {
+export default function AddressScreen({ navigation }) {
   const [deliveryAddress, setDelivreryAddress] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
   const [deliveryLat, setDeliveryLat] = useState(0);
   const [deliveryLon, setDeliveryLon] = useState(0);
-  const [initLat, setInitLat] = useState(0);
-  const [initLon, setInitLon] = useState(0);
+  const [initLat, setInitLat] = useState(45.167868);
+  const [initLon, setInitLon] = useState(4.6381405);
   const deliveryInfo =
     "Livraison à Lalouvesc :\nLes vendredis entre 13h et 15h";
 
@@ -39,15 +42,42 @@ export default function UserSigninScreen({ navigation }) {
     { latitude: 42, longitude: 1 },
   ];
 
-  const [polygonCoords, setPolygonCoords] = useState(polygonCoords1);
+  const [communes, setCommunes] = useState([polygonCoords1]);
+  const [map, setMap] = useState();
 
   useEffect(() => {
     fetch(`http://${licalIP}:3000/locations/contours`)
       .then((response) => response.json())
       .then((data) => {
-        setPolygonCoords(data.polygonCoords);
+        console.log(data.communes.names);
+        setCommunes(data.communes);
+        setInitLat(data.latInit);
+        setInitLon(data.lonInit);
       });
   }, []);
+
+  handlePolygonPress = () => {
+    console.log("Polygon pressed!");
+  };
+
+  console.log(communes.names);
+  // const mapPolygons = communes.polygons.map((data, i) => {
+  //   return (
+  //     <TouchableWithoutFeedback
+  //       onPress={this.handlePolygonPress}
+  //       key={1000 + i}
+  //     >
+  //       <Polygon
+  //         coordinates={data}
+  //         strokeWidth={1}
+  //         strokeColor="#ff0000"
+  //         fillColor="#ff000060"
+  //         key={100 + i}
+  //         zIndex={10}
+  //       />
+  //     </TouchableWithoutFeedback>
+  //   );
+  // });
 
   async function handleGeoLocalization() {
     (async () => {
@@ -71,6 +101,9 @@ export default function UserSigninScreen({ navigation }) {
     })();
   }
 
+  console.log("Init Lat: " + initLat);
+  console.log("Init Lon: " + initLon);
+
   function handleOnNext() {
     const addressData = {
       lat: deliveryLat,
@@ -83,29 +116,26 @@ export default function UserSigninScreen({ navigation }) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="height">
       <View style={styles.topSection}>
         <Text style={styles.text}>
           <FontAwesome name="arrow-left" size={24} color="#000000" />
           {"   "} Adress de livraison
         </Text>
-
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 45.1169,
-            longitude: 4.5216,
-            latitudeDelta: 0.08,
-            longitudeDelta: 0.08,
+            // latitude: 45.1169,
+            // longitude: 4.5216,
+            latitude: initLat,
+            longitude: initLon,
+            latitudeDelta: 0.2,
+            longitudeDelta: 0.2,
           }}
           mapType="hybrid"
+          userInteractionEnabled={true}
         >
-          <Polygon
-            coordinates={polygonCoords}
-            strokeWidth={1}
-            strokeColor="#ff0000"
-            fillColor="#ff000060"
-          />
+          {/* {mapPolygons} */}
         </MapView>
       </View>
 

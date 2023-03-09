@@ -49,7 +49,7 @@ export default function ShoppingCart({ navigation }) {
       <View style={styles.line}></View>
       <View style={styles.total}>
         <Text style={styles.text}>Total</Text>
-        <Text style={styles.text}>{getTotal()} €</Text> 
+        <Text style={styles.text}>{getTotal()} €</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[Styles.button, styles.button]}>
@@ -117,7 +117,7 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 25,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   text: {
     fontSize: 22,
@@ -132,6 +132,5 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "45%",
-    
   },
 });

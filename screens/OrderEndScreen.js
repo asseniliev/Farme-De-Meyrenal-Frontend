@@ -7,7 +7,7 @@ import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetCounter } from "../reducers/productCounter";
 
-export default function UserCreationScreen({ navigation }) {
+export default function OrderEndScreen({ navigation }) {
   const [message, setMessage] = useState("New order is in process of creation");
 
   const user = useSelector((state) => state.user.value);

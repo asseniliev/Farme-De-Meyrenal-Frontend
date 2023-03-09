@@ -7,7 +7,7 @@ import { useState, useEffect } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { RadioButton } from "react-native-paper";
 
-export default function OrderEndScreen({ navigation }) {
+export default function OrderSummaryScreen({ navigation }) {
   const address = useSelector((state) => {
     if (state.users) return state.users.value.deliveryAddress.address;
     else return "";
