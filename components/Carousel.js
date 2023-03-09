@@ -48,6 +48,7 @@ const Carousel = () => {
         style={styles.scrollView}
         contentContainerStyle={styles.slidesContainer}
         scrollEventThrottle={200}
+        initialPage={1}
       >
         {slides.map((slide) => (
           <TouchableOpacity
@@ -127,6 +128,10 @@ const styles = StyleSheet.create({
   },
   activeIndicator: {
     backgroundColor: "#3A7D44",
+  padding: 2,
+  borderRadius: 4,
+  borderWidth: 1,
+  borderColor: "#fff",
   },
 });
 

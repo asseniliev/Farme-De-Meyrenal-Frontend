@@ -167,7 +167,6 @@ export default function App() {
             <Stack.Screen name="OnBoard" component={OnBoard} />
             <Stack.Screen name="Log" component={LogScreen} />
             <Stack.Screen name="HomeTab" component={TabNavigator} />
-            {/* <Stack.Screen name="ShoppingCart" component={ShoppingCart} /> */}
             <Stack.Screen name="Address" component={AddressScreen} />
             <Stack.Screen
               name="AccessDetails"

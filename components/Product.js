@@ -1,11 +1,20 @@
 import { StyleSheet, Text, View, Image, TouchableOpacity } from "react-native";
 import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../reducers/productCounter";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
 
 export default function Product(props) {
+  const navigation = useNavigation();
+
   const compteur = useSelector((state) => {
     const product = state.productCounter.value.find((p) => p.id === props.id);
     return product ? product.quantity : 0;
+  });
+
+  const loggedUser = useSelector((data) => {
+    if (data.user) return data.user.value;
+    else return null;
   });
 
   const dispatch = useDispatch();
@@ -25,17 +34,28 @@ export default function Product(props) {
     dispatch(decrement({ id: props.id, title: props.title }));
   };
 
+  const [modalVisible, setModalVisible] = useState(false);
+  const toggleModal = () => {
+    setModalVisible(!modalVisible);
+  };
+
   return (
     <View style={styles.product1}>
       <View style={styles.bigContent}>
         <View style={styles.imageContainer}>
           <Image source={{ uri: props.imageUrl }} style={styles.image} />
-          <TouchableOpacity onPress={() => console.log("Logo pressed")}>
+          <TouchableOpacity onPress={toggleModal}>
             <Image
               source={require("../assets/logoInfo.png")}
               style={styles.logoI}
             />
           </TouchableOpacity>
+          {modalVisible && (
+            <View style={styles.modal}>
+              <Text>Ceci est la modale.</Text>
+              < TouchableOpacity title="Fermer" onPress={toggleModal} ></TouchableOpacity>
+            </View>
+          )}
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.productName}>{props.title}</Text>
@@ -46,29 +66,46 @@ export default function Product(props) {
         </View>
       </View>
       <View style={styles.quantityContainer}>
-        <TouchableOpacity style={styles.minus} onPress={() => decrementBtn()}>
-          <Image
-            source={require("../assets/logoMinusGrey.png")}
-            style={styles.logo}
-          />
-        </TouchableOpacity>
-        <View style={styles.quantity}>
-          <Text>{compteur}</Text>
-        </View>
-        <TouchableOpacity style={styles.plus} onPress={() => incrementBtn()}>
-          <Image
-            source={require("../assets/logoPlus.png")}
-            style={styles.logo}
-          />
-        </TouchableOpacity>
+        {loggedUser.accesstoken !== "" ? (
+          <>
+            <TouchableOpacity
+              style={styles.minus}
+              onPress={() => decrementBtn()}
+            >
+              <Image
+                source={require("../assets/logoMinusGrey.png")}
+                style={styles.logo}
+              />
+            </TouchableOpacity>
+            <View style={styles.quantity}>
+              <Text>{compteur}</Text>
+            </View>
+            <TouchableOpacity
+              style={styles.plus}
+              onPress={() => incrementBtn()}
+            >
+              <Image
+                source={require("../assets/logoPlus.png")}
+                style={styles.logo}
+              />
+            </TouchableOpacity>
+          </>
+        ) : (
+          <TouchableOpacity
+            style={styles.loginButton}
+            onPress={() => navigation.navigate("Log")}
+          >
+            <Text style={styles.loginButtonText}>Se connecter</Text>
+          </TouchableOpacity>
+        )}
       </View>
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   product1: {
     flexBasis: "47%",
-    //width: 185,
     height: 302,
     backgroundColor: "#ffffff",
     borderRadius: 5,
@@ -79,10 +116,6 @@ const styles = StyleSheet.create({
   bigContent: {
     flex: 0.87,
   },
-  //   imageContainer: {
-  //     height: 185,
-  //     width: 185,
-  //   },
   imageContainer: {
     flex: 1,
     aspectRatio: 1,
@@ -153,4 +186,32 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     borderColor: "#ABABAB",
   },
+  loginButton: {
+    backgroundColor: "#F3A712",
+    borderRadius: 5,
+    paddingVertical: 10,
+    paddingHorizontal: 20,
+    alignSelf: "center",
+    marginTop: 10,
+    marginBottom: 10,
+  },
+  loginButtonText: {
+    color: "#ffffff",
+    fontSize: 16,
+    fontWeight: "bold",
+    textAlign: "center",
+  },
+  /*modal: {
+    backgroundColor: "white",
+    padding: 20,
+    borderRadius: 10,
+    alignItems: "center",
+    justifyContent: "center",
+    position: "absolute",
+    top: 0,
+    bottom: 0,
+    left: 0,
+    right: 0,
+  },*/
+  
 });

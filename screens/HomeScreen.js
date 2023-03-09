@@ -1,6 +1,6 @@
-const licalIP = "10.0.1.23";
+const licalIP = "10.0.1.23"
 
-import Styles from "../components/Styles";
+
 import {
   Button,
   StyleSheet,
@@ -10,20 +10,18 @@ import {
   TextInput,
   TouchableOpacity,
   ScrollView,
-} from "react-native";
-import { useFonts } from "expo-font";
-import Product from "../components/Product";
-import { useEffect, useState } from "react";
-import Carousel from "../components/Carousel"
+} from 'react-native';
+import { useFonts } from 'expo-font';
+import Product from '../components/Product';
+import { useEffect, useState } from 'react';
+import Carousel from '../components/Carousel';
 
 export default function Home({ navigation }) {
-
-  const [fontsLoaded] = useFonts({
-    BelweBold: require("../assets/fonts/BelweBold.otf"),
-  });
-  if (!fontsLoaded) null;
-
   const [productList, setProductList] = useState([]);
+  const [fontsLoaded] = useFonts({
+    BelweBold: require('../assets/fonts/BelweBold.otf'),
+  });
+
   useEffect(() => {
     fetch(`http://${licalIP}:3000/products`)
       .then((response) => response.json())
@@ -48,12 +46,16 @@ export default function Home({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>
-          {"  "}ferme de {"\n"} mereynal
-        </Text>
+        {fontsLoaded && (
+          <Text style={styles.title}>
+            {'  '}ferme de {'\n'} mereynal
+          </Text>
+        )}
       </View>
       <ScrollView style={styles.productContainerContainer}>
-      <View style={styles.carouselContainer}><Carousel /></View>
+        <View style={styles.carouselContainer}>
+          <Carousel />
+        </View>
         <View style={styles.productContainer}>{products}</View>
       </ScrollView>
     </View>
@@ -80,9 +82,9 @@ const styles = StyleSheet.create({
     borderBottomColor: "#ABABAB",
   },
   title: {
-    fontFamily: "BelweBold",
     fontSize: 21,
     color: "#3A7D44",
+    fontFamily: "BelweBold",
   },
   productContainerContainer: {
     flex: 1,
