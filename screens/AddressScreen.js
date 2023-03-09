@@ -29,8 +29,15 @@ export default function AddressScreen({ navigation }) {
   const [deliveryLon, setDeliveryLon] = useState(0);
   const [initLat, setInitLat] = useState(45.167868);
   const [initLon, setInitLon] = useState(4.6381405);
-  const deliveryInfo =
-    "Livraison à Lalouvesc :\nLes vendredis entre 13h et 15h";
+  const [deliveryInfo, setDeliveryInfo] = useState([
+    "Les vendredis entre 13h et 15h",
+    "Les jedis entre 9h et 12h",
+    "Les lundis entre 14h et 16h",
+    "Les mardis entre 10h et 12h",
+  ]);
+  const [deliveryInfoText, setDeliveryInfoText] = useState("");
+  const [validateAddressDisabled, setIsValidateAddressDisabled] =
+    useState(true);
 
   const dispatch = useDispatch();
 
@@ -42,15 +49,21 @@ export default function AddressScreen({ navigation }) {
     { latitude: 42, longitude: 1 },
   ];
 
-  const [communes, setCommunes] = useState([polygonCoords1]);
-  const [map, setMap] = useState();
+  const [polygons, setPolygons] = useState([polygonCoords1]);
+  const [names, setNames] = useState([]);
+  const [latitudes, setLatitudes] = useState([
+    45.1169, 45.2208, 45.1916, 45.1893,
+  ]);
+  const [longitudes, setLongitudes] = useState([4.5216, 4.6528, 4.702, 4.7472]);
 
   useEffect(() => {
     fetch(`http://${licalIP}:3000/locations/contours`)
       .then((response) => response.json())
       .then((data) => {
-        console.log(data.communes.names);
-        setCommunes(data.communes);
+        setPolygons(data.polygons);
+        setNames(data.names);
+        setLatitudes(data.latitudes);
+        setLongitudes(data.longitudes);
         setInitLat(data.latInit);
         setInitLon(data.lonInit);
       });
@@ -60,24 +73,46 @@ export default function AddressScreen({ navigation }) {
     console.log("Polygon pressed!");
   };
 
-  console.log(communes.names);
-  // const mapPolygons = communes.polygons.map((data, i) => {
-  //   return (
-  //     <TouchableWithoutFeedback
-  //       onPress={this.handlePolygonPress}
-  //       key={1000 + i}
-  //     >
-  //       <Polygon
-  //         coordinates={data}
-  //         strokeWidth={1}
-  //         strokeColor="#ff0000"
-  //         fillColor="#ff000060"
-  //         key={100 + i}
-  //         zIndex={10}
-  //       />
-  //     </TouchableWithoutFeedback>
-  //   );
-  // });
+  handleMarkerPress = (name, deliveryInfo) => {
+    console.log(deliveryInfo);
+    setDelivreryAddress("Market of " + name);
+    let text = "Livraison à " + name + ":\n";
+    text += deliveryInfo;
+    setDeliveryInfoText(text);
+    setIsValidateAddressDisabled(false);
+  };
+
+  const markers = names.map((data, i) => {
+    const latitude = Number(latitudes[i]);
+    const longitude = Number(longitudes[i]);
+    const deliveryText = deliveryInfo[i];
+    return (
+      <Marker
+        key={i}
+        coordinate={{ latitude: latitude, longitude: longitude }}
+        title={data}
+        onPress={() => handleMarkerPress(data, deliveryText)}
+      />
+    );
+  });
+
+  const mapPolygons = polygons.map((data, i) => {
+    return (
+      <TouchableWithoutFeedback
+        onPress={this.handlePolygonPress}
+        key={1000 + i}
+      >
+        <Polygon
+          coordinates={data}
+          strokeWidth={1}
+          strokeColor="#ff0000"
+          fillColor="#ff000060"
+          key={100 + i}
+          zIndex={10}
+        />
+      </TouchableWithoutFeedback>
+    );
+  });
 
   async function handleGeoLocalization() {
     (async () => {
@@ -95,14 +130,22 @@ export default function AddressScreen({ navigation }) {
               setDeliveryCity(data.city);
               setDeliveryLat(location.coords.latitude);
               setDeliveryLon(location.coords.longitude);
+              console.log("Cities here");
+              console.log(names.includes(data.city));
+              if (names.includes(data.city)) {
+                setIsValidateAddressDisabled(false);
+              } else {
+                let text = "No delivery in your comminity.\n";
+                text +=
+                  "Please select a market location from the map or contact Flavien!";
+                setDeliveryInfoText(text);
+                setIsValidateAddressDisabled(true);
+              }
             });
         });
       }
     })();
   }
-
-  console.log("Init Lat: " + initLat);
-  console.log("Init Lon: " + initLon);
 
   function handleOnNext() {
     const addressData = {
@@ -135,7 +178,8 @@ export default function AddressScreen({ navigation }) {
           mapType="hybrid"
           userInteractionEnabled={true}
         >
-          {/* {mapPolygons} */}
+          {mapPolygons}
+          {markers}
         </MapView>
       </View>
 
@@ -152,13 +196,14 @@ export default function AddressScreen({ navigation }) {
         >
           <Text style={styles.textButton}>Géolocaliser</Text>
         </TouchableOpacity>
-        <Text style={styles.text}>{deliveryInfo}</Text>
+        <Text style={styles.text}>{deliveryInfoText}</Text>
       </View>
 
       <View style={styles.bottomSection}>
         <TouchableOpacity
           onPress={() => handleOnNext()}
           style={styles.buttonFull}
+          disabled={validateAddressDisabled}
         >
           <Text style={styles.textButton}>Validez l'adresse de livraison</Text>
         </TouchableOpacity>
@@ -199,7 +244,7 @@ const styles = StyleSheet.create({
   text: {
     paddingHorizontal: 10,
     marginBottom: 5,
-    fontSize: 26,
+    fontSize: 20,
     lineHeight: 40,
   },
   input: {
