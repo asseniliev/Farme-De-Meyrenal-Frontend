@@ -12,6 +12,7 @@ import OrderEndScreen from "./screens/OrderEndScreen";
 import OrderSummaryScreen from "./screens/OrderSummaryScreen";
 import UnderConstructionScreen from "./screens/UnderConstructionScreen";
 import UserSignInScreen from "./screens/UserSignInScreen";
+import MyAccountScreen from "./screens/MyAccountScreen";
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -20,6 +21,7 @@ import OnBoard from "./screens/OnBoard";
 import LogScreen from "./screens/LogScreen";
 import HomeScreen from "./screens/HomeScreen";
 import ShoppingCart from "./screens/ShoppingCart";
+import { useSelector } from "react-redux";
 
 import { useState } from "react";
 
@@ -32,6 +34,8 @@ import {
 } from "@reduxjs/toolkit";
 import user from "./reducers/users"; //thihs is the reducer to be used
 import productCounter from "./reducers/productCounter";
+
+//AsyncStorage.clear();
 
 const reducers = combineReducers({ user, productCounter });
 const persistConfig = {
@@ -57,13 +61,25 @@ const BasketStack = createNativeStackNavigator();
 function BasketStackScreen() {
   return (
     <BasketStack.Navigator>
-      <BasketStack.Screen name="ShoppingCart" component={ShoppingCart} options={{ headerShown: false }}/>
-      <BasketStack.Screen name="Summary" component={OrderSummaryScreen} options={{ headerShown: false }}/>
+      <BasketStack.Screen
+        name="ShoppingCart"
+        component={ShoppingCart}
+        options={{ headerShown: false }}
+      />
+      <BasketStack.Screen
+        name="Summary"
+        component={OrderSummaryScreen}
+        options={{ headerShown: false }}
+      />
       {/* <BasketStack.Screen
         name="OrderSummary"
         component={UnderConstructionScreen}
       /> */}
-      <BasketStack.Screen name="Complete" component={OrderEndScreen} />
+      <BasketStack.Screen
+        name="Complete"
+        component={OrderEndScreen}
+        options={{ headerShown: false }}
+      />
     </BasketStack.Navigator>
   );
 }
@@ -72,6 +88,18 @@ function TabNavigator() {
   const activeColor = "#3a7d44";
   const inactiveColor = "#ababab";
 
+  const loggedUser = useSelector((data) => {
+    if (data.user) return data.user.value;
+    else return null;
+  });
+
+  console.log(loggedUser);
+  let accountScreen;
+  if (loggedUser.accesstoken === "") {
+    accountScreen = LogScreen;
+  } else {
+    accountScreen = MyAccountScreen;
+  }
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
@@ -106,6 +134,7 @@ function TabNavigator() {
     >
       <Tab.Screen name="Home" component={HomeScreen} />
       <Tab.Screen name="Basket" component={BasketStackScreen} />
+      <Tab.Screen name="Account" component={accountScreen} />
     </Tab.Navigator>
   );
 }
@@ -131,6 +160,7 @@ export default function App() {
             <Stack.Screen name="Complete" component={OrderEndScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="UserSignIn" component={UserSignInScreen} />
+            <Stack.Screen name="MyAccount" component={MyAccountScreen} />
             <Stack.Screen
               name="UnderConstruction"
               component={UnderConstructionScreen}
@@ -145,7 +175,7 @@ export default function App() {
 const styles = StyleSheet.create({
   iconsBar: {
     flex: 1,
-    height: 100,
+    height: 80,
     flexDirection: "row",
     paddingHorizontal: 10,
     justifyContent: "space-between",

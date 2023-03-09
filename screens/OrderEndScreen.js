@@ -19,10 +19,10 @@ export default function UserCreationScreen({ navigation }) {
     let totalAmount = 0;
     const items = [];
 
-    for (const product in shoppingCart) {
-      const id = shoppingCart[product].id;
-      const qty = shoppingCart[product].quantity;
-      const price = shoppingCart[product].price;
+    for (const product of shoppingCart) {
+      const id = product.id;
+      const qty = product.quantity;
+      const price = product.price;
       totalAmount += qty * price;
       items.push({
         id: id,
@@ -32,8 +32,8 @@ export default function UserCreationScreen({ navigation }) {
     }
 
     const order = {
-      user: "6406f1a7dd1e86318c1a6327", //user.id,
-      city: "Lyon", //user.deliveryAddress.city,
+      user: user.id,
+      city: user.deliveryAddress.city,
       date: Date.now(),
       items: items,
       totalAmount: totalAmount,
