@@ -88,6 +88,7 @@ export default function UserSignInScreen({ navigation }) {
           />
           <TextInput
             style={styles.input}
+            secureTextEntry={true}
             placeholder="Password"
             onChangeText={(value) => setPassword(value)}
             value={password}
