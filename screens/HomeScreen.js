@@ -14,12 +14,15 @@ import {
 import { useFonts } from "expo-font";
 import Product from "../components/Product";
 import { useEffect, useState } from "react";
+import Carousel from "../components/Carousel"
 
 export default function Home({ navigation }) {
+
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
+
   const [productList, setProductList] = useState([]);
   useEffect(() => {
     fetch(`http://${licalIP}:3000/products`)
@@ -41,8 +44,6 @@ export default function Home({ navigation }) {
       />
     );
   });
-  //console.log('home')
-  //console.log(products)
 
   return (
     <View style={styles.container}>
@@ -52,6 +53,7 @@ export default function Home({ navigation }) {
         </Text>
       </View>
       <ScrollView style={styles.productContainerContainer}>
+      <View style={styles.carouselContainer}><Carousel /></View>
         <View style={styles.productContainer}>{products}</View>
       </ScrollView>
     </View>
@@ -86,7 +88,12 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
   },
-
+  carouselContainer: {
+    width: "100%",
+    alignItems: "center",
+    marginTop: 10,
+    marginBottom: 5,
+  },
   productContainer: {
     flex: 1,
     flexWrap: "wrap",

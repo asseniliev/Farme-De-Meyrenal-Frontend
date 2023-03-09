@@ -13,6 +13,7 @@ import OrderSummaryScreen from "./screens/OrderSummaryScreen";
 import UnderConstructionScreen from "./screens/UnderConstructionScreen";
 import UserSignInScreen from "./screens/UserSignInScreen";
 import MyAccountScreen from "./screens/MyAccountScreen";
+import PresentationScreen from "./screens/PresentationScreen"
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
