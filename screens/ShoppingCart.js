@@ -12,6 +12,19 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import getTotal from "../components/GetTotal";
 
+
+//Composant du ticket
+function Totaux (props) {
+  return (
+    <View style={styles.ticket}>
+      <Text style={styles.ticketText}>{props.title} :</Text>
+      <Text style={styles.ticketText}>
+        {props.quantity} x {props.price}     {props.quantity * props.price} €
+      </Text>
+    </View>
+  );
+}
+
 export default function ShoppingCart({ navigation }) {
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
@@ -19,6 +32,18 @@ export default function ShoppingCart({ navigation }) {
   if (!fontsLoaded) null;
 
   const shoppingCart = useSelector((state) => state.productCounter.value);
+  
+  //Mapping du ticket
+  const totaux = shoppingCart.map((data, i) => {
+    return (
+      <Totaux
+      title={data.title}
+      quantity={data.quantity}
+      price={data.price}
+      key={i}
+      />
+    )
+  })
 
   const products = shoppingCart.map((data, i) => {
     return (
@@ -41,15 +66,14 @@ export default function ShoppingCart({ navigation }) {
       <ScrollView style={styles.productContainerContainer}>
         <View style={styles.productContainer}>{products}</View>
         <View style={styles.line}></View>
-        <View style={styles.ticket}>
-          <Text style={styles.text}>Potimarron :</Text>
-          <Text style={styles.text}>3 x 7.50 22.50 €</Text>
+        <View style={styles.ticketContainer}>
+          {totaux}
         </View>
       </ScrollView>
       <View style={styles.line}></View>
       <View style={styles.total}>
         <Text style={styles.text}>Total</Text>
-        <Text style={styles.text}>{getTotal()} €</Text> 
+        <Text style={styles.text}>{getTotal()} €</Text>
       </View>
       <View style={styles.buttonContainer}>
         <TouchableOpacity style={[Styles.button, styles.button]}>
@@ -68,7 +92,6 @@ const styles = StyleSheet.create({
     flex: 1,
 
     backgroundColor: "#F4F5F9",
-    //alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 30,
   },
@@ -108,16 +131,22 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#ABABAB",
   },
+  ticketContainer: { 
+  },
   ticket: {
     flexDirection: "row",
     justifyContent: "space-between",
     marginHorizontal: 25,
   },
+  ticketText: {
+    fontSize: 17,
+    marginVertical: 5,
+  },
   total: {
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 25,
-    backgroundColor: "#fff"
+    backgroundColor: "#fff",
   },
   text: {
     fontSize: 22,
@@ -132,6 +161,5 @@ const styles = StyleSheet.create({
   },
   button: {
     width: "45%",
-    
   },
 });
