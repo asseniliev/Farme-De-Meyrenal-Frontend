@@ -1,6 +1,6 @@
 const licalIP = "10.0.1.183";
 
-import { Text, View, Image, StyleSheet } from "react-native";
+import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
@@ -87,5 +87,19 @@ const styles = StyleSheet.create({
   image: {
     width: "100%",
     height: "100%",
+  },
+  buttonFull: {
+    backgroundColor: "#3A7D44",
+    marginLeft: "2%",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    marginBottom: "5%",
+    width: "90%",
+    alignItems: "center",
+  },
+  textButton: {
+    color: "#FFFFFF",
+    fontSize: 20,
   },
 });

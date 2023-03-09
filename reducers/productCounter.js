@@ -41,7 +41,7 @@ export const counterSlice = createSlice({
     },
 
     resetCounter: (state) => {
-      state.value = {};
+      state.value = [];
     },
   },
 });

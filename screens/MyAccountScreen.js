@@ -10,12 +10,20 @@ import {
 import Styles from "../components/Styles";
 //font hook
 import { useFonts } from "expo-font";
+import { useDispatch } from "react-redux";
+import { disconnect } from "../reducers/users";
 
-export default function Log({ navigation }) {
+export default function MyAccountScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) return null;
+
+  function handleOnDisconnect() {
+    dispatch(disconnect());
+    navigation.navigate("Log");
+  }
 
   return (
     <View style={styles.container}>
@@ -26,24 +34,31 @@ export default function Log({ navigation }) {
       </View>
       <Image source={require("../assets/fla1.jpg")} style={styles.image} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("Address")}
+        onPress={() => navigation.navigate("")}
         style={Styles.button}
       >
-        <Text style={Styles.textButton}>Créer un nouveau compte</Text>
+        <Text style={Styles.textButton}>Mes Commandes</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("UserSignIn")}
+        onPress={() => navigation.navigate("")}
         style={Styles.button}
       >
-        <Text style={Styles.textButton}>Se connecter</Text>
+        <Text style={Styles.textButton}>Modifier mon profie</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("")}
+        style={Styles.button}
+      >
+        <Text style={Styles.textButton}>Modifier mot de passe</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleOnDisconnect()}
+        style={Styles.button}
+      >
+        <Text style={Styles.textButton}>Me deconnecter</Text>
       </TouchableOpacity>
       <View style={styles.line}></View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("HomeTab")}
-        style={Styles.button}
-      >
-        <Text style={Styles.textButton}>Continuer sans se connecter</Text>
-      </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("")}
         style={Styles.button}

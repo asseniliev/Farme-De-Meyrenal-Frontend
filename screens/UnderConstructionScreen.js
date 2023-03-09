@@ -9,7 +9,7 @@ export default function UnderConstructionScreen({ navigation }) {
           name="arrow-left"
           size={24}
           color="#000000"
-          onPress={() => navigation.navigate("OrderSummary")}
+          onPress={() => navigation.navigate("Summary")}
         />
       </View>
       <View style={styles.bottomSection}>

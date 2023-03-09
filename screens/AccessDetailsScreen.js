@@ -61,12 +61,14 @@ export default function AddressScreen({ navigation }) {
           />
           <TextInput
             style={styles.input}
+            secureTextEntry={true}
             placeholder="Password"
             onChangeText={(value) => setPassword(value)}
             value={password}
           />
           <TextInput
             style={styles.input}
+            secureTextEntry={true}
             placeholder="Repeat password"
             onChangeText={(value) => setRepeatPassword(value)}
             value={repeatPassword}

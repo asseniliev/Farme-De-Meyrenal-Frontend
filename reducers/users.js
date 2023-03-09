@@ -44,11 +44,15 @@ export const userSlice = createSlice({
       // console.log("State: ");
       // console.log(state.value);
     },
-    resetPersonalData: (state) => {
-      state.value = initialState.value;
+    disconnect: (state) => {
+      console.log("Try to reset");
+      state.value.accesstoken = "";
+      console.log("After disconnecting:");
+      console.log(state.value);
     },
     setLoggedUser: (state, action) => {
       state.value = action.payload;
+      console.log("State logged user");
       console.log(state.value);
     },
   },
@@ -60,5 +64,6 @@ export const {
   setPersonalData,
   resetPersonalData,
   setLoggedUser,
+  disconnect,
 } = userSlice.actions;
 export default userSlice.reducer;
