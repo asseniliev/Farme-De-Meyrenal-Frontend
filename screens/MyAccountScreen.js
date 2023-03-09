@@ -60,7 +60,7 @@ export default function MyAccountScreen({ navigation }) {
       </TouchableOpacity>
       <View style={styles.line}></View>
       <TouchableOpacity
-        onPress={() => navigation.navigate("")}
+        onPress={() => navigation.navigate("ContactChoice")}
         style={Styles.button}
       >
         <Text style={Styles.textButton}>Contacter Flavien</Text>

@@ -45,7 +45,11 @@ export default function Log({ navigation }) {
         <Text style={Styles.textButton}>Continuer sans se connecter</Text>
       </TouchableOpacity>
       <TouchableOpacity
+<<<<<<< HEAD
         onPress={() => navigation.navigate("HomeScreen")}
+=======
+        onPress={() => navigation.navigate("ContactChoice")}
+>>>>>>> asen
         style={Styles.button}
       >
         <Text style={Styles.textButton}>Contacter Flavien</Text>

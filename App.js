@@ -13,7 +13,13 @@ import OrderSummaryScreen from "./screens/OrderSummaryScreen";
 import UnderConstructionScreen from "./screens/UnderConstructionScreen";
 import UserSignInScreen from "./screens/UserSignInScreen";
 import MyAccountScreen from "./screens/MyAccountScreen";
+<<<<<<< HEAD
 import PresentationScreen from "./screens/PresentationScreen"
+=======
+import ContactChoiceScreen from "./screens/ContactChoiceScreen";
+import NotificationSentScreen from "./screens/NotificationSentScreen";
+import NotificationFailScreen from "./screens/NotificationFailScreen";
+>>>>>>> asen
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -179,6 +185,18 @@ export default function App() {
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="UserSignIn" component={UserSignInScreen} />
             <Stack.Screen name="MyAccount" component={MyAccountScreen} />
+            <Stack.Screen
+              name="NotificationSent"
+              component={NotificationSentScreen}
+            />
+            <Stack.Screen
+              name="NotificationFail"
+              component={NotificationFailScreen}
+            />
+            <Stack.Screen
+              name="ContactChoice"
+              component={ContactChoiceScreen}
+            />
             <Stack.Screen
               name="UnderConstruction"
               component={UnderConstructionScreen}

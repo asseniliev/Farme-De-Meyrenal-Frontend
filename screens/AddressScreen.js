@@ -7,11 +7,14 @@ import {
   View,
   TextInput,
   TouchableOpacity,
+  TouchableWithoutFeedback,
 } from "react-native";
+
+import { Fragment } from "react";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
-import MapView, { Polygon } from "react-native-maps";
+import MapView, { Polygon, Marker } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
 import { SetDeliveryAddress } from "../reducers/users";
 import * as Location from "expo-location";
@@ -19,15 +22,22 @@ import * as Location from "expo-location";
 //const contourData = require("./modules/contour");
 //console.log("Contour = " + contour[0]);
 
-export default function UserSigninScreen({ navigation }) {
+export default function AddressScreen({ navigation }) {
   const [deliveryAddress, setDelivreryAddress] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
   const [deliveryLat, setDeliveryLat] = useState(0);
   const [deliveryLon, setDeliveryLon] = useState(0);
-  const [initLat, setInitLat] = useState(0);
-  const [initLon, setInitLon] = useState(0);
-  const deliveryInfo =
-    "Livraison à Lalouvesc :\nLes vendredis entre 13h et 15h";
+  const [initLat, setInitLat] = useState(45.167868);
+  const [initLon, setInitLon] = useState(4.6381405);
+  const [deliveryInfo, setDeliveryInfo] = useState([
+    "Les vendredis entre 13h et 15h",
+    "Les jedis entre 9h et 12h",
+    "Les lundis entre 14h et 16h",
+    "Les mardis entre 10h et 12h",
+  ]);
+  const [deliveryInfoText, setDeliveryInfoText] = useState("");
+  const [validateAddressDisabled, setIsValidateAddressDisabled] =
+    useState(true);
 
   const dispatch = useDispatch();
 
@@ -39,15 +49,70 @@ export default function UserSigninScreen({ navigation }) {
     { latitude: 42, longitude: 1 },
   ];
 
-  const [polygonCoords, setPolygonCoords] = useState(polygonCoords1);
+  const [polygons, setPolygons] = useState([polygonCoords1]);
+  const [names, setNames] = useState([]);
+  const [latitudes, setLatitudes] = useState([
+    45.1169, 45.2208, 45.1916, 45.1893,
+  ]);
+  const [longitudes, setLongitudes] = useState([4.5216, 4.6528, 4.702, 4.7472]);
 
   useEffect(() => {
     fetch(`http://${licalIP}:3000/locations/contours`)
       .then((response) => response.json())
       .then((data) => {
-        setPolygonCoords(data.polygonCoords);
+        setPolygons(data.polygons);
+        setNames(data.names);
+        setLatitudes(data.latitudes);
+        setLongitudes(data.longitudes);
+        setInitLat(data.latInit);
+        setInitLon(data.lonInit);
       });
   }, []);
+
+  handlePolygonPress = () => {
+    console.log("Polygon pressed!");
+  };
+
+  handleMarkerPress = (name, deliveryInfo) => {
+    console.log(deliveryInfo);
+    setDelivreryAddress("Market of " + name);
+    let text = "Livraison à " + name + ":\n";
+    text += deliveryInfo;
+    setDeliveryInfoText(text);
+    setIsValidateAddressDisabled(false);
+  };
+
+  const markers = names.map((data, i) => {
+    const latitude = Number(latitudes[i]);
+    const longitude = Number(longitudes[i]);
+    const deliveryText = deliveryInfo[i];
+    return (
+      <Marker
+        key={i}
+        coordinate={{ latitude: latitude, longitude: longitude }}
+        title={data}
+        onPress={() => handleMarkerPress(data, deliveryText)}
+      />
+    );
+  });
+
+  const mapPolygons = polygons.map((data, i) => {
+    return (
+      <TouchableWithoutFeedback
+        onPress={this.handlePolygonPress}
+        key={1000 + i}
+      >
+        <Polygon
+          coordinates={data}
+          strokeWidth={1}
+          strokeColor="#ff0000"
+          fillColor="#ff000060"
+          key={100 + i}
+          zIndex={10}
+        />
+      </TouchableWithoutFeedback>
+    );
+  });
 
   async function handleGeoLocalization() {
     (async () => {
@@ -65,6 +130,17 @@ export default function UserSigninScreen({ navigation }) {
               setDeliveryCity(data.city);
               setDeliveryLat(location.coords.latitude);
               setDeliveryLon(location.coords.longitude);
+              console.log("Cities here");
+              console.log(names.includes(data.city));
+              if (names.includes(data.city)) {
+                setIsValidateAddressDisabled(false);
+              } else {
+                let text = "No delivery in your comminity.\n";
+                text +=
+                  "Please select a market location from the map or contact Flavien!";
+                setDeliveryInfoText(text);
+                setIsValidateAddressDisabled(true);
+              }
             });
         });
       }
@@ -83,29 +159,27 @@ export default function UserSigninScreen({ navigation }) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container}>
+    <KeyboardAvoidingView style={styles.container} behavior="height">
       <View style={styles.topSection}>
         <Text style={styles.text}>
           <FontAwesome name="arrow-left" size={24} color="#000000" />
           {"   "} Adress de livraison
         </Text>
-
         <MapView
           style={styles.map}
           initialRegion={{
-            latitude: 45.1169,
-            longitude: 4.5216,
-            latitudeDelta: 0.08,
-            longitudeDelta: 0.08,
+            // latitude: 45.1169,
+            // longitude: 4.5216,
+            latitude: initLat,
+            longitude: initLon,
+            latitudeDelta: 0.2,
+            longitudeDelta: 0.2,
           }}
           mapType="hybrid"
+          userInteractionEnabled={true}
         >
-          <Polygon
-            coordinates={polygonCoords}
-            strokeWidth={1}
-            strokeColor="#ff0000"
-            fillColor="#ff000060"
-          />
+          {mapPolygons}
+          {markers}
         </MapView>
       </View>
 
@@ -122,13 +196,14 @@ export default function UserSigninScreen({ navigation }) {
         >
           <Text style={styles.textButton}>Géolocaliser</Text>
         </TouchableOpacity>
-        <Text style={styles.text}>{deliveryInfo}</Text>
+        <Text style={styles.text}>{deliveryInfoText}</Text>
       </View>
 
       <View style={styles.bottomSection}>
         <TouchableOpacity
           onPress={() => handleOnNext()}
           style={styles.buttonFull}
+          disabled={validateAddressDisabled}
         >
           <Text style={styles.textButton}>Validez l'adresse de livraison</Text>
         </TouchableOpacity>
@@ -169,7 +244,7 @@ const styles = StyleSheet.create({
   text: {
     paddingHorizontal: 10,
     marginBottom: 5,
-    fontSize: 26,
+    fontSize: 20,
     lineHeight: 40,
   },
   input: {
