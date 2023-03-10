@@ -39,8 +39,6 @@ export default function OrderEndScreen({ navigation }) {
       totalAmount: totalAmount,
     };
 
-    console.log(order);
-
     fetch(`http://${licalIP}:3000/orders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -48,14 +46,12 @@ export default function OrderEndScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data);
         if (data.result) {
           let message = `Order No. ${data.order} was created.\n`;
           message += "Thank you for purchasing from Ferme de Meyrenal!";
           setMessage(message);
           dispatch(resetCounter());
         } else {
-          console.log(data);
           setMessage(data.error);
         }
       });

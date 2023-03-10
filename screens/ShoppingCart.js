@@ -12,14 +12,13 @@ import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import getTotal from "../components/GetTotal";
 
-
 //Composant du ticket
-function Totaux (props) {
+function Totaux(props) {
   return (
     <View style={styles.ticket}>
       <Text style={styles.ticketText}>{props.title} :</Text>
       <Text style={styles.ticketText}>
-        {props.quantity} x {props.price}     {props.quantity * props.price} €
+        {props.quantity} x {props.price} {props.quantity * props.price} €
       </Text>
     </View>
   );
@@ -32,18 +31,18 @@ export default function ShoppingCart({ navigation }) {
   if (!fontsLoaded) null;
 
   const shoppingCart = useSelector((state) => state.productCounter.value);
-  
+
   //Mapping du ticket
   const totaux = shoppingCart.map((data, i) => {
     return (
       <Totaux
-      title={data.title}
-      quantity={data.quantity}
-      price={data.price}
-      key={i}
+        title={data.title}
+        quantity={data.quantity}
+        price={data.price}
+        key={i}
       />
-    )
-  })
+    );
+  });
 
   const products = shoppingCart.map((data, i) => {
     return (
@@ -66,9 +65,7 @@ export default function ShoppingCart({ navigation }) {
       <ScrollView style={styles.productContainerContainer}>
         <View style={styles.productContainer}>{products}</View>
         <View style={styles.line}></View>
-        <View style={styles.ticketContainer}>
-          {totaux}
-        </View>
+        <View style={styles.ticketContainer}>{totaux}</View>
       </ScrollView>
       <View style={styles.line}></View>
       <View style={styles.total}>
@@ -76,10 +73,16 @@ export default function ShoppingCart({ navigation }) {
         <Text style={styles.text}>{getTotal()} €</Text>
       </View>
       <View style={styles.buttonContainer}>
-        <TouchableOpacity style={[Styles.button, styles.button]}>
+        <TouchableOpacity
+          style={[Styles.button, styles.button]}
+          onPress={() => navigation.navigate("HomeScreen")}
+        >
           <Text style={Styles.textButton}>Continue shopping</Text>
         </TouchableOpacity>
-        <TouchableOpacity style={[Styles.button, styles.button]}>
+        <TouchableOpacity
+          style={[Styles.button, styles.button]}
+          onPress={() => navigation.navigate("Summary")}
+        >
           <Text style={Styles.textButton}>Valider mon panier</Text>
         </TouchableOpacity>
       </View>
@@ -90,10 +93,8 @@ export default function ShoppingCart({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: "#F4F5F9",
     justifyContent: "space-between",
-    marginBottom: 30,
   },
   header: {
     alignItems: "center",
@@ -131,8 +132,7 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#ABABAB",
   },
-  ticketContainer: { 
-  },
+  ticketContainer: {},
   ticket: {
     flexDirection: "row",
     justifyContent: "space-between",

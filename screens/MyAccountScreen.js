@@ -43,7 +43,7 @@ export default function MyAccountScreen({ navigation }) {
         onPress={() => navigation.navigate("")}
         style={Styles.button}
       >
-        <Text style={Styles.textButton}>Modifier mon profie</Text>
+        <Text style={Styles.textButton}>Modifier mon profil</Text>
       </TouchableOpacity>
 
       <TouchableOpacity

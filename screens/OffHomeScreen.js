@@ -40,8 +40,6 @@ export default function Home({ navigation }) {
       />
     );
   });
-  //console.log('home')
-  //console.log(products)
 
   return (
     <View style={styles.container}>

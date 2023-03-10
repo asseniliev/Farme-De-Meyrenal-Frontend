@@ -18,7 +18,6 @@ export default function OrderSummaryScreen({ navigation }) {
   const shoppingCart = useSelector((state) => state.productCounter.value);
 
   useEffect(() => {
-    //console.log(shoppingCart);
     let total = 0;
     for (const product in shoppingCart) {
       total += shoppingCart[product].quantity * shoppingCart[product].price;
@@ -40,8 +39,6 @@ export default function OrderSummaryScreen({ navigation }) {
   const year = nextThursday.getFullYear().toString().substr(-4);
 
   const formattedDate = `${day}/${month}/${year}`;
-
-  //console.log(formattedDate);
 
   function handleOnPlaceOrder() {
     if (payCash) {

@@ -16,7 +16,6 @@ export default function UserCreationScreen({ navigation }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    //console.log(user);
     fetch(`http://${licalIP}:3000/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
@@ -24,7 +23,6 @@ export default function UserCreationScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data);
         if (data.result) {
           let message = "New account is almost created.\n";
           message += `A mail was sent to mailbox ${data.user.email} :\n`;
@@ -33,7 +31,6 @@ export default function UserCreationScreen({ navigation }) {
           setMessage(message);
           dispatch(resetPersonalData());
         } else {
-          console.log(data);
           setMessage(data.error);
         }
       });

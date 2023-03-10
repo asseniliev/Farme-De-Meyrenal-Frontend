@@ -82,11 +82,10 @@ export default function ContactChoiceScreen({ navigation }) {
   };
 
   function handleOnNotify() {
-    console.log(email);
     if (contactByMessage) {
       if (email === "") {
         setErrorText("Email address is a mandatory field");
-        console.log("Click");
+
         return;
       }
     } else {
@@ -119,7 +118,6 @@ export default function ContactChoiceScreen({ navigation }) {
     })
       .then((response) => response.json())
       .then((data) => {
-        //console.log(data);
         if (data.result) {
           navigation.navigate("NotificationSent");
         } else {

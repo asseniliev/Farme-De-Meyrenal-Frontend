@@ -19,9 +19,6 @@ import { useDispatch, useSelector } from "react-redux";
 import { SetDeliveryAddress } from "../reducers/users";
 import * as Location from "expo-location";
 
-//const contourData = require("./modules/contour");
-//console.log("Contour = " + contour[0]);
-
 export default function AddressScreen({ navigation }) {
   const [deliveryAddress, setDelivreryAddress] = useState("");
   const [deliveryCity, setDeliveryCity] = useState("");
@@ -74,7 +71,6 @@ export default function AddressScreen({ navigation }) {
   };
 
   handleMarkerPress = (name, deliveryInfo) => {
-    console.log(deliveryInfo);
     setDelivreryAddress("Market of " + name);
     let text = "Livraison à " + name + ":\n";
     text += deliveryInfo;
@@ -83,6 +79,9 @@ export default function AddressScreen({ navigation }) {
   };
 
   const markers = names.map((data, i) => {
+    console.log(
+      `${latitudes[i]} + ${longitudes[i]} = ${latitudes[i] + longitudes[i]}`
+    );
     const latitude = Number(latitudes[i]);
     const longitude = Number(longitudes[i]);
     const deliveryText = deliveryInfo[i];
@@ -130,8 +129,6 @@ export default function AddressScreen({ navigation }) {
               setDeliveryCity(data.city);
               setDeliveryLat(location.coords.latitude);
               setDeliveryLon(location.coords.longitude);
-              console.log("Cities here");
-              console.log(names.includes(data.city));
               if (names.includes(data.city)) {
                 setIsValidateAddressDisabled(false);
               } else {
