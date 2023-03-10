@@ -151,7 +151,7 @@ function TabNavigator() {
         },
         tabBarActiveTintColor: activeColor,
         tabBarInactiveTintColor: inactiveColor,
-        tabBarStyle: [{ height: 60 }],
+        tabBarStyle: [{ height: "10%" }],
         headerShown: false,
       })}
     >
