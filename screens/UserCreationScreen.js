@@ -1,4 +1,4 @@
-const licalIP = "10.0.1.183";
+import localIP from "../modules/localIP"
 
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -16,7 +16,7 @@ export default function UserCreationScreen({ navigation }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(`http://${licalIP}:3000/users/signup`, {
+    fetch(`http://${localIP}:3000/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),

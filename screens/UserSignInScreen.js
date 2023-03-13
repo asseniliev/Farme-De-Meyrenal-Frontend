@@ -1,4 +1,4 @@
-const licalIP = "10.0.1.183";
+import localIP from "../modules/localIP"
 
 import {
   KeyboardAvoidingView,
@@ -39,7 +39,7 @@ export default function UserSignInScreen({ navigation }) {
         email: email,
         password: password,
       };
-      fetch(`http://${licalIP}:3000/users/signin`, {
+      fetch(`http://${localIP}:3000/users/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(login),

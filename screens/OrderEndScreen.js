@@ -1,4 +1,4 @@
-const licalIP = "10.0.1.183";
+import localIP from "../modules/localIP"
 
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -39,7 +39,7 @@ export default function OrderEndScreen({ navigation }) {
       totalAmount: totalAmount,
     };
 
-    fetch(`http://${licalIP}:3000/orders`, {
+    fetch(`http://${localIP}:3000/orders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(order),

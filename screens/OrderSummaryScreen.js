@@ -1,5 +1,3 @@
-const licalIP = "10.0.1.183";
-
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
@@ -126,7 +124,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
   },
   radioButtonLine: {
-    flex: 1,
+    flex: 0.4,
     flexDirection: "row",
     justifyContent: "flex-start",
     alignItems: "flex-start",
@@ -135,6 +133,7 @@ const styles = StyleSheet.create({
     flex: 0.6,
     width: "100%",
     justifyContent: "center",
+    alignItems: "center",
   },
   textTitle: {
     paddingHorizontal: 10,

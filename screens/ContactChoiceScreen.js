@@ -1,4 +1,4 @@
-const licalIP = "10.0.1.183";
+import localIP from "../modules/localIP"
 
 import {
   Text,
@@ -111,7 +111,7 @@ export default function ContactChoiceScreen({ navigation }) {
       text: messageBody,
     };
 
-    fetch(`http://${licalIP}:3000/admin/notify`, {
+    fetch(`http://${localIP}:3000/admin/notify`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(mail),

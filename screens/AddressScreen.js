@@ -1,5 +1,3 @@
-const licalIP = "10.0.1.183";
-
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -18,6 +16,7 @@ import MapView, { Polygon, Marker } from "react-native-maps";
 import { useDispatch, useSelector } from "react-redux";
 import { SetDeliveryAddress } from "../reducers/users";
 import * as Location from "expo-location";
+import localIP from "../modules/localIP";
 
 export default function AddressScreen({ navigation }) {
   const [deliveryAddress, setDelivreryAddress] = useState("");
@@ -54,7 +53,7 @@ export default function AddressScreen({ navigation }) {
   const [longitudes, setLongitudes] = useState([4.5216, 4.6528, 4.702, 4.7472]);
 
   useEffect(() => {
-    fetch(`http://${licalIP}:3000/locations/contours`)
+    fetch(`http://${localIP}:3000/locations/contours`)
       .then((response) => response.json())
       .then((data) => {
         setPolygons(data.polygons);
@@ -119,9 +118,8 @@ export default function AddressScreen({ navigation }) {
 
       if (status === "granted") {
         Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-          const url = `http://${licalIP}:3000/locations/addresses/?lon=${location.coords.longitude}&lat=${location.coords.latitude}`;
-          //fetch(`http://${licalIP}:3000/locations/address)
-          //setLocalPosition(location.coords);
+          const url = `http://${localIP}:3000/locations/addresses/?lon=${location.coords.longitude}&lat=${location.coords.latitude}`;
+
           fetch(url)
             .then((response) => response.json())
             .then((data) => {
