@@ -51,6 +51,7 @@ export default function ShoppingCart({ navigation }) {
         title={data.title}
         price={data.price}
         priceUnit={data.priceUnit}
+        description={data.description}
         id={data.id}
         key={i}
       />

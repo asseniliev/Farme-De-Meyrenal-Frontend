@@ -22,6 +22,7 @@ export const counterSlice = createSlice({
           imageUrl,
           price,
           priceUnit,
+          description,
           quantity: 1,
         });
       }

@@ -3,8 +3,15 @@ import { useSelector, useDispatch } from "react-redux";
 import { increment, decrement } from "../reducers/productCounter";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
+import { Overlay } from "react-native-elements";
+import Styles from "./Styles";
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Product(props) {
+  const [visible, setVisible] = useState(false);
+  const toggleOverlay = () => {
+    setVisible(!visible);
+  };
   const navigation = useNavigation();
 
   const compteur = useSelector((state) => {
@@ -34,28 +41,27 @@ export default function Product(props) {
     dispatch(decrement({ id: props.id, title: props.title }));
   };
 
-  const [modalVisible, setModalVisible] = useState(false);
-  const toggleModal = () => {
-    setModalVisible(!modalVisible);
-  };
-
   return (
     <View style={styles.product1}>
       <View style={styles.bigContent}>
         <View style={styles.imageContainer}>
           <Image source={{ uri: props.imageUrl }} style={styles.image} />
-          <TouchableOpacity onPress={toggleModal}>
-            <Image
-              source={require("../assets/logoInfo.png")}
-              style={styles.logoI}
-            />
-          </TouchableOpacity>
-          {modalVisible && (
-            <View style={styles.modal}>
-              <Text>Ceci est la modale.</Text>
-              < TouchableOpacity title="Fermer" onPress={toggleModal} ></TouchableOpacity>
-            </View>
+          {props.description ? (
+            <TouchableOpacity onPress={toggleOverlay}>
+              <MaterialCommunityIcons name="information-outline" size={24} color="black" style={styles.logoI}/>
+            </TouchableOpacity>
+          ) : (
+            <></>
           )}
+          <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
+            <View style={styles.modal}>
+              <Text style={{fontSize: 20, fontWeight: 'bold'}}>{props.title} :</Text>
+              <Text style={{fontSize: 20}}>{props.description}</Text>
+              <TouchableOpacity onPress={toggleOverlay} style={Styles.button}>
+                <Text style={Styles.textButton}>Fermer</Text>
+              </TouchableOpacity>
+            </View>
+          </Overlay>
         </View>
         <View style={styles.textContainer}>
           <Text style={styles.productName}>{props.title}</Text>
@@ -119,7 +125,7 @@ const styles = StyleSheet.create({
   imageContainer: {
     flex: 1,
     aspectRatio: 1,
-    Width: "100%",
+    width: "100%",
     height: undefined,
   },
   image: {
@@ -132,6 +138,9 @@ const styles = StyleSheet.create({
     position: "absolute",
     top: -155,
     right: 15,
+    color: "white",
+    textShadowColor: 'rgba(0, 0, 0, 1)',
+    textShadowRadius: 2,
   },
   textContainer: {
     marginTop: 10,
@@ -201,17 +210,13 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     textAlign: "center",
   },
-  /*modal: {
+  modal: {
     backgroundColor: "white",
+    borderRadius: "50%",
     padding: 20,
-    borderRadius: 10,
+    width: 250,
+    height: 200,
+    justifyContent: "space-between",
     alignItems: "center",
-    justifyContent: "center",
-    position: "absolute",
-    top: 0,
-    bottom: 0,
-    left: 0,
-    right: 0,
-  },*/
-  
+  },
 });

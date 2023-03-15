@@ -1,5 +1,3 @@
-const licalIP = "10.0.1.183";
-
 import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";

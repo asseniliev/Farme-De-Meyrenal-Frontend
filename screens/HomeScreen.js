@@ -1,4 +1,4 @@
-const licalIP = "10.0.1.23";
+import localIP from "../modules/localIP"
 
 import {
   Button,
@@ -22,7 +22,7 @@ export default function Home({ navigation }) {
   });
 
   useEffect(() => {
-    fetch(`http://${licalIP}:3000/products`)
+    fetch(`http://${localIP}:3000/products`)
       .then((response) => response.json())
       .then((data) => {
         setProductList(data.result);
@@ -36,6 +36,7 @@ export default function Home({ navigation }) {
         title={data.title}
         price={data.price}
         priceUnit={data.priceUnit}
+        description={data.description}
         id={data._id}
         key={i}
       />

@@ -1,5 +1,3 @@
-const licalIP = "10.0.1.183";
-
 import {
   KeyboardAvoidingView,
   StyleSheet,
