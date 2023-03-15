@@ -5,7 +5,7 @@ import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Overlay } from "react-native-elements";
 import Styles from "./Styles";
-import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from "@expo/vector-icons";
 
 export default function Product(props) {
   const [visible, setVisible] = useState(false);
@@ -45,18 +45,25 @@ export default function Product(props) {
     <View style={styles.product1}>
       <View style={styles.bigContent}>
         <View style={styles.imageContainer}>
-          <Image source={{ uri: props.imageUrl }} style={styles.image} />
           {props.description ? (
             <TouchableOpacity onPress={toggleOverlay}>
-              <MaterialCommunityIcons name="information-outline" size={24} color="black" style={styles.logoI}/>
+              <Image source={{ uri: props.imageUrl }} style={styles.image} />
+              <MaterialCommunityIcons
+                name="information-outline"
+                size={24}
+                color="black"
+                style={styles.logoI}
+              />
             </TouchableOpacity>
           ) : (
-            <></>
+            <Image source={{ uri: props.imageUrl }} style={styles.image} />
           )}
           <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
             <View style={styles.modal}>
-              <Text style={{fontSize: 20, fontWeight: 'bold'}}>{props.title} :</Text>
-              <Text style={{fontSize: 20}}>{props.description}</Text>
+              <Text style={{ fontSize: 20, fontWeight: "bold" }}>
+                {props.title} :
+              </Text>
+              <Text style={{ fontSize: 20 }}>{props.description}</Text>
               <TouchableOpacity onPress={toggleOverlay} style={Styles.button}>
                 <Text style={Styles.textButton}>Fermer</Text>
               </TouchableOpacity>
@@ -136,10 +143,10 @@ const styles = StyleSheet.create({
   },
   logoI: {
     position: "absolute",
-    top: -155,
-    right: 15,
+    top: 134,
+    right: 10,
     color: "white",
-    textShadowColor: 'rgba(0, 0, 0, 1)',
+    textShadowColor: "rgba(0, 0, 0, 1)",
     textShadowRadius: 2,
   },
   textContainer: {
