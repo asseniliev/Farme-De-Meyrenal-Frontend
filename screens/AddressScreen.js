@@ -6,6 +6,7 @@ import {
   TextInput,
   TouchableOpacity,
   TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 
 import { Fragment } from "react";
@@ -19,7 +20,9 @@ import * as Location from "expo-location";
 import localIP from "../modules/localIP";
 
 export default function AddressScreen({ navigation }) {
-  const [deliveryAddress, setDelivreryAddress] = useState("");
+  const [deliveryAddress, setDeliveryAddress] = useState("");
+  const [buttonColor, setButtonColor] = useState("#ababab");
+  const [locationCoordinates, setLocationCoordinates] = useState(null);
   const [deliveryCity, setDeliveryCity] = useState("");
   const [deliveryLat, setDeliveryLat] = useState(0);
   const [deliveryLon, setDeliveryLon] = useState(0);
@@ -65,22 +68,19 @@ export default function AddressScreen({ navigation }) {
       });
   }, []);
 
-  handlePolygonPress = () => {
-    console.log("Polygon pressed!");
-  };
-
   handleMarkerPress = (name, deliveryInfo) => {
-    setDelivreryAddress("Market of " + name);
+    setDeliveryAddress("Market of " + name);
     let text = "Livraison à " + name + ":\n";
     text += deliveryInfo;
     setDeliveryInfoText(text);
     setIsValidateAddressDisabled(false);
+    setButtonColor("#3A7D44");
   };
 
   const markers = names.map((data, i) => {
-    console.log(
-      `${latitudes[i]} + ${longitudes[i]} = ${latitudes[i] + longitudes[i]}`
-    );
+    // console.log(
+    //   `${latitudes[i]} + ${longitudes[i]} = ${latitudes[i] + longitudes[i]}`
+    // );
     const latitude = Number(latitudes[i]);
     const longitude = Number(longitudes[i]);
     const deliveryText = deliveryInfo[i];
@@ -118,28 +118,75 @@ export default function AddressScreen({ navigation }) {
 
       if (status === "granted") {
         Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-          const url = `http://${localIP}:3000/locations/addresses/?lon=${location.coords.longitude}&lat=${location.coords.latitude}`;
+          const url = `http://${localIP}:3000/locations/addressbycoordinates/?lon=${location.coords.longitude}&lat=${location.coords.latitude}`;
 
           fetch(url)
             .then((response) => response.json())
             .then((data) => {
-              setDelivreryAddress(data.address);
+              setDeliveryAddress(data.address);
               setDeliveryCity(data.city);
               setDeliveryLat(location.coords.latitude);
               setDeliveryLon(location.coords.longitude);
+              setLocationCoordinates(location.coords);
               if (names.includes(data.city)) {
                 setIsValidateAddressDisabled(false);
+                setButtonColor("#3A7D44");
               } else {
                 let text = "No delivery in your comminity.\n";
                 text +=
                   "Please select a market location from the map or contact Flavien!";
                 setDeliveryInfoText(text);
                 setIsValidateAddressDisabled(true);
+                setButtonColor("#ababab");
               }
             });
         });
       }
     })();
+  }
+
+  async function handleAddressValidation() {
+    if (deliveryAddress.length < 3) {
+      let text = "Delivery adress must contain at least 3 characters.\n";
+      setDeliveryInfoText(text);
+      return;
+    }
+
+    const url = `http://${localIP}:3000/locations/addressbystring/?q=${deliveryAddress}&limit=1}`;
+    fetch(url)
+      .then((response) => response.json())
+      .then((data) => {
+        if (data.result) {
+          setDeliveryAddress(data.address);
+          setDeliveryCity(data.city);
+          setDeliveryLat(data.location[1]);
+          setDeliveryLon(data.location[0]);
+          setLocationCoordinates({
+            latitude: data.location[1],
+            longitude: data.location[0],
+          });
+          console.log(data);
+          console.log(names);
+          if (names.includes(data.city)) {
+            setIsValidateAddressDisabled(false);
+            setButtonColor("#3A7D44");
+            let text = "Delivery address validated.\n";
+            setDeliveryInfoText(text);
+          } else {
+            let text = "No delivery in your comminity.\n";
+            text +=
+              "Please select a market location from the map or contact Flavien!";
+            setDeliveryInfoText(text);
+            setIsValidateAddressDisabled(true);
+            setButtonColor("#ababab");
+          }
+        } else {
+          let text = "Please insert a valid address";
+          setDeliveryInfoText(text);
+          setIsValidateAddressDisabled(true);
+          setButtonColor("#ababab");
+        }
+      });
   }
 
   function handleOnNext() {
@@ -154,56 +201,74 @@ export default function AddressScreen({ navigation }) {
   }
 
   return (
-    <KeyboardAvoidingView style={styles.container} behavior="height">
-      <View style={styles.topSection}>
-        <Text style={styles.text}>
-          <FontAwesome name="arrow-left" size={24} color="#000000" />
-          {"   "} Adress de livraison
-        </Text>
-        <MapView
-          style={styles.map}
-          initialRegion={{
-            // latitude: 45.1169,
-            // longitude: 4.5216,
-            latitude: initLat,
-            longitude: initLon,
-            latitudeDelta: 0.2,
-            longitudeDelta: 0.2,
-          }}
-          mapType="hybrid"
-          userInteractionEnabled={true}
-        >
-          {mapPolygons}
-          {markers}
-        </MapView>
-      </View>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+      <KeyboardAvoidingView style={styles.container} behavior="height">
+        <View style={styles.topSection}>
+          <Text style={styles.title}>
+            <FontAwesome name="arrow-left" size={24} color="#000000" />
+            {"          "} adresse de livraison
+          </Text>
+          <MapView
+            style={styles.map}
+            initialRegion={{
+              // latitude: 45.1169,
+              // longitude: 4.5216,
+              latitude: initLat,
+              longitude: initLon,
+              latitudeDelta: 0.2,
+              longitudeDelta: 0.2,
+            }}
+            mapType="hybrid"
+            userInteractionEnabled={true}
+          >
+            {mapPolygons}
+            {markers}
+            {locationCoordinates && (
+              <Marker
+                coordinate={locationCoordinates}
+                title="Home"
+                pinColor="#fecb2d"
+              />
+            )}
+          </MapView>
+        </View>
 
-      <View style={styles.middleSection}>
-        <TextInput
-          style={styles.input}
-          placeholder="Adresse de livraison"
-          onChangeText={(value) => setDeliveryAddress(value)}
-          value={deliveryAddress}
-        />
-        <TouchableOpacity
-          onPress={() => handleGeoLocalization()}
-          style={styles.buttonHalf}
-        >
-          <Text style={styles.textButton}>Géolocaliser</Text>
-        </TouchableOpacity>
-        <Text style={styles.text}>{deliveryInfoText}</Text>
-      </View>
+        <View style={styles.middleSection}>
+          <TextInput
+            style={styles.input}
+            placeholder="Adresse de livraison"
+            onChangeText={(value) => setDeliveryAddress(value)}
+            value={deliveryAddress}
+          />
+          <View style={styles.addressButtonsView}>
+            <TouchableOpacity
+              onPress={() => handleGeoLocalization()}
+              style={styles.buttonHalf}
+            >
+              <Text style={styles.textButton}>Géolocaliser</Text>
+            </TouchableOpacity>
+            <TouchableOpacity
+              onPress={() => handleAddressValidation()}
+              style={styles.buttonHalf}
+            >
+              <Text style={styles.textButton}>Valider l'adresse</Text>
+            </TouchableOpacity>
+          </View>
 
-      <View style={styles.bottomSection}>
-        <TouchableOpacity
-          onPress={() => handleOnNext()}
-          style={styles.buttonFull}
-          disabled={validateAddressDisabled}
-        >
-          <Text style={styles.textButton}>Validez l'adresse de livraison</Text>
-        </TouchableOpacity>
-      </View>
-    </KeyboardAvoidingView>
+          <Text style={styles.text}>{deliveryInfoText}</Text>
+        </View>
+
+        <View style={styles.bottomSection}>
+          <TouchableOpacity
+            onPress={() => handleOnNext()}
+            style={[styles.buttonFull, { backgroundColor: buttonColor }]}
+            disabled={validateAddressDisabled}
+          >
+            <Text style={styles.textButton}>Next</Text>
+          </TouchableOpacity>
+        </View>
+      </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 
@@ -225,6 +290,14 @@ const styles = StyleSheet.create({
     height: "35%",
     marginVertical: "5%",
   },
+  addressButtonsView: {
+    width: "100%",
+    // height: "25%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    marginBottom: "5%",
+  },
   bottomSection: {
     flex: 0.1,
     width: "100%",
@@ -238,9 +311,15 @@ const styles = StyleSheet.create({
   },
   text: {
     paddingHorizontal: 10,
-    marginBottom: 5,
     fontSize: 20,
-    lineHeight: 40,
+    lineHeight: 30,
+  },
+  title: {
+    fontSize: 21,
+    paddingHorizontal: 10,
+    color: "#3A7D44",
+    fontFamily: "BelweBold",
+    marginBottom: "3%",
   },
   input: {
     backgroundColor: "#D9D9D9",
@@ -254,22 +333,21 @@ const styles = StyleSheet.create({
   },
   buttonHalf: {
     backgroundColor: "#3A7D44",
-    marginLeft: "2%",
+    marginHorizontal: "2%",
     borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 5,
-    marginBottom: "5%",
-    width: "40%",
+    width: "46%",
     alignItems: "center",
   },
   buttonFull: {
-    backgroundColor: "#3A7D44",
-    marginLeft: "2%",
+    // backgroundColor: "#3A7D44",
+    marginHorizontal: "10%",
     borderRadius: 10,
     paddingHorizontal: 15,
     paddingVertical: 5,
     marginBottom: "5%",
-    width: "90%",
+    width: "80%",
     alignItems: "center",
   },
   textButton: {

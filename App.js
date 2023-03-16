@@ -116,7 +116,6 @@ function TabNavigator() {
     else return null;
   });
 
-  console.log(loggedUser);
   let accountScreen;
   if (loggedUser.accesstoken === "") {
     accountScreen = LogScreen;
