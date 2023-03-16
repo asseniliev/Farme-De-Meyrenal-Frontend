@@ -9,7 +9,7 @@ export const counterSlice = createSlice({
   initialState,
   reducers: {
     increment: (state, action) => {
-      const { id, imageUrl, price, priceUnit, title } = action.payload;
+      const { id, imageUrl, price, priceUnit, title, description } = action.payload;
 
       const existingProduct = state.value.find((product) => product.id === id);
 

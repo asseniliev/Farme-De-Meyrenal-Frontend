@@ -1,12 +1,9 @@
-import localIP from "../modules/localIP"
+import localIP from "../modules/localIP";
 
 import {
-  Button,
   StyleSheet,
   Text,
   View,
-  Image,
-  TextInput,
   TouchableOpacity,
   ScrollView,
 } from "react-native";
@@ -14,6 +11,8 @@ import { useFonts } from "expo-font";
 import Product from "../components/Product";
 import { useEffect, useState } from "react";
 import Carousel from "../components/Carousel";
+import Styles from "../modules/importedStyle";
+import {getLoggedUser} from "../modules/isUserLogged";
 
 export default function Home({ navigation }) {
   const [productList, setProductList] = useState([]);
@@ -21,6 +20,8 @@ export default function Home({ navigation }) {
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
 
+  const loggedUser = getLoggedUser();
+ 
   useEffect(() => {
     fetch(`http://${localIP}:3000/products`)
       .then((response) => response.json())
@@ -57,6 +58,14 @@ export default function Home({ navigation }) {
           <Carousel />
         </View>
         <View style={styles.productContainer}>{products}</View>
+        {loggedUser.accesstoken !== "" ?
+        <View style={styles.basket}><TouchableOpacity
+        onPress={() => navigation.navigate("Basket")}
+        style={Styles.button}
+      >
+        <Text style={Styles.textButton}>Mon panier</Text>
+      </TouchableOpacity>
+      </View> : <></>}
       </ScrollView>
     </View>
   );
@@ -104,5 +113,11 @@ const styles = StyleSheet.create({
 
   product: {
     margin: 10,
+  },
+
+  basket: {
+    width: "100%",
+    alignItems: "center",
+    paddingVertical: 10,
   },
 });

@@ -4,8 +4,10 @@ import { increment, decrement } from "../reducers/productCounter";
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Overlay } from "react-native-elements";
-import Styles from "./Styles";
+import Styles from "../modules/importedStyle";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
+import {getLoggedUser} from "../modules/isUserLogged";
+
 
 export default function Product(props) {
   const [visible, setVisible] = useState(false);
@@ -19,10 +21,7 @@ export default function Product(props) {
     return product ? product.quantity : 0;
   });
 
-  const loggedUser = useSelector((data) => {
-    if (data.user) return data.user.value;
-    else return null;
-  });
+  const loggedUser = getLoggedUser();
 
   const dispatch = useDispatch();
   const incrementBtn = () => {
@@ -86,7 +85,7 @@ export default function Product(props) {
               onPress={() => decrementBtn()}
             >
               <Image
-                source={require("../assets/logoMinusGrey.png")}
+                source={compteur !== 0 ? require("../assets/logoMinus.png") : require("../assets/logoMinusGrey.png")}
                 style={styles.logo}
               />
             </TouchableOpacity>

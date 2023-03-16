@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import Styles from "../components/Styles";
+import Styles from "../modules/importedStyle";
 //font hook
 import { useFonts } from "expo-font";
 
