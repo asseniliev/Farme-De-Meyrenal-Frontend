@@ -1,5 +1,4 @@
 import localIP from "../modules/localIP";
-
 import {
   StyleSheet,
   Text,
@@ -8,14 +7,12 @@ import {
   ScrollView,
 } from "react-native";
 import { useFonts } from "expo-font";
-import Product from "../components/Product";
 import { useEffect, useState } from "react";
-import Carousel from "../components/Carousel";
 import Styles from "../modules/importedStyle";
 import { getLoggedUser } from "../modules/isUserLogged";
 
-export default function Home({ navigation }) {
-  const [productList, setProductList] = useState([]);
+export default function MyOrders({ navigation }) {
+  const [orderList, setOrderList] = useState([]);
   const [fontsLoaded] = useFonts({
     BelweBold: require("../assets/fonts/BelweBold.otf"),
   });
@@ -23,51 +20,38 @@ export default function Home({ navigation }) {
   const loggedUser = getLoggedUser();
 
   useEffect(() => {
-    fetch(`http://${localIP}:3000/products`)
+    fetch(`http://${localIP}:3000/orders/filter?user=${loggedUser.id}`)
       .then((response) => response.json())
       .then((data) => {
-        setProductList(data.result);
+        //console.log(data.result)
+         setOrderList(data.result);
       });
   }, []);
 
-  const products = productList.map((data, i) => {
+  
+  const orders = orderList.map((order, i) => {return <Order key={i} order={order} />});
+   //console.log(orders)
+  function Order({ order }) {
     return (
-      <Product
-        imageUrl={data.imageUrl}
-        title={data.title}
-        price={data.price}
-        priceUnit={data.priceUnit}
-        description={data.description}
-        id={data._id}
-        key={i}
-      />
+      <View style={styles.order}>
+        <Text>Numéro de commande : {order.orderNumber}</Text>
+        <Text>Montant total : {order.totalAmount}</Text>
+        <Text>Payé : {order.isPaid ? "Oui" : "Non"}</Text>
+      </View>
     );
-  });
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         {fontsLoaded && (
           <Text style={styles.title}>
-            {"  "}ferme de {"\n"} mereynal
+            mes commandes
           </Text>
         )}
       </View>
-      <ScrollView style={styles.productContainerContainer}>
-        <View style={styles.carouselContainer}>
-          <Carousel />
-        </View>
-        <View style={styles.productContainer}>
-          {products}
-        </View>
-        {loggedUser.accesstoken !== "" ? (
-          <View style={styles.basket}>
-            <TouchableOpacity onPress={() => navigation.navigate("Basket")} style={Styles.button} >
-              <Text style={Styles.textButton}>Mon panier</Text>
-            </TouchableOpacity>
-          </View>
-        ) : ( <></> )
-        }
+      <ScrollView style={styles.orderContainer}>
+        {orders}
       </ScrollView>
     </View>
   );
@@ -82,6 +66,7 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
+    justifyContent: "center",
     paddingTop: 30,
     paddingBottom: 3,
     backgroundColor: "#ffffff",

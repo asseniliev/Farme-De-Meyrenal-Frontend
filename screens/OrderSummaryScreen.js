@@ -2,7 +2,7 @@ import { Text, View, StyleSheet, TouchableOpacity } from "react-native";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RadioButton } from "react-native-paper";
 
 export default function OrderSummaryScreen({ navigation }) {
@@ -48,10 +48,15 @@ export default function OrderSummaryScreen({ navigation }) {
 
   return (
     <View style={styles.container}>
-      <Text style={styles.textTitle}>
-        <FontAwesome name="arrow-left" size={24} color="#000000" />
-        {"            "} Order Summary
-      </Text>
+      <View style={styles.textTitle}>
+        <TouchableOpacity
+          style={styles.arrowContainer}
+          onPress={() => navigation.navigate("ShoppingCart")}
+        >
+          <FontAwesome name="arrow-left" size={24} color="#000" />
+        </TouchableOpacity>
+        <Text style={{fontSize: 26}}> Order Summary{"             "}</Text>
+      </View>
       <View style={styles.topSection}>
         <View style={styles.summaryLine}>
           <Text style={styles.text}>TOTAL</Text>
@@ -72,11 +77,15 @@ export default function OrderSummaryScreen({ navigation }) {
         >
           <View style={styles.radioButtonLine}>
             <RadioButton value={false} />
-            <Text style={styles.text}>Online Payment</Text>
+            <Text style={styles.text} onPress={() => setPayCash(false)}>
+              Online Payment
+            </Text>
           </View>
           <View style={styles.radioButtonLine}>
             <RadioButton value={true} />
-            <Text style={styles.text}>Cash Payment at Reception</Text>
+            <Text style={styles.text} onPress={() => setPayCash(true)}>
+              Cash Payment at Reception
+            </Text>
           </View>
         </RadioButton.Group>
       </View>
@@ -100,6 +109,7 @@ const styles = StyleSheet.create({
     justifyContent: "space-between",
     paddingTop: "15%",
   },
+  
   topSection: {
     flex: 1,
     width: "90%",
@@ -137,9 +147,18 @@ const styles = StyleSheet.create({
   },
   textTitle: {
     paddingHorizontal: 10,
-    marginBottom: 5,
-    fontSize: 26,
-    lineHeight: 40,
+    paddingBottom: 10,
+    height: 50,
+    width: "100%",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+  },
+  arrowContainer: {
+    width: 80,
+    height: 50,
+    alignItems: "center",
+    justifyContent: "center",
   },
   text: {
     paddingHorizontal: 10,

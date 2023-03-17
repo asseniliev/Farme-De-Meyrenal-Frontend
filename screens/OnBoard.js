@@ -6,11 +6,12 @@ import {
   FlatList,
   Animated,
 } from "react-native";
-import slide from "../components/slide";
+import slide from "../modules/slide";
 import OnbordingItem from "../components/OnbordingItem";
-import Styles from "../components/Styles";
+import Styles from "../modules/importedStyle";
 import { useSelector } from "react-redux";
 import React, { useState } from "react";
+import { AntDesign } from '@expo/vector-icons';
 
 export default function Carousel({ navigation }) {
 
@@ -65,8 +66,6 @@ export default function Carousel({ navigation }) {
         horizontal
         showsHorizontalScrollIndicator={false}
         pagingEnabled
-        bounces={false}
-        keyExtractor={(item) => item.id}
         onScroll={handleScroll}
       />
       <TouchableOpacity onPress={() => handleOnPress()} style={Styles.button}>

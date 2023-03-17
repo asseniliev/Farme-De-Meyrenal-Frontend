@@ -87,6 +87,7 @@ export default function Presentation({ navigation }) {
           minima sequi est doloremque repudiandae rem sint inventore. Eum
           accusantium molestias et obcaecati iusto aut amet exercitationem.
         </Text>
+        <View style={{height: 150}}></View>
       </ScrollView>
     </View>
   );
@@ -130,6 +131,7 @@ const styles = StyleSheet.create({
     flex: 1,
     width: "100%",
     padding: 30,
+    
   },
   titre: {
     fontFamily: "BelweBold",

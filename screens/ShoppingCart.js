@@ -1,4 +1,4 @@
-import Styles from "../components/Styles";
+import Styles from "../modules/importedStyle";
 import {
   StyleSheet,
   Text,
@@ -17,9 +17,10 @@ function Totaux(props) {
   return (
     <View style={styles.ticket}>
       <Text style={styles.ticketText}>{props.title} :</Text>
-      <Text style={styles.ticketText}>
-        {props.quantity} x {props.price} {props.quantity * props.price} €
-      </Text>
+      <View style={{ flex: 1 , flexDirection: "row"}}>
+        <Text style={styles.ticketText}>{props.quantity} x {props.price}</Text>
+        <Text style={styles.ticketText}>{props.quantity * props.price} €</Text>
+      </View>
     </View>
   );
 }
@@ -80,12 +81,18 @@ export default function ShoppingCart({ navigation }) {
         >
           <Text style={Styles.textButton}>Continue shopping</Text>
         </TouchableOpacity>
-        <TouchableOpacity
-          style={[Styles.button, styles.button]}
-          onPress={() => navigation.navigate("Summary")}
-        >
-          <Text style={Styles.textButton}>Valider mon panier</Text>
-        </TouchableOpacity>
+        {shoppingCart.length !== 0 ? (
+          <TouchableOpacity
+            style={[Styles.button, styles.button]}
+            onPress={() => navigation.navigate("Summary")}
+          >
+            <Text style={Styles.textButton}>Valider mon panier</Text>
+          </TouchableOpacity>
+        ) : (
+          <View style={[Styles.unclickableButton, styles.button]}>
+            <Text style={Styles.textButton}>Valider mon panier</Text>
+          </View>
+        )}
       </View>
     </View>
   );
@@ -124,7 +131,6 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     marginHorizontal: 5,
   },
-
   product: {
     margin: 10,
   },
@@ -133,15 +139,15 @@ const styles = StyleSheet.create({
     height: 1,
     backgroundColor: "#ABABAB",
   },
-  ticketContainer: {},
   ticket: {
     flexDirection: "row",
-    justifyContent: "space-between",
     marginHorizontal: 25,
+    width: "100%",
   },
   ticketText: {
     fontSize: 17,
     marginVertical: 5,
+    flex: 1,
   },
   total: {
     flexDirection: "row",

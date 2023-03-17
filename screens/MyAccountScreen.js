@@ -7,7 +7,7 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import Styles from "../components/Styles";
+import Styles from "../modules/importedStyle";
 //font hook
 import { useFonts } from "expo-font";
 import { useDispatch } from "react-redux";
@@ -34,7 +34,7 @@ export default function MyAccountScreen({ navigation }) {
       </View>
       <Image source={require("../assets/fla1.jpg")} style={styles.image} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("")}
+        onPress={() => navigation.navigate("MyOrders")}
         style={Styles.button}
       >
         <Text style={Styles.textButton}>Mes Commandes</Text>
