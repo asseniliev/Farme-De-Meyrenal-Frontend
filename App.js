@@ -19,6 +19,7 @@ import PresentationScreen from "./screens/PresentationScreen";
 import ContactChoiceScreen from "./screens/ContactChoiceScreen";
 import NotificationSentScreen from "./screens/NotificationSentScreen";
 import NotificationFailScreen from "./screens/NotificationFailScreen";
+import MyOrdersScreen from "./screens/MyOrdersScreen";
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
 import AsyncStorage from "@react-native-async-storage/async-storage";
@@ -82,6 +83,15 @@ function BasketStackScreen() {
     </BasketStack.Navigator>
   );
 }
+const AccountStack = createNativeStackNavigator();
+function AccountStackScreen() {
+  return (
+    <AccountStack.Navigator>
+      <AccountStack.Screen name="Account" component={MyAccountScreen} options={{ headerShown: false }} />
+      <AccountStack.Screen name="MyOrders" component={MyOrdersScreen} options={{ headerShown: false }}/>
+    </AccountStack.Navigator>
+  );
+}
 
 function TabNavigator() {
   const activeColor = "#3a7d44";
@@ -130,7 +140,7 @@ function TabNavigator() {
         />)
       : ( <></> )
       }
-      <Tab.Screen name="Account" component={accountScreen} />
+      <Tab.Screen name="Account" component={AccountStackScreen} />
     </Tab.Navigator>
   );
 }
@@ -159,6 +169,7 @@ export default function App() {
             <Stack.Screen name="NotificationFail" component={NotificationFailScreen} />
             <Stack.Screen name="ContactChoice" component={ContactChoiceScreen} />
             <Stack.Screen name="UnderConstruction" component={UnderConstructionScreen} />
+            
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

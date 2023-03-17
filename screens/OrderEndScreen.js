@@ -31,13 +31,18 @@ export default function OrderEndScreen({ navigation }) {
       });
     }
 
+
+
     const order = {
-      user: user.id,
+      id: user.id,
       city: user.deliveryAddress.city,
       date: Date.now(),
       items: items,
       totalAmount: totalAmount,
     };
+
+    console.log(order)
+
 
     fetch(`http://${localIP}:3000/orders`, {
       method: "POST",

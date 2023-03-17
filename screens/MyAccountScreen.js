@@ -34,7 +34,7 @@ export default function MyAccountScreen({ navigation }) {
       </View>
       <Image source={require("../assets/fla1.jpg")} style={styles.image} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("")}
+        onPress={() => navigation.navigate("MyOrders")}
         style={Styles.button}
       >
         <Text style={Styles.textButton}>Mes Commandes</Text>

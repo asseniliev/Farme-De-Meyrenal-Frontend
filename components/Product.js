@@ -7,14 +7,14 @@ import { Overlay } from "react-native-elements";
 import Styles from "../modules/importedStyle";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import {getLoggedUser} from "../modules/isUserLogged";
+import { FontAwesome } from '@expo/vector-icons';
 
 
 export default function Product(props) {
-  const [visible, setVisible] = useState(false);
-  const toggleOverlay = () => {
-    setVisible(!visible);
-  };
+
   const navigation = useNavigation();
+  const [visible, setVisible] = useState(false);
+  const toggleOverlay = () =>  setVisible(!visible);
 
   const compteur = useSelector((state) => {
     const product = state.productCounter.value.find((p) => p.id === props.id);
@@ -35,24 +35,17 @@ export default function Product(props) {
       })
     );
   };
-
-  const decrementBtn = () => {
-    dispatch(decrement({ id: props.id, title: props.title }));
-  };
+  const decrementBtn = () => dispatch(decrement({ id: props.id, title: props.title }));
 
   return (
     <View style={styles.product1}>
       <View style={styles.bigContent}>
         <View style={styles.imageContainer}>
-          {props.description ? (
+          {props.description 
+          ? (
             <TouchableOpacity onPress={toggleOverlay}>
               <Image source={{ uri: props.imageUrl }} style={styles.image} />
-              <MaterialCommunityIcons
-                name="information-outline"
-                size={24}
-                color="black"
-                style={styles.logoI}
-              />
+              <MaterialCommunityIcons name="information-outline" size={24} color="black" style={styles.logoI} />
             </TouchableOpacity>
           ) : (
             <Image source={{ uri: props.imageUrl }} style={styles.image} />
@@ -62,7 +55,9 @@ export default function Product(props) {
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>
                 {props.title} :
               </Text>
-              <Text style={{ fontSize: 20 }}>{props.description}</Text>
+              <Text style={{ fontSize: 20 }}>
+                {props.description}
+              </Text>
               <TouchableOpacity onPress={toggleOverlay} style={Styles.button}>
                 <Text style={Styles.textButton}>Fermer</Text>
               </TouchableOpacity>
@@ -70,43 +65,34 @@ export default function Product(props) {
           </Overlay>
         </View>
         <View style={styles.textContainer}>
-          <Text style={styles.productName}>{props.title}</Text>
+          <Text style={styles.productName}>
+            {props.title}
+          </Text>
           <View style={styles.priceUnit}>
-            <Text style={styles.price}>{props.price}€/</Text>
-            <Text style={styles.unit}>{props.priceUnit}</Text>
+            <Text style={styles.price}>
+              {props.price}€/
+            </Text>
+            <Text style={styles.unit}>
+              {props.priceUnit}
+            </Text>
           </View>
         </View>
       </View>
       <View style={styles.quantityContainer}>
         {loggedUser.accesstoken !== "" ? (
           <>
-            <TouchableOpacity
-              style={styles.minus}
-              onPress={() => decrementBtn()}
-            >
-              <Image
-                source={compteur !== 0 ? require("../assets/logoMinus.png") : require("../assets/logoMinusGrey.png")}
-                style={styles.logo}
-              />
+            <TouchableOpacity style={styles.minus} onPress={() => decrementBtn()} >
+              <FontAwesome name="minus" size={24} color={compteur !== 0 ? "#fff" : "#ABABAB"} style={styles.logo} />
             </TouchableOpacity>
             <View style={styles.quantity}>
               <Text>{compteur}</Text>
             </View>
-            <TouchableOpacity
-              style={styles.plus}
-              onPress={() => incrementBtn()}
-            >
-              <Image
-                source={require("../assets/logoPlus.png")}
-                style={styles.logo}
-              />
+            <TouchableOpacity style={styles.plus} onPress={() => incrementBtn()} >
+            <FontAwesome name="plus" size={24} color="#fff" style={styles.logo}/>
             </TouchableOpacity>
           </>
         ) : (
-          <TouchableOpacity
-            style={styles.loginButton}
-            onPress={() => navigation.navigate("Log")}
-          >
+          <TouchableOpacity style={styles.loginButton} onPress={() => navigation.navigate("Log")} >
             <Text style={styles.loginButtonText}>Se connecter</Text>
           </TouchableOpacity>
         )}
@@ -126,7 +112,7 @@ const styles = StyleSheet.create({
     margin: 5,
   },
   bigContent: {
-    flex: 0.87,
+    flex: 0.88,
   },
   imageContainer: {
     flex: 1,
@@ -154,17 +140,17 @@ const styles = StyleSheet.create({
     width: "100%",
   },
   productName: {
-    fontSize: 13,
+    fontSize: 16,
   },
   priceUnit: {
     flexDirection: "row",
     alignItems: "baseline",
   },
   price: {
-    fontSize: 12,
+    fontSize: 13,
   },
   unit: {
-    fontSize: 10,
+    fontSize: 12,
   },
   quantityContainer: {
     flexDirection: "row",
@@ -188,7 +174,7 @@ const styles = StyleSheet.create({
     borderTopWidth: 1,
     borderBottomWidth: 1,
     borderColor: "#ABABAB",
-    marginBottom: 22,
+    marginBottom: 21,
   },
   plus: {
     width: 42,

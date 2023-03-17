@@ -53,7 +53,7 @@ export default function OrderSummaryScreen({ navigation }) {
           style={styles.arrowContainer}
           onPress={() => navigation.navigate("ShoppingCart")}
         >
-          <FontAwesome name="arrow-left" size={24} color="#000000" />
+          <FontAwesome name="arrow-left" size={24} color="#000" />
         </TouchableOpacity>
         <Text style={{fontSize: 26}}> Order Summary{"             "}</Text>
       </View>
