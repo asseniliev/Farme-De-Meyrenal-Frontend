@@ -32,6 +32,7 @@ export default function AddressScreen({ navigation }) {
   const [marketHours, setMarketHours] = useState([]);
   const [marketAddresses, setMarketAddresses] = useState([]);
   const [marketLabels, setMarketLabels] = useState([]);
+  const [marketsData, setMarketData] = useState([]);
   const [deliveryInfoText, setDeliveryInfoText] = useState("");
   const [validateAddressDisabled, setIsValidateAddressDisabled] =
     useState(true);
@@ -56,12 +57,13 @@ export default function AddressScreen({ navigation }) {
         setMarketLabels(data.marketLabels);
         setLatitudes(data.latitudes);
         setLongitudes(data.longitudes);
+        setMarketData(data.marketsData);
         setInitLat(data.latInit);
         setInitLon(data.lonInit);
       });
   }, []);
 
-  handleMarkerPress = (homeDeliveries, marketHours, marketAddress) => {
+  handleMarkerPress = (homeDelivery, marketHours, marketAddress) => {
     let text = "";
     if (marketHours) {
       setDeliveryAddress(marketAddress);
@@ -70,20 +72,20 @@ export default function AddressScreen({ navigation }) {
     }
 
     text += "Livraison à domicile: \n";
-    text += homeDeliveries;
+    text += homeDelivery;
     setDeliveryInfoText(text);
     setIsValidateAddressDisabled(false);
     setButtonColor("#3A7D44");
   };
 
-  const markers = longitudes.map((data, i) => {
+  const markers = marketsData.map((data, i) => {
 
-    const latitude = Number(latitudes[i]);
-    const longitude = Number(longitudes[i]);
-    const homeDelivery = homeDeliveries[i];
-    const marketHour = marketHours[i];
-    const marketAddress = marketAddresses[i];
-    const label = marketLabels[i];
+    const latitude = data.latitude;
+    const longitude = data.longitude;
+    const homeDelivery = data.homeDelivery;
+    const marketHour = data.marketHour;
+    const marketAddress = data.marketAddress;
+    const label = data.label;
 
     return (
       <Marker
