@@ -41,8 +41,6 @@ export const userSlice = createSlice({
       state.value.firstName = action.payload.firstName;
       state.value.lastName = action.payload.lastName;
       state.value.phoneNumber = action.payload.phoneNumber;
-      // console.log("State: ");
-      // console.log(state.value);
     },
     disconnect: (state) => {
       console.log("Try to reset");
@@ -62,7 +60,6 @@ export const {
   SetDeliveryAddress,
   SetCredentials,
   setPersonalData,
-  resetPersonalData,
   setLoggedUser,
   disconnect,
 } = userSlice.actions;
