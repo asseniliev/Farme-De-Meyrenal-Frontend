@@ -38,20 +38,11 @@ export default function AddressScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
-  const polygonCoords1 = [
-    { latitude: 42, longitude: 1 },
-    { latitude: 42, longitude: 2 },
-    { latitude: 41, longitude: 2 },
-    { latitude: 41, longitude: 1 },
-    { latitude: 42, longitude: 1 },
-  ];
-
-  const [polygons, setPolygons] = useState([polygonCoords1]);
+  const [polygons, setPolygons] = useState([]);
   const [names, setNames] = useState([]);
-  const [latitudes, setLatitudes] = useState([
-    45.1169, 45.2208, 45.1916, 45.1893,
-  ]);
-  const [longitudes, setLongitudes] = useState([4.5216, 4.6528, 4.702, 4.7472]);
+  const [latitudes, setLatitudes] = useState([]);
+  const [longitudes, setLongitudes] = useState([]);
+
 
   useEffect(() => {
     fetch(`http://${localIP}:3000/locations/contours`)
@@ -85,31 +76,26 @@ export default function AddressScreen({ navigation }) {
     setButtonColor("#3A7D44");
   };
 
-  const markers = names.map((data, i) => {
-    // console.log(
-    //   `${latitudes[i]} + ${longitudes[i]} = ${latitudes[i] + longitudes[i]}`
-    // );
+  const markers = longitudes.map((data, i) => {
+
     const latitude = Number(latitudes[i]);
     const longitude = Number(longitudes[i]);
     const homeDelivery = homeDeliveries[i];
     const marketHour = marketHours[i];
     const marketAddress = marketAddresses[i];
     const label = marketLabels[i];
-    //const label = marketLabels[i];
-    // const homeDelivery = "Home Delivery";
-    // const marketHour = "Market Delivery";
-    // const marketAddress = "Market Address";
+
     return (
       <Marker
         key={i}
         coordinate={{ latitude: latitude, longitude: longitude }}
         title={label}
-        // title={data}
         onPress={() =>
           handleMarkerPress(homeDelivery, marketHour, marketAddress)
         }
       />
     );
+
   });
 
   const mapPolygons = polygons.map((data, i) => {
