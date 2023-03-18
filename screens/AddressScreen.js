@@ -28,11 +28,10 @@ export default function AddressScreen({ navigation }) {
   const [deliveryLon, setDeliveryLon] = useState(0);
   const [initLat, setInitLat] = useState(45.167868);
   const [initLon, setInitLon] = useState(4.6381405);
+  const [regionsData, setRegionsData] = useState([]);
+  // const [initLat, setInitLat] = useState(0);
+  // const [initLon, setInitLon] = useState(0);
   const [homeDeliveries, setHomeDeliveries] = useState([]);
-  const [marketHours, setMarketHours] = useState([]);
-  const [marketAddresses, setMarketAddresses] = useState([]);
-  const [marketLabels, setMarketLabels] = useState([]);
-  const [marketsData, setMarketData] = useState([]);
   const [deliveryInfoText, setDeliveryInfoText] = useState("");
   const [validateAddressDisabled, setIsValidateAddressDisabled] =
     useState(true);
@@ -41,30 +40,22 @@ export default function AddressScreen({ navigation }) {
 
   const [polygons, setPolygons] = useState([]);
   const [names, setNames] = useState([]);
-  const [latitudes, setLatitudes] = useState([]);
-  const [longitudes, setLongitudes] = useState([]);
+
 
 
   useEffect(() => {
     fetch(`http://${localIP}:3000/locations/contours`)
       .then((response) => response.json())
       .then((data) => {
-        setPolygons(data.polygons);
-        setNames(data.names);
-        setHomeDeliveries(data.homeDeliveries);
-        setMarketHours(data.marketHours);
-        setMarketAddresses(data.marketAddresses);
-        setMarketLabels(data.marketLabels);
-        setLatitudes(data.latitudes);
-        setLongitudes(data.longitudes);
-        setMarketData(data.marketsData);
+        setRegionsData(data.regionsData);
         setInitLat(data.latInit);
         setInitLon(data.lonInit);
       });
   }, []);
 
-  handleMarkerPress = (homeDelivery, marketHours, marketAddress) => {
+  handleMarkerPress = (homeDeliveryHours, marketHours, marketAddress) => {
     let text = "";
+    console.log(marketHours);
     if (marketHours) {
       setDeliveryAddress(marketAddress);
       text = "Market time:\n";
@@ -72,42 +63,44 @@ export default function AddressScreen({ navigation }) {
     }
 
     text += "Livraison à domicile: \n";
-    text += homeDelivery;
+    text += homeDeliveryHours;
     setDeliveryInfoText(text);
     setIsValidateAddressDisabled(false);
     setButtonColor("#3A7D44");
   };
 
-  const markers = marketsData.map((data, i) => {
+  const markers = regionsData.map((data, i) => {
 
-    const latitude = data.latitude;
-    const longitude = data.longitude;
-    const homeDelivery = data.homeDelivery;
-    const marketHour = data.marketHour;
-    const marketAddress = data.marketAddress;
-    const label = data.label;
+    if (data.market.address) {
+      //console.log(data.market)
+      const address = data.market.address;
+      const latitude = data.market.latitude;
+      const longitude = data.market.longitude;
+      const label = data.market.label;
+      const marketHours = data.market.marketHours;
+      const homeDeliveryHours = data.homeDeliveryHours;
 
-    return (
-      <Marker
-        key={i}
-        coordinate={{ latitude: latitude, longitude: longitude }}
-        title={label}
-        onPress={() =>
-          handleMarkerPress(homeDelivery, marketHour, marketAddress)
-        }
-      />
-    );
-
+      return (
+        <Marker
+          key={i}
+          coordinate={{ latitude: latitude, longitude: longitude }}
+          title={label}
+          onPress={() =>
+            handleMarkerPress(homeDeliveryHours, marketHours, address)
+          }
+        />
+      );
+    }
   });
 
-  const mapPolygons = polygons.map((data, i) => {
+  const mapPolygons = regionsData.map((data, i) => {
     return (
       <TouchableWithoutFeedback
         onPress={this.handlePolygonPress}
         key={1000 + i}
       >
         <Polygon
-          coordinates={data}
+          coordinates={data.polygon}
           strokeWidth={1}
           strokeColor="#ff0000"
           fillColor="#ff000060"
