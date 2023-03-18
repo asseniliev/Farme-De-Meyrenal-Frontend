@@ -28,12 +28,10 @@ export default function AddressScreen({ navigation }) {
   const [deliveryLon, setDeliveryLon] = useState(0);
   const [initLat, setInitLat] = useState(45.167868);
   const [initLon, setInitLon] = useState(4.6381405);
-  const [deliveryInfo, setDeliveryInfo] = useState([
-    "Les vendredis entre 13h et 15h",
-    "Les jedis entre 9h et 12h",
-    "Les lundis entre 14h et 16h",
-    "Les mardis entre 10h et 12h",
-  ]);
+  const [homeDeliveries, setHomeDeliveries] = useState([]);
+  const [marketHours, setMarketHours] = useState([]);
+  const [marketAddresses, setMarketAddresses] = useState([]);
+  const [marketLabels, setMarketLabels] = useState([]);
   const [deliveryInfoText, setDeliveryInfoText] = useState("");
   const [validateAddressDisabled, setIsValidateAddressDisabled] =
     useState(true);
@@ -61,6 +59,10 @@ export default function AddressScreen({ navigation }) {
       .then((data) => {
         setPolygons(data.polygons);
         setNames(data.names);
+        setHomeDeliveries(data.homeDeliveries);
+        setMarketHours(data.marketHours);
+        setMarketAddresses(data.marketAddresses);
+        setMarketLabels(data.marketLabels);
         setLatitudes(data.latitudes);
         setLongitudes(data.longitudes);
         setInitLat(data.latInit);
@@ -68,10 +70,16 @@ export default function AddressScreen({ navigation }) {
       });
   }, []);
 
-  handleMarkerPress = (name, deliveryInfo) => {
-    setDeliveryAddress("Market of " + name);
-    let text = "Livraison à " + name + ":\n";
-    text += deliveryInfo;
+  handleMarkerPress = (homeDeliveries, marketHours, marketAddress) => {
+    let text = "";
+    if (marketHours) {
+      setDeliveryAddress(marketAddress);
+      text = "Market time:\n";
+      text += marketHours + "\n";
+    }
+
+    text += "Livraison à domicile: \n";
+    text += homeDeliveries;
     setDeliveryInfoText(text);
     setIsValidateAddressDisabled(false);
     setButtonColor("#3A7D44");
@@ -83,13 +91,23 @@ export default function AddressScreen({ navigation }) {
     // );
     const latitude = Number(latitudes[i]);
     const longitude = Number(longitudes[i]);
-    const deliveryText = deliveryInfo[i];
+    const homeDelivery = homeDeliveries[i];
+    const marketHour = marketHours[i];
+    const marketAddress = marketAddresses[i];
+    const label = marketLabels[i];
+    //const label = marketLabels[i];
+    // const homeDelivery = "Home Delivery";
+    // const marketHour = "Market Delivery";
+    // const marketAddress = "Market Address";
     return (
       <Marker
         key={i}
         coordinate={{ latitude: latitude, longitude: longitude }}
-        title={data}
-        onPress={() => handleMarkerPress(data, deliveryText)}
+        title={label}
+        // title={data}
+        onPress={() =>
+          handleMarkerPress(homeDelivery, marketHour, marketAddress)
+        }
       />
     );
   });
@@ -165,12 +183,12 @@ export default function AddressScreen({ navigation }) {
             latitude: data.location[1],
             longitude: data.location[0],
           });
-          console.log(data);
-          console.log(names);
           if (names.includes(data.city)) {
             setIsValidateAddressDisabled(false);
             setButtonColor("#3A7D44");
-            let text = "Delivery address validated.\n";
+            let text = "Livraison à domicile: \n";
+            const cityIndex = names.indexOf(data.city);
+            text += homeDeliveries[cityIndex];
             setDeliveryInfoText(text);
           } else {
             let text = "No delivery in your comminity.\n";
@@ -187,6 +205,7 @@ export default function AddressScreen({ navigation }) {
           setButtonColor("#ababab");
         }
       });
+    Keyboard.dismiss();
   }
 
   function handleOnNext() {
@@ -288,7 +307,8 @@ const styles = StyleSheet.create({
     flex: 0.3,
     width: "100%",
     height: "35%",
-    marginVertical: "5%",
+    marginTop: "5%",
+    marginBottom: "10%"
   },
   addressButtonsView: {
     width: "100%",
@@ -302,6 +322,8 @@ const styles = StyleSheet.create({
     flex: 0.1,
     width: "100%",
     height: "5%",
+    alignItems: "center",
+    justifyContent: "flex-end"
   },
   map: {
     flex: 1,
