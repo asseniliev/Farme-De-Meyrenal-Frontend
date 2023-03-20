@@ -6,7 +6,7 @@ import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import AddressScreen from "./screens/AddressScreen";
-import AddressDetailsScreen from "./screens/AccessDetailsScreen";
+import AccessDetailsScreen from "./screens/AccessDetailsScreen";
 import PersonalDataScreen from "./screens/PersonalDataScreen";
 import UserCreationScreen from "./screens/UserCreationScreen";
 import OrderEndScreen from "./screens/OrderEndScreen";
@@ -107,16 +107,8 @@ const AccountStack = createNativeStackNavigator();
 function AccountStackScreen() {
   return (
     <AccountStack.Navigator>
-      <AccountStack.Screen
-        name="Account"
-        component={MyAccountScreen}
-        options={{ headerShown: false }}
-      />
-      <AccountStack.Screen
-        name="MyOrders"
-        component={MyOrdersScreen}
-        options={{ headerShown: false }}
-      />
+      <AccountStack.Screen name="Account" component={MyAccountScreen} options={{ headerShown: false }} />
+      <AccountStack.Screen name="MyOrders" component={MyOrdersScreen} options={{ headerShown: false }} />
     </AccountStack.Navigator>
   );
 }
@@ -141,6 +133,12 @@ function TabNavigator() {
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
+
+          // let iconName = "";
+          // if (route.name === "Home") { iconName = "home";
+          // } else if (route.name === "Basket") { iconName = "shopping-basket";
+          // } else if (route.name === "Account") { iconName = "user";
+          // }
           let iconName = "";
           if (route.name === "Home") {
             iconName = "home";
@@ -148,6 +146,9 @@ function TabNavigator() {
             iconName = "shopping-basket";
           } else if (route.name === "Account") {
             iconName = "user";
+          if (route.name === "Acceuil") { iconName = "home";
+          } else if (route.name === "Panier") { iconName = "shopping-basket";
+          } else if (route.name === "Profil") { iconName = "user";
           }
 
           return (
@@ -166,28 +167,21 @@ function TabNavigator() {
         tabBarActiveTintColor: activeColor,
         tabBarInactiveTintColor: inactiveColor,
         tabBarStyle: [{ height: "10%" }],
+        tabBarLabelStyle: { paddingBottom: 10 },
         headerShown: false,
       })}
     >
       <Tab.Screen name="Home" component={HomeStackScreen} />
-      {loggedUser.accesstoken !== "" ? (
-        <Tab.Screen
-          name="Basket"
-          component={BasketStackScreen}
-          options={
-            productCount
-              ? {
-                  tabBarBadge: productCount,
-                  tabBarBadgeStyle: styles.tabBarBadgeStyle,
-                }
-              : {}
+      {loggedUser.accesstoken !== ""
+        ? (
+          <Tab.Screen name="Basket" component={BasketStackScreen} options={
+            productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {}
           }
-        />
-      ) : (
-        <></>
-      )}
+          />)
+        : (<></>)
+      }
       <Tab.Screen name="Account" component={AccountStackScreen} />
-    </Tab.Navigator>
+    </Tab.Navigator >
   );
 }
 
@@ -201,35 +195,18 @@ export default function App() {
             <Stack.Screen name="Log" component={LogScreen} />
             <Stack.Screen name="HomeTab" component={TabNavigator} />
             <Stack.Screen name="Address" component={AddressScreen} />
-            <Stack.Screen
-              name="AccessDetails"
-              component={AddressDetailsScreen}
-            />
+            <Stack.Screen name="AccessDetails" component={AddressDetailsScreen} />
             <Stack.Screen name="PersonalData" component={PersonalDataScreen} />
             <Stack.Screen name="UserCreation" component={UserCreationScreen} />
-            <Stack.Screen name="Summary" component={OrderSummaryScreen} />
-            <Stack.Screen name="Complete" component={OrderEndScreen} />
-
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
 
             <Stack.Screen name="UserSignIn" component={UserSignInScreen} />
-            {/* <Stack.Screen name="MyAccount" component={MyAccountScreen} /> */}
-            <Stack.Screen
-              name="NotificationSent"
-              component={NotificationSentScreen}
-            />
-            <Stack.Screen
-              name="NotificationFail"
-              component={NotificationFailScreen}
-            />
-            <Stack.Screen
-              name="ContactChoice"
-              component={ContactChoiceScreen}
-            />
-            <Stack.Screen
-              name="UnderConstruction"
-              component={UnderConstructionScreen}
-            />
+            <Stack.Screen name="MyAccount" component={MyAccountScreen} />
+            <Stack.Screen name="NotificationSent" component={NotificationSentScreen} />
+            <Stack.Screen name="NotificationFail" component={NotificationFailScreen} />
+            <Stack.Screen name="ContactChoice" component={ContactChoiceScreen} />
+            <Stack.Screen name="UnderConstruction" component={UnderConstructionScreen} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

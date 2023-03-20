@@ -13,14 +13,15 @@ import { useSelector } from "react-redux";
 import React, { useState } from "react";
 import { AntDesign } from '@expo/vector-icons';
 
-export default function Carousel({ navigation }) {
-
+ export default function Carousel({ navigation }) {
   const loggedUser = useSelector((data) => {
     if (data.user) return data.user.value;
     else return null;
   });
 
   const [progress] = useState(new Animated.Value(0));
+  const [scrollDirection, setScrollDirection] = useState("right");
+  const [previousPosition, setPreviousPosition] = useState(0);
 
   function handleOnPress() {
     if (loggedUser.accesstoken !== "") {
@@ -30,7 +31,6 @@ export default function Carousel({ navigation }) {
     }
   }
 
-  
   function handleScroll(event) {
     const { contentOffset, layoutMeasurement } = event.nativeEvent;
     const slideWidth = layoutMeasurement.width;
@@ -44,8 +44,8 @@ export default function Carousel({ navigation }) {
       useNativeDriver: false,
     }).start();
   }
-
-  return (
+    
+      return (
     <View style={styles.container}>
       <View style={styles.progressContainer}>
         <Animated.View

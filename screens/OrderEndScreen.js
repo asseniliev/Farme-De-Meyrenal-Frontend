@@ -21,16 +21,19 @@ export default function OrderEndScreen({ navigation }) {
 
     for (const product of shoppingCart) {
       const id = product.id;
+      const title = product.title;
       const qty = product.quantity;
       const price = product.price;
+      const priceUnit = product.priceUnit
       totalAmount += qty * price;
       items.push({
         id: id,
+        title: title,
         quantity: qty,
         price: price,
+        priceUnit: priceUnit,
       });
     }
-
 
 
     const order = {

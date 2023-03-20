@@ -81,7 +81,7 @@ export default function Product(props) {
       <View style={styles.quantityContainer}>
         {loggedUser.accesstoken !== "" ? (
           <>
-            <TouchableOpacity style={styles.minus} onPress={() => decrementBtn()} >
+            <TouchableOpacity style={styles.minus} onPress={() => decrementBtn()} disabled={compteur !== 0 ? false : true}>
               <FontAwesome name="minus" size={24} color={compteur !== 0 ? "#fff" : "#ABABAB"} style={styles.logo} />
             </TouchableOpacity>
             <View style={styles.quantity}>
