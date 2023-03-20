@@ -67,16 +67,8 @@ const HomeStack = createNativeStackNavigator();
 function HomeStackScreen() {
   return (
     <HomeStack.Navigator>
-      <HomeStack.Screen
-        name="HomeScreen"
-        component={HomeScreen}
-        options={{ headerShown: false }}
-      />
-      <HomeStack.Screen
-        name="PresentationScreen"
-        component={PresentationScreen}
-        options={{ headerShown: false }}
-      />
+      <HomeStack.Screen name="HomeScreen" component={HomeScreen} options={{ headerShown: false }} />
+      <HomeStack.Screen name="PresentationScreen" component={PresentationScreen} options={{ headerShown: false }} />
     </HomeStack.Navigator>
   );
 }
@@ -85,21 +77,9 @@ const BasketStack = createNativeStackNavigator();
 function BasketStackScreen() {
   return (
     <BasketStack.Navigator>
-      <BasketStack.Screen
-        name="ShoppingCart"
-        component={ShoppingCart}
-        options={{ headerShown: false }}
-      />
-      <BasketStack.Screen
-        name="Summary"
-        component={OrderSummaryScreen}
-        options={{ headerShown: false }}
-      />
-      <BasketStack.Screen
-        name="Complete"
-        component={OrderEndScreen}
-        options={{ headerShown: false }}
-      />
+      <BasketStack.Screen name="ShoppingCart" component={ShoppingCart} options={{ headerShown: false }} />
+      <BasketStack.Screen name="Summary" component={OrderSummaryScreen} options={{ headerShown: false }} />
+      <BasketStack.Screen name="Complete" component={OrderEndScreen} options={{ headerShown: false }} />
     </BasketStack.Navigator>
   );
 }
@@ -107,7 +87,7 @@ const AccountStack = createNativeStackNavigator();
 function AccountStackScreen() {
   return (
     <AccountStack.Navigator>
-      <AccountStack.Screen name="Account" component={MyAccountScreen} options={{ headerShown: false }} />
+      <AccountStack.Screen name="MyAccount" component={MyAccountScreen} options={{ headerShown: false }} />
       <AccountStack.Screen name="MyOrders" component={MyOrdersScreen} options={{ headerShown: false }} />
     </AccountStack.Navigator>
   );
@@ -125,9 +105,7 @@ function TabNavigator() {
   });
 
   let accountScreen;
-  loggedUser.accesstoken === ""
-    ? (accountScreen = LogScreen)
-    : (accountScreen = MyAccountScreen);
+  loggedUser.accesstoken === "" ? accountScreen = LogScreen : accountScreen = MyAccountScreen;
 
   return (
     <Tab.Navigator
@@ -140,25 +118,17 @@ function TabNavigator() {
           // } else if (route.name === "Account") { iconName = "user";
           // }
           let iconName = "";
-          if (route.name === "Home") {
+          if (route.name === "Acceuil") {
             iconName = "home";
-          } else if (route.name === "Basket") {
+          } else if (route.name === "Panier") {
             iconName = "shopping-basket";
-          } else if (route.name === "Account") {
+          } else if (route.name === "Profil") {
             iconName = "user";
-          if (route.name === "Acceuil") { iconName = "home";
-          } else if (route.name === "Panier") { iconName = "shopping-basket";
-          } else if (route.name === "Profil") { iconName = "user";
           }
 
           return (
             <View style={styles.iconsBar}>
-              <View
-                style={[
-                  styles.iconContainer,
-                  { borderColor: color == activeColor ? color : "#ffffff" },
-                ]}
-              >
+              <View style={[styles.iconContainer, { borderColor: color == activeColor ? color : "#ffffff" },]} >
                 <FontAwesome name={iconName} size={size} color={color} />
               </View>
             </View>
@@ -171,17 +141,17 @@ function TabNavigator() {
         headerShown: false,
       })}
     >
-      <Tab.Screen name="Home" component={HomeStackScreen} />
+      <Tab.Screen name="Acceuil" component={HomeStackScreen} />
       {loggedUser.accesstoken !== ""
         ? (
-          <Tab.Screen name="Basket" component={BasketStackScreen} options={
+          <Tab.Screen name="Panier" component={BasketStackScreen} options={
             productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {}
           }
           />)
         : (<></>)
       }
-      <Tab.Screen name="Account" component={AccountStackScreen} />
-    </Tab.Navigator >
+      <Tab.Screen name="Profil" component={AccountStackScreen} />
+    </Tab.Navigator>
   );
 }
 
@@ -195,13 +165,11 @@ export default function App() {
             <Stack.Screen name="Log" component={LogScreen} />
             <Stack.Screen name="HomeTab" component={TabNavigator} />
             <Stack.Screen name="Address" component={AddressScreen} />
-            <Stack.Screen name="AccessDetails" component={AddressDetailsScreen} />
+            <Stack.Screen name="AccessDetails" component={AccessDetailsScreen} />
             <Stack.Screen name="PersonalData" component={PersonalDataScreen} />
             <Stack.Screen name="UserCreation" component={UserCreationScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
-
             <Stack.Screen name="UserSignIn" component={UserSignInScreen} />
-            <Stack.Screen name="MyAccount" component={MyAccountScreen} />
             <Stack.Screen name="NotificationSent" component={NotificationSentScreen} />
             <Stack.Screen name="NotificationFail" component={NotificationFailScreen} />
             <Stack.Screen name="ContactChoice" component={ContactChoiceScreen} />
