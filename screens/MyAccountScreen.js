@@ -29,7 +29,7 @@ export default function MyAccountScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>
-          {"  "}ferme de {"\n"} mereynal
+          profil
         </Text>
       </View>
       <Image source={require("../assets/fla1.jpg")} style={styles.image} />
@@ -71,14 +71,20 @@ export default function MyAccountScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: "#F4F5F9",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 30,
   },
   header: {
-    marginTop: 30,
+    alignItems: "center",
+    paddingTop: 40,
+    paddingBottom: 3,
+    backgroundColor: "#ffffff",
+    width: "100%",
+    height: 90,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ABABAB",
   },
   image: {
     width: "100%",
