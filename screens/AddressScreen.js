@@ -26,22 +26,18 @@ export default function AddressScreen({ navigation }) {
   const [deliveryCity, setDeliveryCity] = useState("");
   const [deliveryLat, setDeliveryLat] = useState(0);
   const [deliveryLon, setDeliveryLon] = useState(0);
-  const [initLat, setInitLat] = useState(45.167868);
-  const [initLon, setInitLon] = useState(4.6381405);
+  // const [initLat, setInitLat] = useState(45.167868);
+  // const [initLon, setInitLon] = useState(4.6381405);
   const [regionsData, setRegionsData] = useState([]);
-  // const [initLat, setInitLat] = useState(0);
-  // const [initLon, setInitLon] = useState(0);
-  const [homeDeliveries, setHomeDeliveries] = useState([]);
+  const [initLat, setInitLat] = useState(0);
+  const [initLon, setInitLon] = useState(0);
   const [deliveryInfoText, setDeliveryInfoText] = useState("");
   const [validateAddressDisabled, setIsValidateAddressDisabled] =
     useState(true);
 
   const dispatch = useDispatch();
 
-  const [polygons, setPolygons] = useState([]);
   const [names, setNames] = useState([]);
-
-
 
   useEffect(() => {
     fetch(`http://${localIP}:3000/locations/contours`)
@@ -111,7 +107,36 @@ export default function AddressScreen({ navigation }) {
     );
   });
 
-  async function handleGeoLocalization() {
+  function processDeliverAddressData(data) {
+    setDeliveryAddress(data.address);
+    setDeliveryCity(data.city);
+    if (data.location) {
+      setDeliveryLat(data.location[1]);
+      setDeliveryLon(data.location[0]);
+      setLocationCoordinates({
+        latitude: data.location[1],
+        longitude: data.location[0],
+      });
+    }
+
+    const myRegion = regionsData.find(element => element.name === data.city)
+    if (myRegion) {
+      setIsValidateAddressDisabled(false);
+      setButtonColor("#3A7D44");
+      let text = "Livraison à domicile: \n";
+      text += myRegion.homeDeliveryHours;
+      setDeliveryInfoText(text);
+    } else {
+      let text = "No delivery in your comminity.\n";
+      text +=
+        "Please select a market location from the map or contact Flavien!";
+      setDeliveryInfoText(text);
+      setIsValidateAddressDisabled(true);
+      setButtonColor("#ababab");
+    }
+  }
+
+  async function handleOnGeoLocalization() {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
@@ -122,29 +147,18 @@ export default function AddressScreen({ navigation }) {
           fetch(url)
             .then((response) => response.json())
             .then((data) => {
-              setDeliveryAddress(data.address);
-              setDeliveryCity(data.city);
+              processDeliverAddressData(data);
               setDeliveryLat(location.coords.latitude);
               setDeliveryLon(location.coords.longitude);
               setLocationCoordinates(location.coords);
-              if (names.includes(data.city)) {
-                setIsValidateAddressDisabled(false);
-                setButtonColor("#3A7D44");
-              } else {
-                let text = "No delivery in your comminity.\n";
-                text +=
-                  "Please select a market location from the map or contact Flavien!";
-                setDeliveryInfoText(text);
-                setIsValidateAddressDisabled(true);
-                setButtonColor("#ababab");
-              }
             });
         });
       }
     })();
+    Keyboard.dismiss();
   }
 
-  async function handleAddressValidation() {
+  async function handleOnAddressValidation() {
     if (deliveryAddress.length < 3) {
       let text = "Delivery adress must contain at least 3 characters.\n";
       setDeliveryInfoText(text);
@@ -156,29 +170,7 @@ export default function AddressScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          setDeliveryAddress(data.address);
-          setDeliveryCity(data.city);
-          setDeliveryLat(data.location[1]);
-          setDeliveryLon(data.location[0]);
-          setLocationCoordinates({
-            latitude: data.location[1],
-            longitude: data.location[0],
-          });
-          if (names.includes(data.city)) {
-            setIsValidateAddressDisabled(false);
-            setButtonColor("#3A7D44");
-            let text = "Livraison à domicile: \n";
-            const cityIndex = names.indexOf(data.city);
-            text += homeDeliveries[cityIndex];
-            setDeliveryInfoText(text);
-          } else {
-            let text = "No delivery in your comminity.\n";
-            text +=
-              "Please select a market location from the map or contact Flavien!";
-            setDeliveryInfoText(text);
-            setIsValidateAddressDisabled(true);
-            setButtonColor("#ababab");
-          }
+          processDeliverAddressData(data);
         } else {
           let text = "Please insert a valid address";
           setDeliveryInfoText(text);
@@ -200,6 +192,17 @@ export default function AddressScreen({ navigation }) {
     navigation.navigate("AccessDetails");
   }
 
+  onMapReady = () => {
+    // Update the region with new coordinates
+    const newRegion = {
+      latitude: initLat,
+      longitude: initLon,
+      latitudeDelta: 0.2,
+      longitudeDelta: 0.2,
+    };
+    this.mapView.animateToRegion(newRegion, 1000);
+  };
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <KeyboardAvoidingView style={styles.container} behavior="height">
@@ -218,6 +221,7 @@ export default function AddressScreen({ navigation }) {
               latitudeDelta: 0.2,
               longitudeDelta: 0.2,
             }}
+            onMapReady={this.onMapReady}
             mapType="hybrid"
             userInteractionEnabled={true}
           >
@@ -242,13 +246,13 @@ export default function AddressScreen({ navigation }) {
           />
           <View style={styles.addressButtonsView}>
             <TouchableOpacity
-              onPress={() => handleGeoLocalization()}
+              onPress={() => handleOnGeoLocalization()}
               style={styles.buttonHalf}
             >
               <Text style={styles.textButton}>Géolocaliser</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handleAddressValidation()}
+              onPress={() => handleOnAddressValidation()}
               style={styles.buttonHalf}
             >
               <Text style={styles.textButton}>Valider l'adresse</Text>
