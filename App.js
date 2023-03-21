@@ -141,8 +141,8 @@ function TabNavigator() {
       {loggedUser.accesstoken !== ""
       ? (
         <Tab.Screen name="Panier" component={BasketStackScreen} options={ 
-          productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {}
-          }
+          productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {}  
+        }
         />)
       : ( <></> )
       }
@@ -150,7 +150,6 @@ function TabNavigator() {
     </Tab.Navigator>
   );
 }
-
 export default function App() {
   return (
     <Provider store={store}>
