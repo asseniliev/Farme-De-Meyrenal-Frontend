@@ -103,8 +103,8 @@ function TabNavigator() {
     return count !== 0 ? count : "";
   });
 
-  let accountScreen;
-  loggedUser.accesstoken === "" ? accountScreen = LogScreen : accountScreen = MyAccountScreen;
+  // let accountScreen;
+  // loggedUser.accesstoken !== "" ? accountScreen = MyAccountScreen : accountScreen = LogScreen;
 
   return (
     <Tab.Navigator

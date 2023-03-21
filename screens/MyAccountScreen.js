@@ -37,7 +37,7 @@ export default function MyAccountScreen({ navigation }) {
         onPress={() => navigation.navigate("MyOrders")}
         style={Styles.button}
       >
-        <Text style={Styles.textButton}>Mes Commandes</Text>
+        <Text style={Styles.textButton}>Mes commandes</Text>
       </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("")}
