@@ -24,13 +24,13 @@ export default function AddressScreen({ navigation }) {
   const [buttonColor, setButtonColor] = useState("#ababab");
   const [locationCoordinates, setLocationCoordinates] = useState(null);
   const [deliveryCity, setDeliveryCity] = useState("");
-  const [deliveryLat, setDeliveryLat] = useState(0);
-  const [deliveryLon, setDeliveryLon] = useState(0);
-  // const [initLat, setInitLat] = useState(45.167868);
-  // const [initLon, setInitLon] = useState(4.6381405);
+  //const [deliveryLat, setDeliveryLat] = useState(0);
+  //const [deliveryLon, setDeliveryLon] = useState(0);
+  const [initLat, setInitLat] = useState(45.167868);
+  const [initLon, setInitLon] = useState(4.6381405);
   const [regionsData, setRegionsData] = useState([]);
-  const [initLat, setInitLat] = useState(0);
-  const [initLon, setInitLon] = useState(0);
+  //const [initLat, setInitLat] = useState(0);
+  //const [initLon, setInitLon] = useState(0);
   const [deliveryInfoText, setDeliveryInfoText] = useState("");
   const [validateAddressDisabled, setIsValidateAddressDisabled] =
     useState(true);
@@ -221,7 +221,7 @@ export default function AddressScreen({ navigation }) {
               latitudeDelta: 0.2,
               longitudeDelta: 0.2,
             }}
-            onMapReady={this.onMapReady}
+            //onMapReady={this.onMapReady}
             mapType="hybrid"
             userInteractionEnabled={true}
           >
