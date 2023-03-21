@@ -21,7 +21,7 @@ export default function MyOrders({ navigation }) {
   const loggedUser = getLoggedUser();
 
   useEffect(() => {
-    fetch(`http://${localIP}:3000/orders/filter?user=${loggedUser.id}`)
+    fetch(`http://${localIP}:3000/orders/?user=${loggedUser.id}`)
       .then((response) => response.json())
       .then((data) => {
         setOrderList(data.result);

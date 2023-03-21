@@ -104,19 +104,11 @@ function TabNavigator() {
     return count !== 0 ? count : "";
   });
 
-  // let accountScreen;
-  // loggedUser.accesstoken !== "" ? accountScreen = MyAccountScreen : accountScreen = LogScreen;
-
   return (
     <Tab.Navigator
       screenOptions={({ route }) => ({
         tabBarIcon: ({ color, size }) => {
 
-          // let iconName = "";
-          // if (route.name === "Home") { iconName = "home";
-          // } else if (route.name === "Basket") { iconName = "shopping-basket";
-          // } else if (route.name === "Account") { iconName = "user";
-          // }
           let iconName = "";
           if (route.name === "Acceuil") {
             iconName = "home";
@@ -144,13 +136,14 @@ function TabNavigator() {
       <Tab.Screen name="Acceuil" component={HomeStackScreen} />
       {loggedUser.accesstoken !== ""
         ? (
-          <Tab.Screen name="Panier" component={BasketStackScreen} options={
-            productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {}
-          }
-          />)
-        : (<></>)
+          <>
+          <Tab.Screen name="Panier" component={BasketStackScreen}
+          options={ productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {} }
+          />
+          <Tab.Screen name="Profil" component={AccountStackScreen} />
+          </>
+          ) : ( <Tab.Screen name="Profil" component={LogScreen} /> )
       }
-      <Tab.Screen name="Profil" component={AccountStackScreen} />
     </Tab.Navigator>
   );
 }

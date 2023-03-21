@@ -15,7 +15,7 @@ export default function NotificationSentScreen({ navigation }) {
           {"\n"}
         </Text>
         <TouchableOpacity
-          onPress={() => navigation.navigate("Home")}
+          onPress={() => navigation.navigate("HomeScreen")}
           style={styles.buttonFull}
         >
           <Text style={styles.textButton}>Return to Home Screen</Text>

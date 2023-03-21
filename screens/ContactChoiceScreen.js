@@ -134,7 +134,7 @@ export default function ContactChoiceScreen({ navigation }) {
             name="arrow-left"
             size={24}
             color="#000000"
-            onPress={() => navigation.navigate("MyAccount")}
+            onPress={() => navigation.navigate("Profil")}
           />
           {"                     "} contact
         </Text>
