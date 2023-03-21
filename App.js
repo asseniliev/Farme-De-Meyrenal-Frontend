@@ -88,7 +88,7 @@ function AccountStackScreen() {
   return (
     <AccountStack.Navigator>
       <AccountStack.Screen name="MyAccount" component={MyAccountScreen} options={{ headerShown: false }} />
-      <AccountStack.Screen name="MyOrders" component={MyOrdersScreen} options={{ headerShown: false }}/>
+      <AccountStack.Screen name="MyOrders" component={MyOrdersScreen} options={{ headerShown: false }} />
     </AccountStack.Navigator>
   );
 }
@@ -99,7 +99,8 @@ function TabNavigator() {
 
   const loggedUser = getLoggedUser();
 
-  const productCount = useSelector((state) => { const count = state.productCounter.value.length;
+  const productCount = useSelector((state) => {
+    const count = state.productCounter.value.length;
     return count !== 0 ? count : "";
   });
 
@@ -117,14 +118,17 @@ function TabNavigator() {
           // } else if (route.name === "Account") { iconName = "user";
           // }
           let iconName = "";
-          if (route.name === "Acceuil") { iconName = "home";
-          } else if (route.name === "Panier") { iconName = "shopping-basket";
-          } else if (route.name === "Profil") { iconName = "user";
+          if (route.name === "Acceuil") {
+            iconName = "home";
+          } else if (route.name === "Panier") {
+            iconName = "shopping-basket";
+          } else if (route.name === "Profil") {
+            iconName = "user";
           }
 
           return (
             <View style={styles.iconsBar}>
-              <View style={[ styles.iconContainer, { borderColor: color == activeColor ? color : "#ffffff" }, ]} >
+              <View style={[styles.iconContainer, { borderColor: color == activeColor ? color : "#ffffff" },]} >
                 <FontAwesome name={iconName} size={size} color={color} />
               </View>
             </View>
@@ -139,12 +143,12 @@ function TabNavigator() {
     >
       <Tab.Screen name="Acceuil" component={HomeStackScreen} />
       {loggedUser.accesstoken !== ""
-      ? (
-        <Tab.Screen name="Panier" component={BasketStackScreen} options={ 
-          productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {}  
-        }
-        />)
-      : ( <></> )
+        ? (
+          <Tab.Screen name="Panier" component={BasketStackScreen} options={
+            productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {}
+          }
+          />)
+        : (<></>)
       }
       <Tab.Screen name="Profil" component={AccountStackScreen} />
     </Tab.Navigator>
@@ -169,7 +173,7 @@ export default function App() {
             <Stack.Screen name="NotificationFail" component={NotificationFailScreen} />
             <Stack.Screen name="ContactChoice" component={ContactChoiceScreen} />
             <Stack.Screen name="UnderConstruction" component={UnderConstructionScreen} />
-            
+
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

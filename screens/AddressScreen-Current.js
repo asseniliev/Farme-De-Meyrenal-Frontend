@@ -28,30 +28,50 @@ export default function AddressScreen({ navigation }) {
   const [deliveryLon, setDeliveryLon] = useState(0);
   const [initLat, setInitLat] = useState(45.167868);
   const [initLon, setInitLon] = useState(4.6381405);
-  const [regionsData, setRegionsData] = useState([]);
-  //const [initLat, setInitLat] = useState(0);
-  //const [initLon, setInitLon] = useState(0);
+  const [homeDeliveries, setHomeDeliveries] = useState([]);
+  const [marketHours, setMarketHours] = useState([]);
+  const [marketAddresses, setMarketAddresses] = useState([]);
+  const [marketLabels, setMarketLabels] = useState([]);
   const [deliveryInfoText, setDeliveryInfoText] = useState("");
   const [validateAddressDisabled, setIsValidateAddressDisabled] =
     useState(true);
 
   const dispatch = useDispatch();
 
+  const polygonCoords1 = [
+    { latitude: 42, longitude: 1 },
+    { latitude: 42, longitude: 2 },
+    { latitude: 41, longitude: 2 },
+    { latitude: 41, longitude: 1 },
+    { latitude: 42, longitude: 1 },
+  ];
+
+  const [polygons, setPolygons] = useState([polygonCoords1]);
   const [names, setNames] = useState([]);
+  const [latitudes, setLatitudes] = useState([
+    45.1169, 45.2208, 45.1916, 45.1893,
+  ]);
+  const [longitudes, setLongitudes] = useState([4.5216, 4.6528, 4.702, 4.7472]);
 
   useEffect(() => {
     fetch(`http://${localIP}:3000/locations/contours`)
       .then((response) => response.json())
       .then((data) => {
-        setRegionsData(data.regionsData);
+        setPolygons(data.polygons);
+        setNames(data.names);
+        setHomeDeliveries(data.homeDeliveries);
+        setMarketHours(data.marketHours);
+        setMarketAddresses(data.marketAddresses);
+        setMarketLabels(data.marketLabels);
+        setLatitudes(data.latitudes);
+        setLongitudes(data.longitudes);
         setInitLat(data.latInit);
         setInitLon(data.lonInit);
       });
   }, []);
 
-  handleMarkerPress = (homeDeliveryHours, marketHours, marketAddress) => {
+  handleMarkerPress = (homeDeliveries, marketHours, marketAddress) => {
     let text = "";
-    console.log(marketHours);
     if (marketHours) {
       setDeliveryAddress(marketAddress);
       text = "Market time:\n";
@@ -59,44 +79,47 @@ export default function AddressScreen({ navigation }) {
     }
 
     text += "Livraison à domicile: \n";
-    text += homeDeliveryHours;
+    text += homeDeliveries;
     setDeliveryInfoText(text);
     setIsValidateAddressDisabled(false);
     setButtonColor("#3A7D44");
   };
 
-  const markers = regionsData.map((data, i) => {
+  const markers = names.map((data, i) => {
+    // console.log(
+    //   `${latitudes[i]} + ${longitudes[i]} = ${latitudes[i] + longitudes[i]}`
+    // );
+    const latitude = Number(latitudes[i]);
+    const longitude = Number(longitudes[i]);
 
-    if (data.market.address) {
-      //console.log(data.market)
-      const address = data.market.address;
-      const latitude = data.market.latitude;
-      const longitude = data.market.longitude;
-      const label = data.market.label;
-      const marketHours = data.market.marketHours;
-      const homeDeliveryHours = data.homeDeliveryHours;
-
-      return (
-        <Marker
-          key={i}
-          coordinate={{ latitude: latitude, longitude: longitude }}
-          title={label}
-          onPress={() =>
-            handleMarkerPress(homeDeliveryHours, marketHours, address)
-          }
-        />
-      );
-    }
+    const homeDelivery = homeDeliveries[i];
+    const marketHour = marketHours[i];
+    const marketAddress = marketAddresses[i];
+    //const label = marketLabels[i];
+    // const homeDelivery = "Home Delivery";
+    // const marketHour = "Market Delivery";
+    // const marketAddress = "Market Address";
+    return (
+      <Marker
+        key={i}
+        coordinate={{ latitude: latitude, longitude: longitude }}
+        //title={label}
+        title={data}
+        onPress={() =>
+          handleMarkerPress(homeDelivery, marketHour, marketAddress)
+        }
+      />
+    );
   });
 
-  const mapPolygons = regionsData.map((data, i) => {
+  const mapPolygons = polygons.map((data, i) => {
     return (
       <TouchableWithoutFeedback
         onPress={this.handlePolygonPress}
         key={1000 + i}
       >
         <Polygon
-          coordinates={data.polygon}
+          coordinates={data}
           strokeWidth={1}
           strokeColor="#ff0000"
           fillColor="#ff000060"
@@ -107,36 +130,7 @@ export default function AddressScreen({ navigation }) {
     );
   });
 
-  function processDeliverAddressData(data) {
-    setDeliveryAddress(data.address);
-    setDeliveryCity(data.city);
-    if (data.location) {
-      setDeliveryLat(data.location[1]);
-      setDeliveryLon(data.location[0]);
-      setLocationCoordinates({
-        latitude: data.location[1],
-        longitude: data.location[0],
-      });
-    }
-
-    const myRegion = regionsData.find(element => element.name === data.city)
-    if (myRegion) {
-      setIsValidateAddressDisabled(false);
-      setButtonColor("#3A7D44");
-      let text = "Livraison à domicile: \n";
-      text += myRegion.homeDeliveryHours;
-      setDeliveryInfoText(text);
-    } else {
-      let text = "No delivery in your comminity.\n";
-      text +=
-        "Please select a market location from the map or contact Flavien!";
-      setDeliveryInfoText(text);
-      setIsValidateAddressDisabled(true);
-      setButtonColor("#ababab");
-    }
-  }
-
-  async function handleOnGeoLocalization() {
+  async function handleGeoLocalization() {
     (async () => {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
@@ -147,18 +141,29 @@ export default function AddressScreen({ navigation }) {
           fetch(url)
             .then((response) => response.json())
             .then((data) => {
-              processDeliverAddressData(data);
+              setDeliveryAddress(data.address);
+              setDeliveryCity(data.city);
               setDeliveryLat(location.coords.latitude);
               setDeliveryLon(location.coords.longitude);
               setLocationCoordinates(location.coords);
+              if (names.includes(data.city)) {
+                setIsValidateAddressDisabled(false);
+                setButtonColor("#3A7D44");
+              } else {
+                let text = "No delivery in your comminity.\n";
+                text +=
+                  "Please select a market location from the map or contact Flavien!";
+                setDeliveryInfoText(text);
+                setIsValidateAddressDisabled(true);
+                setButtonColor("#ababab");
+              }
             });
         });
       }
     })();
-    Keyboard.dismiss();
   }
 
-  async function handleOnAddressValidation() {
+  async function handleAddressValidation() {
     if (deliveryAddress.length < 3) {
       let text = "Delivery adress must contain at least 3 characters.\n";
       setDeliveryInfoText(text);
@@ -170,7 +175,29 @@ export default function AddressScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          processDeliverAddressData(data);
+          setDeliveryAddress(data.address);
+          setDeliveryCity(data.city);
+          setDeliveryLat(data.location[1]);
+          setDeliveryLon(data.location[0]);
+          setLocationCoordinates({
+            latitude: data.location[1],
+            longitude: data.location[0],
+          });
+          if (names.includes(data.city)) {
+            setIsValidateAddressDisabled(false);
+            setButtonColor("#3A7D44");
+            let text = "Livraison à domicile: \n";
+            const cityIndex = names.indexOf(data.city);
+            text += homeDeliveries[cityIndex];
+            setDeliveryInfoText(text);
+          } else {
+            let text = "No delivery in your comminity.\n";
+            text +=
+              "Please select a market location from the map or contact Flavien!";
+            setDeliveryInfoText(text);
+            setIsValidateAddressDisabled(true);
+            setButtonColor("#ababab");
+          }
         } else {
           let text = "Please insert a valid address";
           setDeliveryInfoText(text);
@@ -192,17 +219,6 @@ export default function AddressScreen({ navigation }) {
     navigation.navigate("AccessDetails");
   }
 
-  onMapReady = () => {
-    // Update the region with new coordinates
-    const newRegion = {
-      latitude: initLat,
-      longitude: initLon,
-      latitudeDelta: 0.2,
-      longitudeDelta: 0.2,
-    };
-    this.mapView.animateToRegion(newRegion, 1000);
-  };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <KeyboardAvoidingView style={styles.container} behavior="height">
@@ -221,7 +237,6 @@ export default function AddressScreen({ navigation }) {
               latitudeDelta: 0.2,
               longitudeDelta: 0.2,
             }}
-            //onMapReady={this.onMapReady}
             mapType="hybrid"
             userInteractionEnabled={true}
           >
@@ -246,13 +261,13 @@ export default function AddressScreen({ navigation }) {
           />
           <View style={styles.addressButtonsView}>
             <TouchableOpacity
-              onPress={() => handleOnGeoLocalization()}
+              onPress={() => handleGeoLocalization()}
               style={styles.buttonHalf}
             >
               <Text style={styles.textButton}>Géolocaliser</Text>
             </TouchableOpacity>
             <TouchableOpacity
-              onPress={() => handleOnAddressValidation()}
+              onPress={() => handleAddressValidation()}
               style={styles.buttonHalf}
             >
               <Text style={styles.textButton}>Valider l'adresse</Text>
@@ -292,8 +307,7 @@ const styles = StyleSheet.create({
     flex: 0.3,
     width: "100%",
     height: "35%",
-    marginTop: "5%",
-    marginBottom: "10%"
+    marginVertical: "5%",
   },
   addressButtonsView: {
     width: "100%",
@@ -307,8 +321,6 @@ const styles = StyleSheet.create({
     flex: 0.1,
     width: "100%",
     height: "5%",
-    alignItems: "center",
-    justifyContent: "flex-end"
   },
   map: {
     flex: 1,
@@ -319,7 +331,7 @@ const styles = StyleSheet.create({
   text: {
     paddingHorizontal: 10,
     fontSize: 20,
-    lineHeight: 30,
+    lineHeight: 25,
   },
   title: {
     fontSize: 21,

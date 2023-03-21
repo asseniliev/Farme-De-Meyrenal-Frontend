@@ -29,7 +29,6 @@ export default function UserCreationScreen({ navigation }) {
           message +=
             "You must click on the provided link to finalize the account activation.";
           setMessage(message);
-          dispatch(resetPersonalData());
         } else {
           setMessage(data.error);
         }
