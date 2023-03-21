@@ -24,8 +24,8 @@ export default function AddressScreen({ navigation }) {
   const [buttonColor, setButtonColor] = useState("#ababab");
   const [locationCoordinates, setLocationCoordinates] = useState(null);
   const [deliveryCity, setDeliveryCity] = useState("");
-  //const [deliveryLat, setDeliveryLat] = useState(0);
-  //const [deliveryLon, setDeliveryLon] = useState(0);
+  const [deliveryLat, setDeliveryLat] = useState(0);
+  const [deliveryLon, setDeliveryLon] = useState(0);
   const [initLat, setInitLat] = useState(45.167868);
   const [initLon, setInitLon] = useState(4.6381405);
   const [regionsData, setRegionsData] = useState([]);
