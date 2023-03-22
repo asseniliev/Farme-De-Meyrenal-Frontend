@@ -62,7 +62,7 @@ export default function Home({ navigation }) {
         </View>
         {loggedUser.accesstoken !== "" ? (
           <View style={styles.basket}>
-            <TouchableOpacity onPress={() => navigation.navigate("Basket")} style={Styles.button} >
+            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={Styles.button} >
               <Text style={Styles.textButton}>Mon panier</Text>
             </TouchableOpacity>
           </View>
