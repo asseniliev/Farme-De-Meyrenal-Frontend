@@ -8,7 +8,6 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import Product from "../components/Product";
-import { useEffect, useState } from "react";
 import { useSelector } from "react-redux";
 import getTotal from "../components/GetTotal";
 
@@ -17,7 +16,7 @@ function Totaux(props) {
   return (
     <View style={styles.ticket}>
       <Text style={styles.ticketText}>{props.title} :</Text>
-      <View style={{ flex: 1 , flexDirection: "row"}}>
+      <View style={{ flex: 1, flexDirection: "row" }}>
         <Text style={styles.ticketText}>{props.quantity} x {props.price}</Text>
         <Text style={styles.ticketText}>{props.quantity * props.price} €</Text>
       </View>

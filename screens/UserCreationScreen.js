@@ -1,11 +1,10 @@
-import localIP from "../modules/localIP"
+import backendUrl from "../modules/backendUrl"
 
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { resetPersonalData } from "../reducers/users";
 
 export default function UserCreationScreen({ navigation }) {
   const [message, setMessage] = useState(
@@ -16,7 +15,7 @@ export default function UserCreationScreen({ navigation }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(`http://${localIP}:3000/users/signup`, {
+    fetch(`${backendUrl}/users/signup`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(user),

@@ -9,15 +9,13 @@ import {
   Keyboard,
 } from "react-native";
 
-import { Fragment } from "react";
-
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import MapView, { Polygon, Marker } from "react-native-maps";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { SetDeliveryAddress } from "../reducers/users";
 import * as Location from "expo-location";
-import localIP from "../modules/localIP";
+import backendUrl from "../modules/backendUrl";
 
 export default function AddressScreen({ navigation }) {
   const [deliveryAddress, setDeliveryAddress] = useState("");
@@ -40,7 +38,7 @@ export default function AddressScreen({ navigation }) {
   const [names, setNames] = useState([]);
 
   useEffect(() => {
-    fetch(`http://${localIP}:3000/locations/contours`)
+    fetch(`${backendUrl}/locations/contours`)
       .then((response) => response.json())
       .then((data) => {
         setRegionsData(data.regionsData);
@@ -142,7 +140,7 @@ export default function AddressScreen({ navigation }) {
 
       if (status === "granted") {
         Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-          const url = `http://${localIP}:3000/locations/addressbycoordinates/?lon=${location.coords.longitude}&lat=${location.coords.latitude}`;
+          const url = `${backendUrl}/locations/addressbycoordinates/?lon=${location.coords.longitude}&lat=${location.coords.latitude}`;
 
           fetch(url)
             .then((response) => response.json())
@@ -165,7 +163,7 @@ export default function AddressScreen({ navigation }) {
       return;
     }
 
-    const url = `http://${localIP}:3000/locations/addressbystring/?q=${deliveryAddress}&limit=1}`;
+    const url = `${backendUrl}/locations/addressbystring/?q=${deliveryAddress}&limit=1}`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {

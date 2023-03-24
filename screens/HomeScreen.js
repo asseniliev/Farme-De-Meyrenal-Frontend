@@ -1,4 +1,4 @@
-import localIP from "../modules/localIP";
+import backendUrl from "../modules/backendUrl";
 
 import {
   StyleSheet,
@@ -23,7 +23,7 @@ export default function Home({ navigation }) {
   const loggedUser = getLoggedUser();
 
   useEffect(() => {
-    fetch(`http://${localIP}:3000/products`)
+    fetch(`${backendUrl}/products`)
       .then((response) => response.json())
       .then((data) => {
         setProductList(data.result);
@@ -66,7 +66,7 @@ export default function Home({ navigation }) {
               <Text style={Styles.textButton}>Mon panier</Text>
             </TouchableOpacity>
           </View>
-        ) : ( <></> )
+        ) : (<></>)
         }
       </ScrollView>
     </View>

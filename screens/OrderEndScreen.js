@@ -1,4 +1,4 @@
-import localIP from "../modules/localIP"
+import backendUrl from "../modules/backendUrl"
 
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -47,7 +47,7 @@ export default function OrderEndScreen({ navigation }) {
     console.log(order)
 
 
-    fetch(`http://${localIP}:3000/orders`, {
+    fetch(`${backendUrl}/orders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(order),
