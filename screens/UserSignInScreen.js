@@ -1,4 +1,4 @@
-import backendUrl from "../modules/backendUrl"
+import backendUrl from "../modules/backendUrl";
 
 import {
   KeyboardAvoidingView,
@@ -23,11 +23,6 @@ export default function UserSignInScreen({ navigation }) {
   const [errorText, setErrorText] = useState("");
 
   const dispatch = useDispatch();
-
-  const loggedUser = useSelector((data) => {
-    if (data.user) return data.user.value;
-    else return null;
-  });
 
   function handleOnSignin() {
     if (email === "") {

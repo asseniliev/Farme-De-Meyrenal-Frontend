@@ -17,7 +17,9 @@ function Totaux(props) {
     <View style={styles.ticket}>
       <Text style={styles.ticketText}>{props.title} :</Text>
       <View style={{ flex: 1, flexDirection: "row" }}>
-        <Text style={styles.ticketText}>{props.quantity} x {props.price}</Text>
+        <Text style={styles.ticketText}>
+          {props.quantity} x {props.price}
+        </Text>
         <Text style={styles.ticketText}>{props.quantity * props.price} €</Text>
       </View>
     </View>

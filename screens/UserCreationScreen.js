@@ -1,4 +1,4 @@
-import backendUrl from "../modules/backendUrl"
+import backendUrl from "../modules/backendUrl";
 
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -12,7 +12,6 @@ export default function UserCreationScreen({ navigation }) {
   );
 
   const user = useSelector((state) => state.user.value);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     fetch(`${backendUrl}/users/signup`, {

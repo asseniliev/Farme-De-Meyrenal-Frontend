@@ -25,7 +25,6 @@ export default function MyOrders({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         setOrderList(data.result);
-        console.log("Order fetch");
       });
   }, [navigation]);
 
@@ -49,20 +48,30 @@ export default function MyOrders({ navigation }) {
           {orderList
             .map((order, i) => (
               <View style={styles.orderContainer} key={i}>
-                <Text style={styles.text}>Date de commande: {formatDate(order.date)}</Text>
+                <Text style={styles.text}>
+                  Date de commande: {formatDate(order.date)}
+                </Text>
                 <Text style={styles.text}>Numéro : {order.orderNumber}</Text>
-                <Text style={styles.text}>Montant total : {order.totalAmount}</Text>
-                <Text style={styles.text}>Payé : {order.isPaid ? "Oui" : "Non"}</Text>
-                <TouchableOpacity onPress={() => toggleOrderDetails(i)} style={styles.dropDownButton}>
-
+                <Text style={styles.text}>
+                  Montant total : {order.totalAmount}
+                </Text>
+                <Text style={styles.text}>
+                  Payé : {order.isPaid ? "Oui" : "Non"}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => toggleOrderDetails(i)}
+                  style={styles.dropDownButton}
+                >
                   <Text style={importedStyle.textButton}>
                     Détails de la commande :{"             "}
                   </Text>
-                  <Text><AntDesign
-                    name={isOpen[i] ? "up" : "down"}
-                    size={24}
-                    color="white"
-                  /></Text>
+                  <Text>
+                    <AntDesign
+                      name={isOpen[i] ? "up" : "down"}
+                      size={24}
+                      color="white"
+                    />
+                  </Text>
                 </TouchableOpacity>
                 {isOpen[i] && (
                   <View style={styles.dropDownMenu}>
@@ -76,7 +85,9 @@ export default function MyOrders({ navigation }) {
                           {"   "}
                           Quantité : {item.quantity} {item.priceUnit}
                         </Text>
-                        <Text style={styles.detailsText}>{"   "}Prix unitaire : {item.price}€</Text>
+                        <Text style={styles.detailsText}>
+                          {"   "}Prix unitaire : {item.price}€
+                        </Text>
                       </View>
                     ))}
                   </View>
@@ -120,7 +131,7 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   orderContainer: {
-    backgroundColor: '#fff',
+    backgroundColor: "#fff",
     borderRadius: 5,
     padding: 10,
     marginBottom: 20,
@@ -148,5 +159,5 @@ const styles = StyleSheet.create({
     fontSize: 15,
     padding: 4,
     color: "#ABABAB",
-  }
+  },
 });

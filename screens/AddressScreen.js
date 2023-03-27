@@ -35,8 +35,6 @@ export default function AddressScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
-  const [names, setNames] = useState([]);
-
   useEffect(() => {
     fetch(`${backendUrl}/locations/contours`)
       .then((response) => response.json())
@@ -49,7 +47,6 @@ export default function AddressScreen({ navigation }) {
 
   handleMarkerPress = (homeDeliveryHours, marketHours, marketAddress) => {
     let text = "";
-    console.log(marketHours);
     if (marketHours) {
       setDeliveryAddress(marketAddress);
       text = "Market time:\n";
@@ -64,9 +61,7 @@ export default function AddressScreen({ navigation }) {
   };
 
   const markers = regionsData.map((data, i) => {
-
     if (data.market.address) {
-      //console.log(data.market)
       const address = data.market.address;
       const latitude = data.market.latitude;
       const longitude = data.market.longitude;
@@ -117,7 +112,7 @@ export default function AddressScreen({ navigation }) {
       });
     }
 
-    const myRegion = regionsData.find(element => element.name === data.city)
+    const myRegion = regionsData.find((element) => element.name === data.city);
     if (myRegion) {
       setIsValidateAddressDisabled(false);
       setButtonColor("#3A7D44");
@@ -291,7 +286,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "35%",
     marginTop: "5%",
-    marginBottom: "10%"
+    marginBottom: "10%",
   },
   addressButtonsView: {
     width: "100%",
@@ -306,7 +301,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "5%",
     alignItems: "center",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   map: {
     flex: 1,

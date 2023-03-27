@@ -27,15 +27,11 @@ export const userSlice = createSlice({
       state.value.deliveryAddress.lon = action.payload.lon;
       state.value.deliveryAddress.address = action.payload.address;
       state.value.deliveryAddress.city = action.payload.city;
-      // console.log("State: ");
-      // console.log(state.value);
     },
     SetCredentials: (state, action) => {
       state.value.id = action.payload.id;
       state.value.email = action.payload.email;
       state.value.password = action.payload.password;
-      // console.log("State: ");
-      // console.log(state.value);
     },
     setPersonalData: (state, action) => {
       state.value.firstName = action.payload.firstName;
@@ -43,15 +39,10 @@ export const userSlice = createSlice({
       state.value.phoneNumber = action.payload.phoneNumber;
     },
     disconnect: (state) => {
-      console.log("Try to reset");
       state.value.accesstoken = "";
-      console.log("After disconnecting:");
-      console.log(state.value);
     },
     setLoggedUser: (state, action) => {
       state.value = action.payload;
-      console.log("State logged user");
-      console.log(state.value);
     },
   },
 });
