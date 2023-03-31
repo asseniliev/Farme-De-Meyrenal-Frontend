@@ -1,4 +1,4 @@
-import { Text, View, StyleSheet, KeyboardAvoidingView } from "react-native";
+import { Text, View, StyleSheet } from "react-native";
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 
 export default function UnderConstructionScreen({ navigation }) {

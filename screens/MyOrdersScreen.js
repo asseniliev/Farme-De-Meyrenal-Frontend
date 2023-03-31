@@ -1,4 +1,4 @@
-import localIP from "../modules/localIP";
+import backendUrl from "../modules/backendUrl";
 import {
   StyleSheet,
   Text,
@@ -21,11 +21,10 @@ export default function MyOrders({ navigation }) {
   const loggedUser = getLoggedUser();
 
   useEffect(() => {
-    fetch(`http://${localIP}:3000/orders/?user=${loggedUser.id}`)
+    fetch(`${backendUrl}/orders/?user=${loggedUser.id}`)
       .then((response) => response.json())
       .then((data) => {
         setOrderList(data.result);
-        console.log("Order fetch");
       });
   }, [navigation]);
 
@@ -44,25 +43,35 @@ export default function MyOrders({ navigation }) {
         {fontsLoaded && <Text style={styles.title}>Mes commandes</Text>}
       </View>
       <ScrollView style={styles.scrollView}>
-        <View style={{height: 30}}></View>
+        <View style={{ height: 30 }}></View>
         <View style={styles.ordersContainer}>
           {orderList
             .map((order, i) => (
               <View style={styles.orderContainer} key={i}>
-                <Text style={styles.text}>Date de commande: {formatDate(order.date)}</Text>
+                <Text style={styles.text}>
+                  Date de commande: {formatDate(order.date)}
+                </Text>
                 <Text style={styles.text}>Numéro : {order.orderNumber}</Text>
-                <Text style={styles.text}>Montant total : {order.totalAmount}</Text>
-                <Text style={styles.text}>Payé : {order.isPaid ? "Oui" : "Non"}</Text>
-                <TouchableOpacity onPress={() => toggleOrderDetails(i)} style={styles.dropDownButton}>
-                  
+                <Text style={styles.text}>
+                  Montant total : {order.totalAmount}
+                </Text>
+                <Text style={styles.text}>
+                  Payé : {order.isPaid ? "Oui" : "Non"}
+                </Text>
+                <TouchableOpacity
+                  onPress={() => toggleOrderDetails(i)}
+                  style={styles.dropDownButton}
+                >
                   <Text style={importedStyle.textButton}>
                     Détails de la commande :{"             "}
                   </Text>
-                  <Text><AntDesign
+                  <Text>
+                    <AntDesign
                       name={isOpen[i] ? "up" : "down"}
                       size={24}
                       color="white"
-                    /></Text>
+                    />
+                  </Text>
                 </TouchableOpacity>
                 {isOpen[i] && (
                   <View style={styles.dropDownMenu}>
@@ -76,7 +85,9 @@ export default function MyOrders({ navigation }) {
                           {"   "}
                           Quantité : {item.quantity} {item.priceUnit}
                         </Text>
-                        <Text style={styles.detailsText}>{"   "}Prix unitaire : {item.price}€</Text>
+                        <Text style={styles.detailsText}>
+                          {"   "}Prix unitaire : {item.price}€
+                        </Text>
                       </View>
                     ))}
                   </View>
@@ -120,10 +131,10 @@ const styles = StyleSheet.create({
     justifyContent: "center",
   },
   orderContainer: {
-   backgroundColor: '#fff',
-  borderRadius: 5,
-  padding: 10,
-  marginBottom: 20, 
+    backgroundColor: "#fff",
+    borderRadius: 5,
+    padding: 10,
+    marginBottom: 20,
   },
   text: {
     fontSize: 18,
@@ -138,15 +149,15 @@ const styles = StyleSheet.create({
     borderRadius: 10,
     flexDirection: "row",
   },
-  dropDownMenu : {
+  dropDownMenu: {
     borderWidth: 1,
     borderColor: "#ABABAB",
     margin: 3,
     padding: 4,
   },
-  detailsText : {
+  detailsText: {
     fontSize: 15,
     padding: 4,
     color: "#ABABAB",
-  }
+  },
 });

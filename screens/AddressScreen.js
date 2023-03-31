@@ -9,15 +9,13 @@ import {
   Keyboard,
 } from "react-native";
 
-import { Fragment } from "react";
-
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import MapView, { Polygon, Marker } from "react-native-maps";
-import { useDispatch, useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
 import { SetDeliveryAddress } from "../reducers/users";
 import * as Location from "expo-location";
-import localIP from "../modules/localIP";
+import backendUrl from "../modules/backendUrl";
 
 export default function AddressScreen({ navigation }) {
   const [deliveryAddress, setDeliveryAddress] = useState("");
@@ -37,10 +35,8 @@ export default function AddressScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
-  const [names, setNames] = useState([]);
-
   useEffect(() => {
-    fetch(`http://${localIP}:3000/locations/contours`)
+    fetch(`${backendUrl}/locations/contours`)
       .then((response) => response.json())
       .then((data) => {
         setRegionsData(data.regionsData);
@@ -51,7 +47,6 @@ export default function AddressScreen({ navigation }) {
 
   handleMarkerPress = (homeDeliveryHours, marketHours, marketAddress) => {
     let text = "";
-    console.log(marketHours);
     if (marketHours) {
       setDeliveryAddress(marketAddress);
       text = "Market time:\n";
@@ -66,9 +61,7 @@ export default function AddressScreen({ navigation }) {
   };
 
   const markers = regionsData.map((data, i) => {
-
     if (data.market.address) {
-      //console.log(data.market)
       const address = data.market.address;
       const latitude = data.market.latitude;
       const longitude = data.market.longitude;
@@ -119,7 +112,7 @@ export default function AddressScreen({ navigation }) {
       });
     }
 
-    const myRegion = regionsData.find(element => element.name === data.city)
+    const myRegion = regionsData.find((element) => element.name === data.city);
     if (myRegion) {
       setIsValidateAddressDisabled(false);
       setButtonColor("#3A7D44");
@@ -142,7 +135,7 @@ export default function AddressScreen({ navigation }) {
 
       if (status === "granted") {
         Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
-          const url = `http://${localIP}:3000/locations/addressbycoordinates/?lon=${location.coords.longitude}&lat=${location.coords.latitude}`;
+          const url = `${backendUrl}/locations/addressbycoordinates/?lon=${location.coords.longitude}&lat=${location.coords.latitude}`;
 
           fetch(url)
             .then((response) => response.json())
@@ -165,7 +158,7 @@ export default function AddressScreen({ navigation }) {
       return;
     }
 
-    const url = `http://${localIP}:3000/locations/addressbystring/?q=${deliveryAddress}&limit=1}`;
+    const url = `${backendUrl}/locations/addressbystring/?q=${deliveryAddress}&limit=1}`;
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -293,7 +286,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "35%",
     marginTop: "5%",
-    marginBottom: "10%"
+    marginBottom: "10%",
   },
   addressButtonsView: {
     width: "100%",
@@ -308,7 +301,7 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "5%",
     alignItems: "center",
-    justifyContent: "flex-end"
+    justifyContent: "flex-end",
   },
   map: {
     flex: 1,

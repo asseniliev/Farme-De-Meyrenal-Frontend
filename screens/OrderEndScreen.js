@@ -1,8 +1,7 @@
-import localIP from "../modules/localIP"
+import backendUrl from "../modules/backendUrl";
 
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import { resetCounter } from "../reducers/productCounter";
@@ -24,7 +23,7 @@ export default function OrderEndScreen({ navigation }) {
       const title = product.title;
       const qty = product.quantity;
       const price = product.price;
-      const priceUnit = product.priceUnit
+      const priceUnit = product.priceUnit;
       totalAmount += qty * price;
       items.push({
         id: id,
@@ -35,7 +34,6 @@ export default function OrderEndScreen({ navigation }) {
       });
     }
 
-
     const order = {
       id: user.id,
       city: user.deliveryAddress.city,
@@ -44,10 +42,7 @@ export default function OrderEndScreen({ navigation }) {
       totalAmount: totalAmount,
     };
 
-    console.log(order)
-
-
-    fetch(`http://${localIP}:3000/orders`, {
+    fetch(`${backendUrl}/orders`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(order),

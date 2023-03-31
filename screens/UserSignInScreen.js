@@ -1,4 +1,4 @@
-import localIP from "../modules/localIP"
+import backendUrl from "../modules/backendUrl";
 
 import {
   KeyboardAvoidingView,
@@ -24,11 +24,6 @@ export default function UserSignInScreen({ navigation }) {
 
   const dispatch = useDispatch();
 
-  const loggedUser = useSelector((data) => {
-    if (data.user) return data.user.value;
-    else return null;
-  });
-
   function handleOnSignin() {
     if (email === "") {
       setErrorText("Insert a valid mail address");
@@ -39,7 +34,7 @@ export default function UserSignInScreen({ navigation }) {
         email: email,
         password: password,
       };
-      fetch(`http://${localIP}:3000/users/signin`, {
+      fetch(`${backendUrl}/users/signin`, {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(login),

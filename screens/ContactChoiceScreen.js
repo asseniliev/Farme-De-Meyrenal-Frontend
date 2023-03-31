@@ -1,4 +1,4 @@
-import localIP from "../modules/localIP"
+import backendUrl from "../modules/backendUrl"
 
 import {
   Text,
@@ -15,7 +15,7 @@ import { Fragment } from "react";
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState, useEffect } from "react";
-import { useDispatch, useSelector } from "react-redux";
+import { useSelector } from "react-redux";
 import { RadioButton } from "react-native-paper";
 
 export default function ContactChoiceScreen({ navigation }) {
@@ -111,7 +111,7 @@ export default function ContactChoiceScreen({ navigation }) {
       text: messageBody,
     };
 
-    fetch(`http://${localIP}:3000/admin/notify`, {
+    fetch(`${backendUrl}/admin/notify`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(mail),
