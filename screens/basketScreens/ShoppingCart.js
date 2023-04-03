@@ -1,4 +1,4 @@
-import Styles from "../modules/importedStyle";
+import Styles from "../../modules/importedStyle";
 import {
   StyleSheet,
   Text,
@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
 } from "react-native";
 import { useFonts } from "expo-font";
-import Product from "../components/Product";
+import Product from "../../components/Product";
 import { useSelector } from "react-redux";
-import getTotal from "../components/GetTotal";
+import getTotal from "../../modules/GetTotal";
 
 //Composant du ticket
 function Totaux(props) {
@@ -28,7 +28,7 @@ function Totaux(props) {
 
 export default function ShoppingCart({ navigation }) {
   const [fontsLoaded] = useFonts({
-    BelweBold: require("../assets/fonts/BelweBold.otf"),
+    BelweBold: require("../../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
 

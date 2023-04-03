@@ -3,34 +3,40 @@ import { StyleSheet, Text, View } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
-
-import FontAwesome from "react-native-vector-icons/FontAwesome";
-import AddressScreen from "./screens/AddressScreen";
-import AccessDetailsScreen from "./screens/AccessDetailsScreen";
-import PersonalDataScreen from "./screens/PersonalDataScreen";
-import UserCreationScreen from "./screens/UserCreationScreen";
-import OrderEndScreen from "./screens/OrderEndScreen";
-import OrderSummaryScreen from "./screens/OrderSummaryScreen";
-import UnderConstructionScreen from "./screens/UnderConstructionScreen";
-import UserSignInScreen from "./screens/UserSignInScreen";
-import MyAccountScreen from "./screens/MyAccountScreen";
-
-import PresentationScreen from "./screens/PresentationScreen";
-import ContactChoiceScreen from "./screens/ContactChoiceScreen";
-import NotificationSentScreen from "./screens/NotificationSentScreen";
-import NotificationFailScreen from "./screens/NotificationFailScreen";
-import MyOrdersScreen from "./screens/MyOrdersScreen";
 import { persistStore, persistReducer } from "redux-persist";
 import { PersistGate } from "redux-persist/integration/react";
-import AsyncStorage from "@react-native-async-storage/async-storage";
-
-import OnBoard from "./screens/OnBoard";
-import LogScreen from "./screens/LogScreen";
-import HomeScreen from "./screens/HomeScreen";
-import ShoppingCart from "./screens/ShoppingCart";
 import { useSelector } from "react-redux";
+import AsyncStorage from "@react-native-async-storage/async-storage";
+import FontAwesome from "react-native-vector-icons/FontAwesome";
 
-// initialization of the store
+//basketScreens
+import OrderEndScreen from "./screens/basketScreens/OrderEndScreen";
+import OrderSummaryScreen from "./screens/basketScreens/OrderSummaryScreen";
+import ShoppingCart from "./screens/basketScreens/ShoppingCart";
+import UnderConstructionScreen from "./screens/basketScreens/UnderConstructionScreen";
+
+//connectionScreens
+import AccessDetailsScreen from "./screens/connectionScreens/AccessDetailsScreen";
+import AddressScreen from "./screens/connectionScreens/AddressScreen";
+import LogScreen from "./screens/connectionScreens/LogScreen";
+import OnBoard from "./screens/connectionScreens/OnBoard";
+import PersonalDataScreen from "./screens/connectionScreens/PersonalDataScreen";
+import UserCreationScreen from "./screens/connectionScreens/UserCreationScreen";
+import UserSignInScreen from "./screens/connectionScreens/UserSignInScreen";
+
+//homeScreens
+import HomeScreen from "./screens/homeScreens/HomeScreen";
+import PresentationScreen from "./screens/homeScreens/PresentationScreen";
+
+//profilScreens
+import ContactChoiceScreen from "./screens/profilScreens/ContactChoiceScreen";
+import MyAccountScreen from "./screens/profilScreens/MyAccountScreen";
+import MyOrdersScreen from "./screens/profilScreens/MyOrdersScreen";
+import NotificationFailScreen from "./screens/profilScreens/NotificationFailScreen";
+import NotificationSentScreen from "./screens/profilScreens/NotificationSentScreen";
+
+
+// initialization of the storebasketScreens/
 import { Provider } from "react-redux";
 import {
   configureStore,

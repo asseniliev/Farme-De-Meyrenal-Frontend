@@ -1,4 +1,4 @@
-import backendUrl from "../modules/backendUrl";
+import backendUrl from "../../modules/backendUrl";
 
 import {
   StyleSheet,
@@ -8,16 +8,17 @@ import {
   ScrollView,
 } from "react-native";
 import { useFonts } from "expo-font";
-import Product from "../components/Product";
+import Product from "../../components/Product";
 import { useEffect, useState } from "react";
-import Carousel from "../components/Carousel";
-import Styles from "../modules/importedStyle";
-import { getLoggedUser } from "../modules/isUserLogged";
+import Carousel from "../../components/Carousel";
+import Styles from "../../modules/importedStyle";
+import { getLoggedUser } from "../../modules/isUserLogged";
+import nextDeliveryDate from "../../modules/nextDeliveryDate"
 
 export default function Home({ navigation }) {
   const [productList, setProductList] = useState([]);
   const [fontsLoaded] = useFonts({
-    BelweBold: require("../assets/fonts/BelweBold.otf"),
+    BelweBold: require("../../assets/fonts/BelweBold.otf"),
   });
 
   const loggedUser = getLoggedUser();
@@ -57,6 +58,9 @@ export default function Home({ navigation }) {
         <View style={styles.carouselContainer}>
           <Carousel />
         </View>
+        {loggedUser.accesstoken !== "" ? (
+        <View style={styles.nextDeliveryDate}><Text>Prochaine livraison possible le {nextDeliveryDate()}</Text></View>)
+        : <></>}
         <View style={styles.productContainer}>
           {products}
         </View>
@@ -66,8 +70,7 @@ export default function Home({ navigation }) {
               <Text style={Styles.textButton}>Mon panier</Text>
             </TouchableOpacity>
           </View>
-        ) : (<></>)
-        }
+        ) : <></>}
       </ScrollView>
     </View>
   );
@@ -103,6 +106,9 @@ const styles = StyleSheet.create({
     alignItems: "center",
     marginTop: 10,
     marginBottom: 5,
+  },
+  nextDeliveryDate: {
+    alignItems: "center",
   },
   productContainer: {
     flex: 1,

@@ -13,9 +13,9 @@ import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import MapView, { Polygon, Marker } from "react-native-maps";
 import { useDispatch } from "react-redux";
-import { SetDeliveryAddress } from "../reducers/users";
+import { SetDeliveryAddress } from "../../reducers/users";
 import * as Location from "expo-location";
-import backendUrl from "../modules/backendUrl";
+import backendUrl from "../../modules/backendUrl";
 
 export default function AddressScreen({ navigation }) {
   const [deliveryAddress, setDeliveryAddress] = useState("");

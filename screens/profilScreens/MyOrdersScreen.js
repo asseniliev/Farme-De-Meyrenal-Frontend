@@ -1,4 +1,4 @@
-import backendUrl from "../modules/backendUrl";
+import backendUrl from "../../modules/backendUrl";
 import {
   StyleSheet,
   Text,
@@ -8,15 +8,15 @@ import {
 } from "react-native";
 import { useFonts } from "expo-font";
 import { useEffect, useState } from "react";
-import importedStyle from "../modules/importedStyle";
-import { getLoggedUser } from "../modules/isUserLogged";
+import importedStyle from "../../modules/importedStyle";
+import { getLoggedUser } from "../../modules/isUserLogged";
 import { AntDesign } from "@expo/vector-icons";
 
 export default function MyOrders({ navigation }) {
   const [orderList, setOrderList] = useState([]);
   const [isOpen, setIsOpen] = useState({});
   const [fontsLoaded] = useFonts({
-    BelweBold: require("../assets/fonts/BelweBold.otf"),
+    BelweBold: require("../../assets/fonts/BelweBold.otf"),
   });
   const loggedUser = getLoggedUser();
 

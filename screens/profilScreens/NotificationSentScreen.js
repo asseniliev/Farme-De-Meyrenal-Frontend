@@ -5,7 +5,7 @@ export default function NotificationSentScreen({ navigation }) {
     <View style={styles.container}>
       <View style={styles.topSection}>
         <Image
-          source={require("../assets/shoppingBasket.jpg")}
+          source={require("../../assets/shoppingBasket.jpg")}
           style={styles.image}
         />
       </View>

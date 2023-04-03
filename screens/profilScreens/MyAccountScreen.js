@@ -1,4 +1,5 @@
 import {
+  Button,
   StyleSheet,
   Text,
   View,
@@ -6,43 +7,58 @@ import {
   TextInput,
   TouchableOpacity,
 } from "react-native";
-import Styles from "../modules/importedStyle";
+import Styles from "../../modules/importedStyle";
 //font hook
 import { useFonts } from "expo-font";
+import { useDispatch } from "react-redux";
+import { disconnect } from "../../reducers/users";
 
-export default function Log({ navigation }) {
+export default function MyAccountScreen({ navigation }) {
+  const dispatch = useDispatch();
   const [fontsLoaded] = useFonts({
-    BelweBold: require("../assets/fonts/BelweBold.otf"),
+    BelweBold: require("../../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) return null;
+
+  function handleOnDisconnect() {
+    dispatch(disconnect());
+    navigation.navigate("Log");
+  }
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
         <Text style={styles.title}>
-          {"  "}ferme de {"\n"} mereynal
+          profil
         </Text>
       </View>
-      <Image source={require("../assets/fla1.jpg")} style={styles.image} />
+      <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("Address")}
+        onPress={() => navigation.navigate("MyOrders")}
         style={Styles.button}
       >
-        <Text style={Styles.textButton}>Créer un nouveau compte</Text>
+        <Text style={Styles.textButton}>Mes commandes</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("UserSignIn")}
+        onPress={() => navigation.navigate("")}
         style={Styles.button}
       >
-        <Text style={Styles.textButton}>Se connecter</Text>
+        <Text style={Styles.textButton}>Modifier mon profil</Text>
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => navigation.navigate("")}
+        style={Styles.button}
+      >
+        <Text style={Styles.textButton}>Modifier mot de passe</Text>
+      </TouchableOpacity>
+      <TouchableOpacity
+        onPress={() => handleOnDisconnect()}
+        style={Styles.button}
+      >
+        <Text style={Styles.textButton}>Me deconnecter</Text>
       </TouchableOpacity>
       <View style={styles.line}></View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("HomeTab")}
-        style={Styles.button}
-      >
-        <Text style={Styles.textButton}>Continuer sans se connecter</Text>
-      </TouchableOpacity>
       <TouchableOpacity
         onPress={() => navigation.navigate("ContactChoice")}
         style={Styles.button}
@@ -52,17 +68,24 @@ export default function Log({ navigation }) {
     </View>
   );
 }
+
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: "#F4F5F9",
     alignItems: "center",
     justifyContent: "space-between",
     marginBottom: 30,
   },
   header: {
-    marginTop: 30,
+    alignItems: "center",
+    paddingTop: 40,
+    paddingBottom: 3,
+    backgroundColor: "#ffffff",
+    width: "100%",
+    height: 90,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ABABAB",
   },
   image: {
     width: "100%",

@@ -1,4 +1,4 @@
-import backendUrl from "../modules/backendUrl";
+import backendUrl from "../../modules/backendUrl";
 
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
@@ -40,7 +40,7 @@ export default function UserCreationScreen({ navigation }) {
           <FontAwesome name="arrow-left" size={24} color="#000000" />
           {"        "} Account Creation
         </Text>
-        <Image source={require("../assets/fla1.jpg")} style={styles.image} />
+        <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
       </View>
       <View style={styles.bottomSection}>
         <Text style={styles.text}>{message}</Text>

@@ -1,28 +1,32 @@
 import { StyleSheet, Text, View, ScrollView, Image } from "react-native";
 import { useFonts } from "expo-font";
+import { AntDesign } from '@expo/vector-icons';
 
 export default function Presentation({ navigation }) {
   const [fontsLoaded] = useFonts({
-    BelweBold: require("../assets/fonts/BelweBold.otf"),
+    BelweBold: require("../../assets/fonts/BelweBold.otf"),
   });
   if (!fontsLoaded) null;
 
   return (
     <View style={styles.container}>
       <View style={styles.header}>
+        <View style={styles.title1Container}>
+      <AntDesign name="caretleft" size={24} color="#3A7D44" />
         <Text
           style={styles.title1}
           onPress={() => navigation.navigate("HomeScreen")}
         >
-          {"  "}ferme de {"\n"} mereynal
+          {" "}ferme de {"\n"} mereynal
         </Text>
+        </View>
         <Text style={styles.title2}>
           mon exploitation{"\n"}
           {"            "}permacole
         </Text>
       </View>
       <ScrollView style={styles.textContainer}>
-        <Image source={require("../assets/fla2.jpg")} style={styles.image} />
+        <Image source={require("../../assets/fla2.jpg")} style={styles.image} />
         <Text style={styles.titre}>L’exploitation :</Text>
         <Text style={styles.paragraphe}>
           {" "}
@@ -110,6 +114,10 @@ const styles = StyleSheet.create({
     flexDirection: "row",
     justifyContent: "space-between",
     paddingHorizontal: 10,
+  },
+  title1Container:{
+    flexDirection: "row", 
+    alignItems: "center",
   },
   title1: {
     fontFamily: "BelweBold",

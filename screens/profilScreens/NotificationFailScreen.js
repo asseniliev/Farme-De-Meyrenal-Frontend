@@ -6,7 +6,7 @@ export default function NotificationFailScreen({ navigation }) {
       <View style={styles.topSection}>
         {/* <Text style={styles.textTitle}>{"              "} Thank You!</Text> */}
         <Image
-          source={require("../assets/AttentionSign.png")}
+          source={require("../../assets/AttentionSign.png")}
           style={styles.image}
         />
       </View>

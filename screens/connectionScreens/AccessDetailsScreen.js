@@ -1,5 +1,3 @@
-import backendUrl from "../modules/backendUrl";
-
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -15,52 +13,30 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { setLoggedUser } from "../reducers/users";
+import { SetCredentials } from "../../reducers/users";
 
-export default function UserSignInScreen({ navigation }) {
+export default function AccessDetailsScreen({ navigation }) {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [repeatPassword, setRepeatPassword] = useState("");
   const [errorText, setErrorText] = useState("");
 
   const dispatch = useDispatch();
 
-  function handleOnSignin() {
+  function handleOnNext() {
     if (email === "") {
       setErrorText("Insert a valid mail address");
-    } else if (password === "") {
+    } else if (password === "" || repeatPassword === "") {
       setErrorText("Insert a valid password");
+    } else if (password !== repeatPassword) {
+      setErrorText("Passwords must match");
     } else {
-      const login = {
+      const credentials = {
         email: email,
         password: password,
       };
-      fetch(`${backendUrl}/users/signin`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        body: JSON.stringify(login),
-      })
-        .then((response) => response.json())
-        .then((data) => {
-          if (data.result) {
-            const loggedUser = {
-              id: data.user._id,
-              email: data.user.email,
-              firstName: data.user.firstName,
-              lastName: data.user.lastName,
-              phoneNumber: data.user.phoneNumber,
-              deliveryAddress: {
-                address: data.user.deliveryAddress.address,
-                city: data.user.deliveryAddress.city,
-              },
-              accesstoken: data.accessToken,
-            };
-            dispatch(setLoggedUser(loggedUser));
-            navigation.navigate("HomeTab");
-          } else {
-            setErrorText(data.message);
-            setPassword("");
-          }
-        });
+      dispatch(SetCredentials(credentials));
+      navigation.navigate("PersonalData");
     }
   }
 
@@ -72,7 +48,7 @@ export default function UserSignInScreen({ navigation }) {
             <FontAwesome name="arrow-left" size={24} color="#000000" />
             {"          "} Détails d'accès
           </Text>
-          <Image source={require("../assets/fla1.jpg")} style={styles.image} />
+          <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
         </View>
         <View style={styles.middleSection}>
           <TextInput
@@ -88,14 +64,21 @@ export default function UserSignInScreen({ navigation }) {
             onChangeText={(value) => setPassword(value)}
             value={password}
           />
+          <TextInput
+            style={styles.input}
+            secureTextEntry={true}
+            placeholder="Repeat password"
+            onChangeText={(value) => setRepeatPassword(value)}
+            value={repeatPassword}
+          />
           <Text style={styles.errorText}>{errorText}</Text>
         </View>
         <View style={styles.bottomSection}>
           <TouchableOpacity
-            onPress={() => handleOnSignin()}
+            onPress={() => handleOnNext()}
             style={styles.buttonFull}
           >
-            <Text style={styles.textButton}>Sign in</Text>
+            <Text style={styles.textButton}>Next</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>

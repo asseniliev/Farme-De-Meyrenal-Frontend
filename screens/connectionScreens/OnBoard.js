@@ -6,9 +6,9 @@ import {
   FlatList,
   Animated,
 } from "react-native";
-import slide from "../modules/slide";
-import OnbordingItem from "../components/OnbordingItem";
-import Styles from "../modules/importedStyle";
+import slide from "../../modules/slide";
+import OnbordingItem from "../../components/OnbordingItem";
+import Styles from "../../modules/importedStyle";
 import { useSelector } from "react-redux";
 import React, { useState } from "react";
 

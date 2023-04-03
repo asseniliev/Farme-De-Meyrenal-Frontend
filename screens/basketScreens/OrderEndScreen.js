@@ -1,10 +1,10 @@
-import backendUrl from "../modules/backendUrl";
+import backendUrl from "../../modules/backendUrl";
 
 import { Text, View, Image, StyleSheet, TouchableOpacity } from "react-native";
 
 import { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
-import { resetCounter } from "../reducers/productCounter";
+import { resetCounter } from "../../reducers/productCounter";
 
 export default function OrderEndScreen({ navigation }) {
   const [message, setMessage] = useState("New order is in process of creation");
@@ -65,7 +65,7 @@ export default function OrderEndScreen({ navigation }) {
       <View style={styles.topSection}>
         <Text style={styles.textTitle}>{"              "} Thank You!</Text>
         <Image
-          source={require("../assets/shoppingBasket.jpg")}
+          source={require("../../assets/shoppingBasket.jpg")}
           style={styles.image}
         />
       </View>

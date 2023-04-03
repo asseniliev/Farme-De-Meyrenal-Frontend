@@ -1,4 +1,4 @@
-import backendUrl from "../modules/backendUrl"
+import backendUrl from "../../modules/backendUrl"
 
 import {
   Text,
@@ -139,7 +139,7 @@ export default function ContactChoiceScreen({ navigation }) {
           {"                     "} contact
         </Text>
         <View style={styles.topSection}>
-          <Image source={require("../assets/fla1.jpg")} style={styles.image} />
+          <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
         </View>
         <View style={styles.middleSection}>
           <RadioButton.Group

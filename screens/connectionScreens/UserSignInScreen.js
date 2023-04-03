@@ -1,3 +1,5 @@
+import backendUrl from "../../modules/backendUrl";
+
 import {
   KeyboardAvoidingView,
   StyleSheet,
@@ -12,32 +14,53 @@ import {
 
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState } from "react";
-import { useDispatch } from "react-redux";
-import { setPersonalData } from "../reducers/users";
+import { useDispatch, useSelector } from "react-redux";
+import { setLoggedUser } from "../../reducers/users";
 
-export default function PersonalDataScreen({ navigation }) {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
-  const [phoneNumber, setPhoneNumber] = useState("");
+export default function UserSignInScreen({ navigation }) {
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
   const [errorText, setErrorText] = useState("");
 
   const dispatch = useDispatch();
 
-  function handleOnNext() {
-    if (lastName === "") {
-      setErrorText("Insert a valid last name");
-    } else if (firstName === "") {
-      setErrorText("Insert a valid first name");
-    } else if (phoneNumber === "") {
-      setErrorText("Insert a phone number");
+  function handleOnSignin() {
+    if (email === "") {
+      setErrorText("Insert a valid mail address");
+    } else if (password === "") {
+      setErrorText("Insert a valid password");
     } else {
-      const personalData = {
-        firstName: firstName,
-        lastName: lastName,
-        phoneNumber: phoneNumber,
+      const login = {
+        email: email,
+        password: password,
       };
-      dispatch(setPersonalData(personalData));
-      navigation.navigate("UserCreation");
+      fetch(`${backendUrl}/users/signin`, {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(login),
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          if (data.result) {
+            const loggedUser = {
+              id: data.user._id,
+              email: data.user.email,
+              firstName: data.user.firstName,
+              lastName: data.user.lastName,
+              phoneNumber: data.user.phoneNumber,
+              deliveryAddress: {
+                address: data.user.deliveryAddress.address,
+                city: data.user.deliveryAddress.city,
+              },
+              accesstoken: data.accessToken,
+            };
+            dispatch(setLoggedUser(loggedUser));
+            navigation.navigate("HomeTab");
+          } else {
+            setErrorText(data.message);
+            setPassword("");
+          }
+        });
     }
   }
 
@@ -49,35 +72,30 @@ export default function PersonalDataScreen({ navigation }) {
             <FontAwesome name="arrow-left" size={24} color="#000000" />
             {"          "} Détails d'accès
           </Text>
-          <Image source={require("../assets/fla1.jpg")} style={styles.image} />
+          <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
         </View>
         <View style={styles.middleSection}>
           <TextInput
             style={styles.input}
-            placeholder="Last Name"
-            onChangeText={(value) => setLastName(value)}
-            value={lastName}
+            placeholder="Email"
+            onChangeText={(value) => setEmail(value)}
+            value={email}
           />
           <TextInput
             style={styles.input}
-            placeholder="First Name"
-            onChangeText={(value) => setFirstName(value)}
-            value={firstName}
-          />
-          <TextInput
-            style={styles.input}
-            placeholder="Phone number"
-            onChangeText={(value) => setPhoneNumber(value)}
-            value={phoneNumber}
+            secureTextEntry={true}
+            placeholder="Password"
+            onChangeText={(value) => setPassword(value)}
+            value={password}
           />
           <Text style={styles.errorText}>{errorText}</Text>
         </View>
         <View style={styles.bottomSection}>
           <TouchableOpacity
-            onPress={() => handleOnNext()}
+            onPress={() => handleOnSignin()}
             style={styles.buttonFull}
           >
-            <Text style={styles.textButton}>Next</Text>
+            <Text style={styles.textButton}>Sign in</Text>
           </TouchableOpacity>
         </View>
       </KeyboardAvoidingView>
