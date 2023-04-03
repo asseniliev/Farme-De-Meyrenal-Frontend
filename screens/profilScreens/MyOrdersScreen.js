@@ -141,7 +141,7 @@ const styles = StyleSheet.create({
     padding: 2,
   },
   dropDownButton: {
-    justifyContent: "spaceBetween",
+    // justifyContent: "space-between",
     paddingHorizontal: 9,
     marginTop: 10,
     paddingTop: 10,
