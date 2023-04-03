@@ -54,18 +54,31 @@ export default function AddressScreen({ navigation }) {
   useEffect(() => {
     const newMap = constructMap();
     setMap(newMap);
-  }, [initLat, initLon, latDelta, lonDelta])
+  }, [initLat, initLon, latDelta, lonDelta, locationCoordinates])
 
   function constructMap() {
     let newMap = null;
+    let centerLatitude = initLat;
+    let centerLongitude = initLon;
+    let deltaLatidude = latDelta;
+    let deltaLongitude = lonDelta;
+
+    if (locationCoordinates !== null) {
+      mapData = getNewMapSize();
+      centerLatitude = mapData.latitude;
+      centerLongitude = mapData.longitude
+      deltaLatidude = mapData.latitudeDelta;
+      deltaLongitude = mapData.longitudeDelta;
+    }
+
     if (initLat !== 0 && initLon !== 0 && latDelta !== 0 && lonDelta !== 0) {
       newMap = (<MapView
         style={styles.map}
-        initialRegion={{
-          latitude: initLat,
-          longitude: initLon,
-          latitudeDelta: latDelta,
-          longitudeDelta: lonDelta,
+        region={{
+          latitude: centerLatitude,
+          longitude: centerLongitude,
+          latitudeDelta: deltaLatidude,
+          longitudeDelta: deltaLongitude,
         }}
         mapType="hybrid"
         userInteractionEnabled={true}
@@ -80,10 +93,73 @@ export default function AddressScreen({ navigation }) {
           />
         )}
       </MapView>);
+    } else {
+      newMap = (
+        <View style={styles.mapText}>
+          <Text style={styles.title}>Loading map...</Text>
+        </View>
+
+      );
     }
 
     return newMap;
   }
+
+  function getNewMapSize() {
+    const currentMinLat = initLat - latDelta / 2;
+    const currentMaxLat = initLat + latDelta / 2;
+    const currentMinLon = initLon - lonDelta / 2;
+    const currentMaxLon = initLat + lonDelta / 2;
+
+    const locationLat = locationCoordinates.latitude;
+    const locationLon = locationCoordinates.longitude;
+
+    if ((currentMinLat < locationLat) && (locationLat < currentMaxLat) && (currentMinLon < locationLon) && (locationLon < currentMaxLon)) {
+      return {
+        latitude: initLat,
+        longitude: initLon,
+        latitudeDelta: latDelta,
+        longitudeDelta: lonDelta,
+      }
+    } else {
+
+      let newCenterLat;
+      let newCenterLon;
+      let newDeltaLat;
+      let newDeltaLon;
+
+      //if locationLat < currentMinLat this means that the locationLat is below the current map
+      if (locationLat < currentMinLat) {
+        newCenterLat = (locationLat + currentMaxLat) / 2;
+        newDeltaLat = Math.abs(locationLat - currentMaxLat);
+      } else {
+        newCenterLat = (locationLat + currentMinLat) / 2;
+        newDeltaLat = Math.abs(locationLat - currentMinLat);
+      }
+
+      //if locationLon < currentMinLon this means that the location is to the left of the current map
+      if (locationLon < currentMinLon) {
+        newCenterLon = (locationLon + currentMaxLon) / 2;
+        newDeltaLon = Math.abs(locationLon - currentMaxLon);
+      } else {
+        newCenterLon = (locationLon + currentMinLon) / 2;
+        newDeltaLon = Math.abs(locationLon - currentMinLon);
+      }
+
+      newCenterLat = (Math.round(newCenterLat * 100)) / 100;
+      newCenterLon = (Math.round(newCenterLon * 100)) / 100;
+      newDeltaLat = 0.1 + (Math.round(newDeltaLat * 100)) / 100;
+      newDeltaLon = 0.02 + (Math.round(newDeltaLon * 100)) / 100;
+
+      return {
+        latitude: newCenterLat,
+        longitude: newCenterLon,
+        latitudeDelta: newDeltaLat,
+        longitudeDelta: newDeltaLon,
+      }
+    }
+  }
+
 
   handleMarkerPress = (homeDeliveryHours, marketHours, marketAddress) => {
     let text = "";
@@ -174,9 +250,10 @@ export default function AddressScreen({ navigation }) {
       const { status } = await Location.requestForegroundPermissionsAsync();
 
       if (status === "granted") {
+        // setDeliveryAddress("Géolocalisation en cours...");
+        setDeliveryAddress("Geolocalisation in process...");
         Location.watchPositionAsync({ distanceInterval: 10 }, (location) => {
           const url = `${backendUrl}/locations/addressbycoordinates/?lon=${location.coords.longitude}&lat=${location.coords.latitude}`;
-
           fetch(url)
             .then((response) => response.json())
             .then((data) => {
@@ -233,30 +310,6 @@ export default function AddressScreen({ navigation }) {
             {"          "} adresse de livraison
           </Text>
           {map}
-          {/* <MapView
-            style={styles.map}
-            initialRegion={{
-              // latitude: 45.1169,
-              // longitude: 4.5216,
-              latitude: initLat,
-              longitude: initLon,
-              latitudeDelta: 0.2,
-              longitudeDelta: 0.2,
-            }}
-            //onMapReady={this.onMapReady}
-            mapType="hybrid"
-            userInteractionEnabled={true}
-          >
-            {mapPolygons}
-            {markers}
-            {locationCoordinates && (
-              <Marker
-                coordinate={locationCoordinates}
-                title="Home"
-                pinColor="#fecb2d"
-              />
-            )}
-          </MapView> */}
         </View>
 
         <View style={styles.middleSection}>
@@ -337,6 +390,13 @@ const styles = StyleSheet.create({
     width: "100%",
     height: "100%",
     marginBottom: "3%",
+  },
+  mapText: {
+    flex: 1,
+    width: "100%",
+    height: "100%",
+    justifyContent: "center",
+    alignItems: "center",
   },
   text: {
     paddingHorizontal: 10,
