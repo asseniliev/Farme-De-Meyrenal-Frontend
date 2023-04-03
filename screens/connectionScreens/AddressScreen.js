@@ -24,11 +24,14 @@ export default function AddressScreen({ navigation }) {
   const [deliveryCity, setDeliveryCity] = useState("");
   const [deliveryLat, setDeliveryLat] = useState(0);
   const [deliveryLon, setDeliveryLon] = useState(0);
-  const [initLat, setInitLat] = useState(45.167868);
-  const [initLon, setInitLon] = useState(4.6381405);
+  // const [initLat, setInitLat] = useState(45.167868);
+  // const [initLon, setInitLon] = useState(4.6381405);
   const [regionsData, setRegionsData] = useState([]);
-  //const [initLat, setInitLat] = useState(0);
-  //const [initLon, setInitLon] = useState(0);
+  const [initLat, setInitLat] = useState(0);
+  const [initLon, setInitLon] = useState(0);
+  const [latDelta, setLatDelta] = useState(0);
+  const [lonDelta, setLonDelta] = useState(0);
+  const [map, setMap] = useState(null);
   const [deliveryInfoText, setDeliveryInfoText] = useState("");
   const [validateAddressDisabled, setIsValidateAddressDisabled] =
     useState(true);
@@ -36,14 +39,51 @@ export default function AddressScreen({ navigation }) {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    fetch(`${backendUrl}/locations/contours`)
+    const url = `${backendUrl}/locations/contours`;
+    fetch(url)
       .then((response) => response.json())
       .then((data) => {
         setRegionsData(data.regionsData);
         setInitLat(data.latInit);
         setInitLon(data.lonInit);
+        setLatDelta(data.latDelta);
+        setLonDelta(data.lonDelta);
       });
   }, []);
+
+  useEffect(() => {
+    const newMap = constructMap();
+    setMap(newMap);
+  }, [initLat, initLon, latDelta, lonDelta])
+
+  function constructMap() {
+    let newMap = null;
+    if (initLat !== 0 && initLon !== 0 && latDelta !== 0 && lonDelta !== 0) {
+      newMap = (<MapView
+        style={styles.map}
+        initialRegion={{
+          latitude: initLat,
+          longitude: initLon,
+          latitudeDelta: latDelta,
+          longitudeDelta: lonDelta,
+        }}
+        mapType="hybrid"
+        userInteractionEnabled={true}
+      >
+        {mapPolygons}
+        {markers}
+        {locationCoordinates && (
+          <Marker
+            coordinate={locationCoordinates}
+            title="Home"
+            pinColor="#fecb2d"
+          />
+        )}
+      </MapView>);
+    }
+
+    return newMap;
+  }
 
   handleMarkerPress = (homeDeliveryHours, marketHours, marketAddress) => {
     let text = "";
@@ -184,18 +224,6 @@ export default function AddressScreen({ navigation }) {
     dispatch(SetDeliveryAddress(addressData));
     navigation.navigate("AccessDetails");
   }
-
-  onMapReady = () => {
-    // Update the region with new coordinates
-    const newRegion = {
-      latitude: initLat,
-      longitude: initLon,
-      latitudeDelta: 0.2,
-      longitudeDelta: 0.2,
-    };
-    this.mapView.animateToRegion(newRegion, 1000);
-  };
-
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <KeyboardAvoidingView style={styles.container} behavior="height">
@@ -204,7 +232,8 @@ export default function AddressScreen({ navigation }) {
             <FontAwesome name="arrow-left" size={24} color="#000000" />
             {"          "} adresse de livraison
           </Text>
-          <MapView
+          {map}
+          {/* <MapView
             style={styles.map}
             initialRegion={{
               // latitude: 45.1169,
@@ -227,7 +256,7 @@ export default function AddressScreen({ navigation }) {
                 pinColor="#fecb2d"
               />
             )}
-          </MapView>
+          </MapView> */}
         </View>
 
         <View style={styles.middleSection}>
