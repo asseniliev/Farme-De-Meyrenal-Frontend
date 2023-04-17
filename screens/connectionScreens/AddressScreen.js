@@ -40,6 +40,7 @@ export default function AddressScreen({ navigation }) {
 
   useEffect(() => {
     const url = `${backendUrl}/locations/contours`;
+    console.log(url);
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
