@@ -34,6 +34,8 @@ import MyAccountScreen from "./screens/profilScreens/MyAccountScreen";
 import MyOrdersScreen from "./screens/profilScreens/MyOrdersScreen";
 import NotificationFailScreen from "./screens/profilScreens/NotificationFailScreen";
 import NotificationSentScreen from "./screens/profilScreens/NotificationSentScreen";
+import PasswordChangeScreen from "./screens/profilScreens/PasswordChangeScreen";
+import PasswordChangeSuccessScreen from "./screens/profilScreens/PasswordChangeSuccessScreen";
 
 
 // initialization of the storebasketScreens/
@@ -143,12 +145,12 @@ function TabNavigator() {
       {loggedUser.accesstoken !== ""
         ? (
           <>
-          <Tab.Screen name="Panier" component={BasketStackScreen}
-          options={ productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {} }
-          />
-          <Tab.Screen name="Profil" component={AccountStackScreen} />
+            <Tab.Screen name="Panier" component={BasketStackScreen}
+              options={productCount ? { tabBarBadge: productCount, tabBarBadgeStyle: styles.tabBarBadgeStyle, } : {}}
+            />
+            <Tab.Screen name="Profil" component={AccountStackScreen} />
           </>
-          ) : ( <Tab.Screen name="Profil" component={LogScreen} /> )
+        ) : (<Tab.Screen name="Profil" component={LogScreen} />)
       }
     </Tab.Navigator>
   );
@@ -172,7 +174,8 @@ export default function App() {
             <Stack.Screen name="NotificationFail" component={NotificationFailScreen} />
             <Stack.Screen name="ContactChoice" component={ContactChoiceScreen} />
             <Stack.Screen name="UnderConstruction" component={UnderConstructionScreen} />
-
+            <Stack.Screen name="PasswordChange" component={PasswordChangeScreen} />
+            <Stack.Screen name="PasswordChangeSuccess" component={PasswordChangeSuccessScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

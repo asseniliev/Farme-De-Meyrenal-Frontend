@@ -47,7 +47,7 @@ export default function MyAccountScreen({ navigation }) {
       </TouchableOpacity>
 
       <TouchableOpacity
-        onPress={() => navigation.navigate("")}
+        onPress={() => navigation.navigate("PasswordChange")}
         style={Styles.button}
       >
         <Text style={Styles.textButton}>Modifier mot de passe</Text>
