@@ -12,7 +12,7 @@ import {
 import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useEffect, useState } from "react";
 import MapView, { Polygon, Marker } from "react-native-maps";
-import { useDispatch } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
 import { SetDeliveryAddress } from "../../reducers/users";
 import * as Location from "expo-location";
 import backendUrl from "../../modules/backendUrl";
@@ -37,10 +37,23 @@ export default function AddressScreen({ navigation }) {
     useState(true);
 
   const dispatch = useDispatch();
+  const loggedUser = useSelector(state => state.user.value);
 
   useEffect(() => {
     const url = `${backendUrl}/locations/contours`;
-    console.log(url);
+    if (loggedUser.accesstoken !== null) {
+      setDeliveryLat(loggedUser.deliveryAddress.lat);
+      setDeliveryLon(loggedUser.deliveryAddress.lon);
+      setDeliveryAddress(loggedUser.deliveryAddress.address);
+      setDeliveryCity(loggedUser.deliveryAddress.city);
+      setLocationCoordinates({
+        latitude: loggedUser.deliveryAddress.lat,
+        longitude: loggedUser.deliveryAddress.lon,
+      });
+      setIsValidateAddressDisabled(false);
+      setButtonColor("#3A7D44")
+    }
+
     fetch(url)
       .then((response) => response.json())
       .then((data) => {
@@ -67,7 +80,9 @@ export default function AddressScreen({ navigation }) {
     if (locationCoordinates !== null) {
       mapData = getNewMapSize();
       centerLatitude = mapData.latitude;
-      centerLongitude = mapData.longitude
+      centerLongitude = mapData.longitude;
+      // centerLatitude = locationCoordinates.lat;
+      // centerLongitude = locationCoordinates.lon;
       deltaLatidude = mapData.latitudeDelta;
       deltaLongitude = mapData.longitudeDelta;
     }
@@ -177,26 +192,27 @@ export default function AddressScreen({ navigation }) {
     setButtonColor("#3A7D44");
   };
 
+  //Markers will not be needed on this screen as we shall not use them as delivery addresses
   const markers = regionsData.map((data, i) => {
-    if (data.market.address) {
-      const address = data.market.address;
-      const latitude = data.market.latitude;
-      const longitude = data.market.longitude;
-      const label = data.market.label;
-      const marketHours = data.market.marketHours;
-      const homeDeliveryHours = data.homeDeliveryHours;
+    // if (data.market.address) {
+    //   const address = data.market.address;
+    //   const latitude = data.market.latitude;
+    //   const longitude = data.market.longitude;
+    //   const label = data.market.label;
+    //   const marketHours = data.market.marketHours;
+    //   const homeDeliveryHours = data.homeDeliveryHours;
 
-      return (
-        <Marker
-          key={i}
-          coordinate={{ latitude: latitude, longitude: longitude }}
-          title={label}
-          onPress={() =>
-            handleMarkerPress(homeDeliveryHours, marketHours, address)
-          }
-        />
-      );
-    }
+    //   return (
+    //     <Marker
+    //       key={i}
+    //       coordinate={{ latitude: latitude, longitude: longitude }}
+    //       title={label}
+    //       onPress={() =>
+    //         handleMarkerPress(homeDeliveryHours, marketHours, address)
+    //       }
+    //     />
+    //   );
+    // }
   });
 
   const mapPolygons = regionsData.map((data, i) => {
@@ -300,8 +316,12 @@ export default function AddressScreen({ navigation }) {
       city: deliveryCity,
     };
     dispatch(SetDeliveryAddress(addressData));
-    navigation.navigate("AccessDetails");
+    if (loggedUser.accesstoken)
+      navigation.navigate("PersonalData");
+    else
+      navigation.navigate("AccessDetails");
   }
+
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <KeyboardAvoidingView style={styles.container} behavior="height">

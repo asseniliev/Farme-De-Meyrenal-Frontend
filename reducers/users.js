@@ -39,7 +39,12 @@ export const userSlice = createSlice({
       state.value.phoneNumber = action.payload.phoneNumber;
     },
     disconnect: (state) => {
-      state.value.accesstoken = "";
+      for (let key in state.value) {
+        if (typeof (state.value[key]) === "string")
+          state.value[key] = null;
+        else
+          state.value[key] = {};
+      }
     },
     setLoggedUser: (state, action) => {
       state.value = action.payload;

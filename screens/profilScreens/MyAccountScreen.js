@@ -40,7 +40,7 @@ export default function MyAccountScreen({ navigation }) {
         <Text style={Styles.textButton}>Mes commandes</Text>
       </TouchableOpacity>
       <TouchableOpacity
-        onPress={() => navigation.navigate("")}
+        onPress={() => navigation.navigate("Address")}
         style={Styles.button}
       >
         <Text style={Styles.textButton}>Modifier mon profil</Text>

@@ -22,6 +22,7 @@ import LogScreen from "./screens/connectionScreens/LogScreen";
 import OnBoard from "./screens/connectionScreens/OnBoard";
 import PersonalDataScreen from "./screens/connectionScreens/PersonalDataScreen";
 import UserCreationScreen from "./screens/connectionScreens/UserCreationScreen";
+import UserModificationScreen from "./screens/connectionScreens/UserModificationScreen";
 import UserSignInScreen from "./screens/connectionScreens/UserSignInScreen";
 
 //homeScreens
@@ -142,7 +143,7 @@ function TabNavigator() {
       })}
     >
       <Tab.Screen name="Acceuil" component={HomeStackScreen} />
-      {loggedUser.accesstoken !== ""
+      {loggedUser.accesstoken !== null
         ? (
           <>
             <Tab.Screen name="Panier" component={BasketStackScreen}
@@ -168,6 +169,7 @@ export default function App() {
             <Stack.Screen name="AccessDetails" component={AccessDetailsScreen} />
             <Stack.Screen name="PersonalData" component={PersonalDataScreen} />
             <Stack.Screen name="UserCreation" component={UserCreationScreen} />
+            <Stack.Screen name="UserModification" component={UserModificationScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />
             <Stack.Screen name="UserSignIn" component={UserSignInScreen} />
             <Stack.Screen name="NotificationSent" component={NotificationSentScreen} />

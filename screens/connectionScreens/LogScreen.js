@@ -16,6 +16,11 @@ export default function Log({ navigation }) {
   });
   if (!fontsLoaded) return null;
 
+  function handleOnProfileCreate() {
+    const isUserChangeMode = false;
+    navigation.navigate("Address", { isUserChangeMode });
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -25,7 +30,7 @@ export default function Log({ navigation }) {
       </View>
       <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
       <TouchableOpacity
-        onPress={() => navigation.navigate("Address")}
+        onPress={() => handleOnProfileCreate()}
         style={Styles.button}
       >
         <Text style={Styles.textButton}>Créer un nouveau compte</Text>

@@ -21,7 +21,7 @@ export default function Carousel({ navigation }) {
   const [progress] = useState(new Animated.Value(0));
 
   function handleOnPress() {
-    if (loggedUser.accesstoken !== "") {
+    if (loggedUser.accesstoken !== null) {
       navigation.navigate("HomeTab");
     } else {
       navigation.navigate("Log");
