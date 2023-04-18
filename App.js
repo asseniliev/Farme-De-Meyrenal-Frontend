@@ -166,8 +166,8 @@ export default function App() {
             <Stack.Screen name="Log" component={LogScreen} />
             <Stack.Screen name="HomeTab" component={TabNavigator} />
             <Stack.Screen name="Address" component={AddressScreen} />
-            <Stack.Screen name="AccessDetails" component={AccessDetailsScreen} />
             <Stack.Screen name="PersonalData" component={PersonalDataScreen} />
+            <Stack.Screen name="AccessDetails" component={AccessDetailsScreen} />
             <Stack.Screen name="UserCreation" component={UserCreationScreen} />
             <Stack.Screen name="UserModification" component={UserModificationScreen} />
             <Stack.Screen name="TabNavigator" component={TabNavigator} />

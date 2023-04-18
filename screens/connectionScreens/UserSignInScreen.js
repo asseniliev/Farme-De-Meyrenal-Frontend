@@ -66,7 +66,7 @@ export default function UserSignInScreen({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView style={styles.container}>
+      <KeyboardAvoidingView style={styles.container} behavior="height" >
         <View style={styles.topSection}>
           <Text style={styles.text}>
             <FontAwesome name="arrow-left" size={24} color="#000000" />
