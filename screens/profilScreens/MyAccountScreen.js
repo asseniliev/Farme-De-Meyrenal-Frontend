@@ -6,6 +6,9 @@ import {
   Image,
   TextInput,
   TouchableOpacity,
+  KeyboardAvoidingView,
+  TouchableWithoutFeedback,
+  Keyboard,
 } from "react-native";
 import Styles from "../../modules/importedStyle";
 //font hook
@@ -26,7 +29,8 @@ export default function MyAccountScreen({ navigation }) {
   }
 
   return (
-    <View style={styles.container}>
+    <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
+    <KeyboardAvoidingView style={styles.container} behavior="height">
       <View style={styles.header}>
         <Text style={styles.title}>
           profil
@@ -65,7 +69,8 @@ export default function MyAccountScreen({ navigation }) {
       >
         <Text style={Styles.textButton}>Contacter Flavien</Text>
       </TouchableOpacity>
-    </View>
+    </KeyboardAvoidingView>
+    </TouchableWithoutFeedback>
   );
 }
 
