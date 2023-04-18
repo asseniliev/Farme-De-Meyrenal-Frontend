@@ -12,11 +12,11 @@ import {
   Keyboard,
 } from "react-native";
 import { Fragment } from "react";
-
-import FontAwesome from "react-native-vector-icons/FontAwesome";
 import { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import { RadioButton } from "react-native-paper";
+import { useFonts } from "expo-font";
+import { AntDesign } from '@expo/vector-icons';
 
 export default function ContactChoiceScreen({ navigation }) {
   const [editable, setEditable] = useState(true);
@@ -27,6 +27,11 @@ export default function ContactChoiceScreen({ navigation }) {
   const [textMessage, setTextMessage] = useState("");
   const [errorText, setErrorText] = useState();
   const user = useSelector((state) => state.user.value);
+
+  const [fontsLoaded] = useFonts({
+    BelweBold: require("../../assets/fonts/BelweBold.otf"),
+  });
+  if (!fontsLoaded) null;
 
   //let contactFields;
   useEffect(() => {
@@ -129,7 +134,22 @@ export default function ContactChoiceScreen({ navigation }) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <KeyboardAvoidingView style={styles.container}>
-        <Text style={styles.textTitle}>
+      <View style={styles.header}>
+        <View style={styles.title1Container}>
+      <AntDesign name="caretleft" size={24} color="#3A7D44" />
+        <Text
+          style={styles.title1}
+          onPress={() => navigation.navigate("MyAccount")}
+        >
+          {"  "}profil
+        </Text>
+        </View>
+        <Text style={styles.title2}>
+          contacter{"\n"}
+          {"    "}Flavien
+        </Text>
+      </View>
+        {/* <Text style={styles.textTitle}>
           <FontAwesome
             name="arrow-left"
             size={24}
@@ -137,7 +157,7 @@ export default function ContactChoiceScreen({ navigation }) {
             onPress={() => navigation.navigate("Profil")}
           />
           {"                     "} contact
-        </Text>
+        </Text> */}
         <View style={styles.topSection}>
           <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
         </View>
@@ -180,7 +200,33 @@ const styles = StyleSheet.create({
     backgroundColor: "#ffffff",
     alignItems: "flex-start",
     justifyContent: "space-between",
-    paddingTop: "15%",
+  },
+  header: {
+    alignItems: "center",
+    paddingTop: 30,
+    paddingBottom: 3,
+    backgroundColor: "#ffffff",
+    width: "100%",
+    height: 90,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ABABAB",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+  },
+  title1Container:{
+    flexDirection: "row", 
+    alignItems: "center",
+  },
+  title1: {
+    fontFamily: "BelweBold",
+    fontSize: 21,
+    color: "#3A7D44",
+  },
+  title2: {
+    fontFamily: "BelweBold",
+    fontSize: 21,
+    color: "#F3A712",
   },
   topSection: {
     flex: 0.8,
@@ -199,8 +245,6 @@ const styles = StyleSheet.create({
     flex: 0.4,
     width: "90%",
     marginLeft: "5%",
-    // borderColor: "ff0000",
-    // borderWidth: 1,
     justifyContent: "flex-start",
     alignItems: "flex-start",
     paddingTop: "5%",
@@ -215,12 +259,7 @@ const styles = StyleSheet.create({
     flex: 0.4,
     width: "100%",
     justifyContent: "flex-end",
-  },
-  textTitle: {
-    fontFamily: "BelweBold",
-    fontSize: 21,
-    color: "#3A7D44",
-    marginLeft: "5%",
+    alignItems: "center",
   },
   text: {
     paddingHorizontal: 10,
@@ -237,6 +276,7 @@ const styles = StyleSheet.create({
     marginBottom: "5%",
     width: "90%",
     alignItems: "center",
+
   },
   textButton: {
     color: "#FFFFFF",

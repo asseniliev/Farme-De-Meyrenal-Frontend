@@ -59,7 +59,23 @@ export default function MyOrders({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {fontsLoaded && <Text style={styles.title}>Mes commandes</Text>}
+        {fontsLoaded && (
+          <>
+          <View style={styles.title1Container}>
+            <AntDesign name="caretleft" size={24} color="#3A7D44" />
+            <Text
+              style={styles.title1}
+              onPress={() => navigation.navigate("MyAccount")}
+            >
+             {"  "}profil
+            </Text>
+          </View>
+          <Text style={styles.title2}>
+            mes commandes
+          </Text>
+          </>
+        )}
+        
       </View>
       <ScrollView style={styles.scrollView}>
         {orderList.length === 0 ? (
@@ -141,18 +157,30 @@ const styles = StyleSheet.create({
   },
   header: {
     alignItems: "center",
-    paddingTop: 40,
+    paddingTop: 30,
     paddingBottom: 3,
     backgroundColor: "#ffffff",
     width: "100%",
     height: 90,
     borderBottomWidth: 1,
     borderBottomColor: "#ABABAB",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
   },
-  title: {
+  title1Container:{
+    flexDirection: "row", 
+    alignItems: "center",
+  },
+  title1: {
+    fontFamily: "BelweBold",
     fontSize: 21,
     color: "#3A7D44",
+  },
+  title2: {
     fontFamily: "BelweBold",
+    fontSize: 21,
+    color: "#F3A712",
   },
   scrollView: {
     width: "100%",
