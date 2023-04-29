@@ -52,10 +52,16 @@ export default function UserSignInScreen({ navigation }) {
                 address: data.user.deliveryAddress.address,
                 city: data.user.deliveryAddress.city,
               },
+              isAdmin: data.user.isAdmin,
               accesstoken: data.accessToken,
             };
             dispatch(setLoggedUser(loggedUser));
-            navigation.navigate("HomeTab");
+            // Vérifier si l'utilisateur est un administrateur
+            if (loggedUser.isAdmin) {
+              navigation.navigate("HomeTab");
+            } else {
+              navigation.navigate("Dashboard");
+            }
           } else {
             setErrorText(data.message);
             setPassword("");
@@ -66,13 +72,16 @@ export default function UserSignInScreen({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-      <KeyboardAvoidingView style={styles.container} behavior="height" >
+      <KeyboardAvoidingView style={styles.container} behavior="height">
         <View style={styles.topSection}>
           <Text style={styles.text}>
             <FontAwesome name="arrow-left" size={24} color="#000000" />
             {"          "} Détails d'accès
           </Text>
-          <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
+          <Image
+            source={require("../../assets/fla1.jpg")}
+            style={styles.image}
+          />
         </View>
         <View style={styles.middleSection}>
           <TextInput

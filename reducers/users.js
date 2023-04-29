@@ -14,6 +14,7 @@ const initialState = {
       address: "",
       city: "",
     },
+    isAdmin: false,
     accesstoken: "",
   },
 };

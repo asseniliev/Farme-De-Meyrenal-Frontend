@@ -16,6 +16,7 @@ import { useDispatch, useSelector } from "react-redux";
 import { SetDeliveryAddress } from "../../reducers/users";
 import * as Location from "expo-location";
 import backendUrl from "../../modules/backendUrl";
+//import notificationApproval from "../../modules/notificationApproval";
 
 export default function AddressScreen({ navigation }) {
   const [deliveryAddress, setDeliveryAddress] = useState("");

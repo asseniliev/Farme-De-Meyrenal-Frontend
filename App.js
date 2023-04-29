@@ -38,6 +38,10 @@ import NotificationSentScreen from "./screens/profilScreens/NotificationSentScre
 import PasswordChangeScreen from "./screens/profilScreens/PasswordChangeScreen";
 import PasswordChangeSuccessScreen from "./screens/profilScreens/PasswordChangeSuccessScreen";
 
+// adminScreens
+import Dashboard from "./screens/adminScreens/Dashboard";
+import CheckingOrdersScreen from "./screens/adminScreens/CheckingOrdersScreen";
+import RoadmapScreen from "./screens/adminScreens/RoadmapScreen";
 
 // initialization of the storebasketScreens/
 import { Provider } from "react-redux";
@@ -178,6 +182,11 @@ export default function App() {
             <Stack.Screen name="UnderConstruction" component={UnderConstructionScreen} />
             <Stack.Screen name="PasswordChange" component={PasswordChangeScreen} />
             <Stack.Screen name="PasswordChangeSuccess" component={PasswordChangeSuccessScreen} />
+            {/* Ecrans innaccessible car pas encore de cession adimin mise en place */}
+            <Stack.Screen name="Dashboard" component={Dashboard} />
+            <Stack.Screen name="CheckingOrdersScreen" component={CheckingOrdersScreen} />
+            <Stack.Screen name="RoadmapScreen" component={RoadmapScreen} />
+
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
