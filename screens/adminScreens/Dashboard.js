@@ -83,7 +83,7 @@ export default function Dashboard({ navigation }) {
             <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
               <Text style={styles.textButton}>Le manifest</Text>
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
+            <TouchableOpacity onPress={() => navigation.navigate("HomeTab")} style={styles.button} >
               <Text style={styles.textButton}>User view</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >

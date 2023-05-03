@@ -36,7 +36,7 @@ export default function Product(props) {
     );
   };
   const decrementBtn = () => dispatch(decrement({ id: props.id, title: props.title }));
-
+  
   return (
     <View style={styles.product1}>
       <View style={styles.bigContent}>
@@ -79,7 +79,7 @@ export default function Product(props) {
         </View>
       </View>
       <View style={styles.quantityContainer}>
-        {loggedUser.accesstoken !== "" ? (
+        {loggedUser.accesstoken !== null ? (
           <>
             <TouchableOpacity style={styles.minus} onPress={() => decrementBtn()} disabled={compteur !== 0 ? false : true}>
               <FontAwesome name="minus" size={24} color={compteur !== 0 ? "#fff" : "#ABABAB"} style={styles.logo} />
