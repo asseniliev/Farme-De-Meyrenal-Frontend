@@ -58,9 +58,9 @@ export default function UserSignInScreen({ navigation }) {
             dispatch(setLoggedUser(loggedUser));
             // Vérifier si l'utilisateur est un administrateur
             if (loggedUser.isAdmin) {
-              navigation.navigate("HomeTab");
-            } else {
               navigation.navigate("Dashboard");
+            } else {
+              navigation.navigate("HomeTab");
             }
           } else {
             setErrorText(data.message);
