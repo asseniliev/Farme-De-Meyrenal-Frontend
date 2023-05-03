@@ -7,12 +7,13 @@ import {
   ScrollView,
   Alert,
 } from "react-native";
-import importedStyle from "../../modules/importedStyle";
+import { Badge } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { useEffect, useState } from "react";
 import Order from "../../components/Order";
+import importedStyle from "../../modules/importedStyle";
 
 export default function RoadmapScreen({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -24,6 +25,7 @@ export default function RoadmapScreen({ navigation }) {
   const [ordersByCity, setOrdersByCity] = useState({});
   const [isOpen, setIsOpen] = useState({});
   const [isVisible, setIsVisible] = useState({});
+  const [AllOrdersVisible, setAllOrdersVisible] = useState(true);
 
   useEffect(() => {
     fetch(`${backendUrl}/orders`)
@@ -108,11 +110,6 @@ export default function RoadmapScreen({ navigation }) {
       .then((data) => {
         if (data.result) {
           console.log(data.result);
-          // // Met à jour la couleur du scudo pour la commande spécifique
-          // setScudoColor((prevColors) => ({
-          //   ...prevColors,
-          //   [id]: "#F82D2D",
-          // }));
         } else {
           console.log("erreur: status non changé");
         }
@@ -172,6 +169,11 @@ export default function RoadmapScreen({ navigation }) {
           />
         </Text>
       </TouchableOpacity>
+      <Badge
+        value={orders.length}
+        badgeStyle={{ backgroundColor: "red" }}
+        containerStyle={{ position: "absolute", top: 3, right: 0 }}
+      />
       <ScrollView>
         {isOpen[city] &&
           orders.map((data, i) => {
@@ -246,6 +248,29 @@ export default function RoadmapScreen({ navigation }) {
     );
   }
 
+  //Modale de vérifcation pour livrer toutes les commandes
+  function showAlert() {
+    Alert.alert(
+      "Attention !",
+      "Êtes-vous sur de vouloir tout livrer ?",
+      [
+        {
+          text: "oui",
+          onPress: () => {
+            console.log("oui appuyé");
+            setAllOrdersVisible(false);
+          },
+        },
+        {
+          text: "Annuler",
+          onPress: () => console.log("Annuler appuyé"),
+          style: "cancel",
+        },
+      ],
+      { cancelable: false }
+    );
+  }
+
   return (
     <View style={styles.container}>
       <View style={styles.header}>
@@ -264,7 +289,7 @@ export default function RoadmapScreen({ navigation }) {
             <Text
               style={styles.title2}
               onPress={() => {
-                navigation.navigate("CheckingOrdersScreen")
+                navigation.navigate("CheckingOrdersScreen");
               }}
             >
               paniers à{"\n"}confirmer
@@ -276,21 +301,35 @@ export default function RoadmapScreen({ navigation }) {
         )}
       </View>
       <ScrollView>
-        {validatedOrders}
+        {AllOrdersVisible && validatedOrders}
         <View style={styles.deliveryButton}>
-          <TouchableOpacity
-            onPress={() => console.log("clic")}
-            style={importedStyle.button}
-          >
-            <Text style={importedStyle.textButton}>
-              Livrer toutes le commandes{" "}
-              <MaterialCommunityIcons
-                name="truck-delivery"
-                size={20}
-                color={"#fff"}
-              />
-            </Text>
-          </TouchableOpacity>
+          {AllOrdersVisible && isVisible? (
+            <TouchableOpacity
+              onPress={() => {
+                showAlert();
+              }}
+              style={importedStyle.button}
+            >
+              <Text style={importedStyle.textButton}>
+                Livrer toutes le commandes{" "}
+                <MaterialCommunityIcons
+                  name="truck-delivery"
+                  size={20}
+                  color={"#fff"}
+                />
+              </Text>
+            </TouchableOpacity>
+          ) : (
+            <>
+            <MaterialCommunityIcons
+              name="truck-fast"
+              size={250}
+              color="#F82D2D"
+              style={{ transform: [{ scaleX: -1 }] }}
+            />
+            <Text style={{fontSize: 50, textAlign: "center"}}>Toutes les livraisons ont été effectuées 🤑 </Text>
+            </>
+          )}
         </View>
       </ScrollView>
     </View>

@@ -11,6 +11,7 @@ import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { useEffect, useState } from "react";
 import Order from "../../components/Order";
+import importedStyle from "../../modules/importedStyle";
 
 export default function CheckingOrders({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -50,7 +51,6 @@ export default function CheckingOrders({ navigation }) {
         console.log("error", error);
         setIsLoading(false);
       });
-
   }, [navigation, reRender]);
 
   function handleConfirmed(id) {
@@ -85,7 +85,7 @@ export default function CheckingOrders({ navigation }) {
       .then((data) => {
         if (data.result) {
           console.log(data.result);
-          setReRender(!reRender)
+          setReRender(!reRender);
         } else {
           console.log("erreur : commande non supprimée");
         }
@@ -110,62 +110,69 @@ export default function CheckingOrders({ navigation }) {
 
     function showAlert(id) {
       Alert.alert(
-        'Attention !',
-        'Êtes-vous sur de vouloir supprimer cette commande ?',
+        "Attention !",
+        "Êtes-vous sur de vouloir supprimer cette commande ?",
         [
-          { text: 'OK', onPress: () => {
-            console.log('OK appuyé')
-            makesDisappear(data._id)
-            handleCancel(id)
-            }
+          {
+            text: "OK",
+            onPress: () => {
+              console.log("OK appuyé");
+              makesDisappear(data._id);
+              handleCancel(id);
+            },
           },
-          { text: 'Annuler', onPress: () => console.log('Annuler appuyé'), style: 'cancel' }
+          {
+            text: "Annuler",
+            onPress: () => console.log("Annuler appuyé"),
+            style: "cancel",
+          },
         ],
         { cancelable: false }
       );
-    };
+    }
 
     if (isVisible[data._id])
-    return (
-      <View style={styles.orderContainerContainer} key={i}>
-        <View style={styles.orderContainer}>
-          <Order
-            lastName={lastName}
-            firstName={firstName}
-            date={data.date}
-            orderNumber={data.orderNumber}
-            totalAmount={data.totalAmount}
-            isPaid={data.isPaid}
-            items={data.items}
-            id={data._id}
-          />
-        </View>
-        <View style={styles.buttonContainer}>
-          <TouchableOpacity>
-            <AntDesign
-              name="checkcircle"
-              size={50}
-              color={circleColor[data._id]}
-              style={{ paddingBottom: 30 }}
-              onPress={() => {
-                handleConfirmed(data._id);
-                setCircleColor((prevColors) => ({
-                  ...prevColors,
-                  [data._id]: "#ABABAB",
-                }));
-              }}
+      return (
+        <View style={styles.orderContainerContainer} key={i}>
+          <View style={styles.orderContainer}>
+            <Order
+              lastName={lastName}
+              firstName={firstName}
+              date={data.date}
+              orderNumber={data.orderNumber}
+              totalAmount={data.totalAmount}
+              isPaid={data.isPaid}
+              items={data.items}
+              id={data._id}
             />
-          </TouchableOpacity>
-          <TouchableOpacity>
-            <AntDesign
-            name="delete"
-            size={30}
-            color="#ABABAB"
-            onPress={() => showAlert(data._id)}/>
-          </TouchableOpacity>
+          </View>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity>
+              <AntDesign
+                name="checkcircle"
+                size={50}
+                color={circleColor[data._id]}
+                style={{ paddingBottom: 30 }}
+                onPress={() => {
+                  handleConfirmed(data._id);
+                  setCircleColor((prevColors) => ({
+                    ...prevColors,
+                    [data._id]: "#ABABAB",
+                  }));
+                }}
+              />
+            </TouchableOpacity>
+            <TouchableOpacity>
+              <AntDesign
+                name="delete"
+                size={30}
+                color="#ABABAB"
+                onPress={() => showAlert(data._id)}
+              />
+            </TouchableOpacity>
+          </View>
         </View>
-      </View>
-    );
+      );
   });
 
   if (isLoading) {
@@ -199,9 +206,8 @@ export default function CheckingOrders({ navigation }) {
             <Text
               style={styles.title2}
               onPress={() => {
-                
-                navigation.navigate("RoadmapScreen")
-                setReRender(!reRender)
+                navigation.navigate("RoadmapScreen");
+                setReRender(!reRender);
               }}
             >
               {"  "}Feuille{"\n"}de route
@@ -209,7 +215,17 @@ export default function CheckingOrders({ navigation }) {
           </>
         )}
       </View>
-      <ScrollView style={styles.ordersList}>{validatedOrders}</ScrollView>
+      <ScrollView style={styles.ordersList}>
+        {validatedOrders}
+        <View style={styles.buttonContainerFinal}>
+          <TouchableOpacity
+            style={importedStyle.button}
+            onPress={() => navigation.navigate("RoadmapScreen")}
+          >
+            <Text style={importedStyle.textButton}>Feuille de route</Text>
+          </TouchableOpacity>
+        </View>
+      </ScrollView>
     </View>
   );
 }
@@ -263,5 +279,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
 
     paddingTop: 70,
+  },
+  buttonContainerFinal: {
+    alignItems: "center",
+    marginTop: 15,
+    marginBottom: 40,
   },
 });

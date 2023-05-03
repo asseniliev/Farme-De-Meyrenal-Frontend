@@ -94,10 +94,10 @@ export default function Dashboard({ navigation }) {
               <Text style={styles.textButton}>Statistiques</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Modification commande</Text>
+              <Text style={styles.textButton}>Modification{"\n"}commande</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Gestion des utilisateurs</Text>
+              <Text style={styles.textButton}>Gestion des{"\n"}utilisateurs</Text>
             </TouchableOpacity>
           </View>
         
