@@ -30,46 +30,52 @@ export default function MyAccountScreen({ navigation }) {
 
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
-    <KeyboardAvoidingView style={styles.container} behavior="height">
-      <View style={styles.header}>
-        <Text style={styles.title}>
-          profil
-        </Text>
-      </View>
-      <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
-      <TouchableOpacity
-        onPress={() => navigation.navigate("MyOrders")}
-        style={Styles.button}
-      >
-        <Text style={Styles.textButton}>Mes commandes</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("Address")}
-        style={Styles.button}
-      >
-        <Text style={Styles.textButton}>Modifier mon profil</Text>
-      </TouchableOpacity>
+      <KeyboardAvoidingView style={styles.container} behavior="height">
+        <View style={styles.header}>
+          <Text style={styles.title}>profil</Text>
+        </View>
+        <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
 
-      <TouchableOpacity
-        onPress={() => navigation.navigate("PasswordChange")}
-        style={Styles.button}
-      >
-        <Text style={Styles.textButton}>Modifier mot de passe</Text>
-      </TouchableOpacity>
-      <TouchableOpacity
-        onPress={() => handleOnDisconnect()}
-        style={Styles.button}
-      >
-        <Text style={Styles.textButton}>Me deconnecter</Text>
-      </TouchableOpacity>
-      <View style={styles.line}></View>
-      <TouchableOpacity
-        onPress={() => navigation.navigate("ContactChoice")}
-        style={Styles.button}
-      >
-        <Text style={Styles.textButton}>Contacter Flavien</Text>
-      </TouchableOpacity>
-    </KeyboardAvoidingView>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ListDesProduits")}
+          style={Styles.button}
+        >
+          <Text style={Styles.textButton}>List des produits</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("MyOrders")}
+          style={Styles.button}
+        >
+          <Text style={Styles.textButton}>Mes commandes</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("Address")}
+          style={Styles.button}
+        >
+          <Text style={Styles.textButton}>Modifier mon profil</Text>
+        </TouchableOpacity>
+
+        <TouchableOpacity
+          onPress={() => navigation.navigate("PasswordChange")}
+          style={Styles.button}
+        >
+          <Text style={Styles.textButton}>Modifier mot de passe</Text>
+        </TouchableOpacity>
+        <TouchableOpacity
+          onPress={() => handleOnDisconnect()}
+          style={Styles.button}
+        >
+          <Text style={Styles.textButton}>Me deconnecter</Text>
+        </TouchableOpacity>
+        <View style={styles.line}></View>
+        <TouchableOpacity
+          onPress={() => navigation.navigate("ContactChoice")}
+          style={Styles.button}
+        >
+          <Text style={Styles.textButton}>Contacter Flavien</Text>
+        </TouchableOpacity>
+      </KeyboardAvoidingView>
     </TouchableWithoutFeedback>
   );
 }
