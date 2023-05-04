@@ -210,7 +210,7 @@ export default function CheckingOrders({ navigation }) {
                 setReRender(!reRender);
               }}
             >
-              {"  "}Feuille{"\n"}de route
+              {"   "}feuille{"\n"}de route
             </Text>
           </>
         )}
