@@ -25,7 +25,7 @@ const TruckIcon = () => {
 
   const rotateZ = animatedValue.interpolate({
     inputRange: [0, 0.5, 1],
-    outputRange: ['1deg', '7deg', '-3deg'],
+    outputRange: ['0deg', '7deg', '-3deg'],
   });
 
   return (

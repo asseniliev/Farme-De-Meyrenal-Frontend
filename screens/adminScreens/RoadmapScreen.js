@@ -327,7 +327,7 @@ export default function RoadmapScreen({ navigation }) {
               </Text>
               <TruckIcon />
               <Text style={{ fontSize: 40, textAlign: "center" }}>
-                Toutes les livraisons ont été effectuées{"\n"}🤑{" "}
+                Toutes les livraisons ont été effectuées
               </Text>
             </>
           )}
