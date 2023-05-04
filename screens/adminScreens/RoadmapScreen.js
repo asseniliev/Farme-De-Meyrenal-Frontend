@@ -14,6 +14,7 @@ import { useFonts } from "expo-font";
 import { useEffect, useState } from "react";
 import Order from "../../components/Order";
 import importedStyle from "../../modules/importedStyle";
+import TruckIcon from "../../modules/truckIcon";
 
 export default function RoadmapScreen({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -295,7 +296,7 @@ export default function RoadmapScreen({ navigation }) {
               paniers à{"\n"}confirmer
             </Text>
             <Text style={styles.title1}>
-              {"  "}Feuille{"\n"}de route
+              {"   "}feuille{"\n"}de route
             </Text>
           </>
         )}
@@ -303,7 +304,7 @@ export default function RoadmapScreen({ navigation }) {
       <ScrollView>
         {AllOrdersVisible && validatedOrders}
         <View style={styles.deliveryButton}>
-          {AllOrdersVisible && isVisible? (
+          {AllOrdersVisible && isVisible ? (
             <TouchableOpacity
               onPress={() => {
                 showAlert();
@@ -321,13 +322,13 @@ export default function RoadmapScreen({ navigation }) {
             </TouchableOpacity>
           ) : (
             <>
-            <MaterialCommunityIcons
-              name="truck-fast"
-              size={250}
-              color="#F82D2D"
-              style={{ transform: [{ scaleX: -1 }] }}
-            />
-            <Text style={{fontSize: 50, textAlign: "center"}}>Toutes les livraisons ont été effectuées 🤑 </Text>
+              <Text style={{ fontSize: 50, textAlign: "center", fontWeight: "bold", fontFamily: "BelweBold" }}>
+                scudo out
+              </Text>
+              <TruckIcon />
+              <Text style={{ fontSize: 40, textAlign: "center" }}>
+                Toutes les livraisons ont été effectuées{"\n"}🤑{" "}
+              </Text>
             </>
           )}
         </View>
