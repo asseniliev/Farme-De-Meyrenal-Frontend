@@ -1,6 +1,6 @@
 import { StatusBar } from "expo-status-bar";
 import { StyleSheet, Text, View } from "react-native";
-import { NavigationContainer } from "@react-navigation/native";
+import { NavigationContainer, navigation } from "@react-navigation/native";
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import { createBottomTabNavigator } from "@react-navigation/bottom-tabs";
 import { persistStore, persistReducer } from "redux-persist";
@@ -135,6 +135,7 @@ function AccountStackScreen() {
   );
 }
 
+
 function TabNavigator() {
   const activeColor = "#3a7d44";
   const inactiveColor = "#ababab";
@@ -188,9 +189,9 @@ function TabNavigator() {
             options={
               productCount
                 ? {
-                    tabBarBadge: productCount,
-                    tabBarBadgeStyle: styles.tabBarBadgeStyle,
-                  }
+                  tabBarBadge: productCount,
+                  tabBarBadgeStyle: styles.tabBarBadgeStyle,
+                }
                 : {}
             }
           />
@@ -202,15 +203,41 @@ function TabNavigator() {
     </Tab.Navigator>
   );
 }
+
+function ScreenSelector() {
+  const loggedUser = getLoggedUser();
+  if (loggedUser.isAdmin === true) {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    )
+  }
+  if (loggedUser.accesstoken !== null) {
+    // if (loggedUser.isAdmin === false) {
+    return <TabNavigator />;
+  } else {
+    return (
+      <Stack.Navigator>
+        <Stack.Screen name="OnBoard" component={OnBoard} options={{ headerShown: false }} />
+      </Stack.Navigator>
+    )
+  }
+
+}
+
 export default function App() {
+
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-            <Stack.Screen name="OnBoard" component={OnBoard} />
+            <Stack.Screen name="ScreenSelector" component={ScreenSelector} />
+            {/* <Stack.Screen name="OnBoard" component={OnBoard} /> */}
             <Stack.Screen name="Log" component={LogScreen} />
             <Stack.Screen name="HomeTab" component={TabNavigator} />
+            {/* <Stack.Screen name="TabNavigator" component={TabNavigator} /> */}
             <Stack.Screen name="Address" component={AddressScreen} />
             <Stack.Screen name="PersonalData" component={PersonalDataScreen} />
             <Stack.Screen
@@ -218,42 +245,16 @@ export default function App() {
               component={AccessDetailsScreen}
             />
             <Stack.Screen name="UserCreation" component={UserCreationScreen} />
-            <Stack.Screen
-              name="UserModification"
-              component={UserModificationScreen}
-            />
-            <Stack.Screen name="TabNavigator" component={TabNavigator} />
+            <Stack.Screen name="UserModification" component={UserModificationScreen} />
             <Stack.Screen name="UserSignIn" component={UserSignInScreen} />
-            <Stack.Screen
-              name="NotificationSent"
-              component={NotificationSentScreen}
-            />
-            <Stack.Screen
-              name="NotificationFail"
-              component={NotificationFailScreen}
-            />
-            <Stack.Screen
-              name="ContactChoice"
-              component={ContactChoiceScreen}
-            />
-            <Stack.Screen
-              name="UnderConstruction"
-              component={UnderConstructionScreen}
-            />
-            <Stack.Screen
-              name="PasswordChange"
-              component={PasswordChangeScreen}
-            />
-            <Stack.Screen
-              name="PasswordChangeSuccess"
-              component={PasswordChangeSuccessScreen}
-            />
-            {/* Ecrans innaccessible car pas encore de cession adimin mise en place */}
-            <Stack.Screen name="Dashboard" component={Dashboard} />
-            <Stack.Screen
-              name="CheckingOrdersScreen"
-              component={CheckingOrdersScreen}
-            />
+            <Stack.Screen name="NotificationSent" component={NotificationSentScreen} />
+            <Stack.Screen name="NotificationFail" component={NotificationFailScreen} />
+            <Stack.Screen name="ContactChoice" component={ContactChoiceScreen} />
+            <Stack.Screen name="UnderConstruction" component={UnderConstructionScreen} />
+            <Stack.Screen name="PasswordChange" component={PasswordChangeScreen} />
+            <Stack.Screen name="PasswordChangeSuccess" component={PasswordChangeSuccessScreen} />
+            {/* Ecrans adimin */}
+            <Stack.Screen name="CheckingOrdersScreen" component={CheckingOrdersScreen} />
             <Stack.Screen name="RoadmapScreen" component={RoadmapScreen} />
             <Stack.Screen name="ListDesProduits" component={ListDesProduits} />
           </Stack.Navigator>

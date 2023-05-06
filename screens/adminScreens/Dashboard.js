@@ -63,77 +63,48 @@ export default function Dashboard({ navigation }) {
           >
             <Text style={styles.textButton}>Paniers</Text>
             <Text style={styles.textButton}>
+              Paniers
+            </Text>
+            <Text style={styles.textButton}>
               À confirmer :{"  "}
-              <Badge
-                value={validedBasket}
-                badgeStyle={{ backgroundColor: "red" }}
-              />
+              <Badge value={validedBasket} badgeStyle={{ backgroundColor: "red" }} />
             </Text>
             <Text style={styles.textButton}>
               Confirmés :{"  "}
               <Badge value={confirmedBasket} />
             </Text>
+
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Panier")}
-            style={styles.button}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
             <Text style={styles.textButton}>Préparer paniers</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Panier")}
-            style={styles.button}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
             <Text style={styles.textButton}>Blog</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Panier")}
-            style={styles.button}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
             <Text style={styles.textButton}>Map et marchés</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Panier")}
-            style={styles.button}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
             <Text style={styles.textButton}>Le manifest</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Panier")}
-            style={styles.button}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("HomeTab")} style={styles.button} >
             <Text style={styles.textButton}>User view</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Panier")}
-            style={styles.button}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
             <Text style={styles.textButton}>Dette client</Text>
-            <Badge
-              value={0}
-              containerStyle={{ position: "absolute", top: -4, right: -4 }}
-              badgeStyle={{ backgroundColor: "red" }}
-            />
+            <Badge value={0} containerStyle={{ position: "absolute", top: -4, right: -4, }} badgeStyle={{ backgroundColor: "red" }} />
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Panier")}
-            style={styles.button}
-          >
+          <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
             <Text style={styles.textButton}>Statistiques</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Panier")}
-            style={styles.button}
-          >
-            <Text style={styles.textButton}>Modification commande</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
+            <Text style={styles.textButton}>Modification{"\n"}commande</Text>
           </TouchableOpacity>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("Panier")}
-            style={styles.button}
-          >
-            <Text style={styles.textButton}>Gestion des utilisateurs</Text>
+          <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
+            <Text style={styles.textButton}>Gestion des{"\n"}utilisateurs</Text>
           </TouchableOpacity>
         </View>
+
       </ScrollView>
     </View>
   );
