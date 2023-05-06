@@ -41,6 +41,7 @@ export default function ListDesProduits({ navigation }) {
         return (
           <ActiveProduct
             key={i}
+            id={prod._id}
             description={prod.description}
             imageUrl={prod.imageUrl}
             price={prod.price}
@@ -57,6 +58,7 @@ export default function ListDesProduits({ navigation }) {
         return (
           <ArchivedProduct
             key={i}
+            id={prod._id}
             description={prod.description}
             imageUrl={prod.imageUrl}
             price={prod.price}
