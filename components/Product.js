@@ -6,15 +6,16 @@ import React, { useState } from "react";
 import { Overlay } from "react-native-elements";
 import Styles from "../modules/importedStyle";
 import { MaterialCommunityIcons } from "@expo/vector-icons";
-import {getLoggedUser} from "../modules/isUserLogged";
+import { getLoggedUser } from "../modules/isUserLogged";
 import { FontAwesome } from '@expo/vector-icons';
 
 
 export default function Product(props) {
 
+  console.log(props.imageUrl);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
-  const toggleOverlay = () =>  setVisible(!visible);
+  const toggleOverlay = () => setVisible(!visible);
 
   const compteur = useSelector((state) => {
     const product = state.productCounter.value.find((p) => p.id === props.id);
@@ -41,15 +42,15 @@ export default function Product(props) {
     <View style={styles.product1}>
       <View style={styles.bigContent}>
         <View style={styles.imageContainer}>
-          {props.description 
-          ? (
-            <TouchableOpacity onPress={toggleOverlay}>
+          {props.description
+            ? (
+              <TouchableOpacity onPress={toggleOverlay}>
+                <Image source={{ uri: props.imageUrl }} style={styles.image} />
+                <MaterialCommunityIcons name="information-outline" size={24} color="black" style={styles.logoI} />
+              </TouchableOpacity>
+            ) : (
               <Image source={{ uri: props.imageUrl }} style={styles.image} />
-              <MaterialCommunityIcons name="information-outline" size={24} color="black" style={styles.logoI} />
-            </TouchableOpacity>
-          ) : (
-            <Image source={{ uri: props.imageUrl }} style={styles.image} />
-          )}
+            )}
           <Overlay isVisible={visible} onBackdropPress={toggleOverlay}>
             <View style={styles.modal}>
               <Text style={{ fontSize: 20, fontWeight: "bold" }}>
@@ -88,7 +89,7 @@ export default function Product(props) {
               <Text>{compteur}</Text>
             </View>
             <TouchableOpacity style={styles.plus} onPress={() => incrementBtn()} >
-            <FontAwesome name="plus" size={24} color="#fff" style={styles.logo}/>
+              <FontAwesome name="plus" size={24} color="#fff" style={styles.logo} />
             </TouchableOpacity>
           </>
         ) : (
