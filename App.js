@@ -43,6 +43,7 @@ import Dashboard from "./screens/adminScreens/Dashboard";
 import CheckingOrdersScreen from "./screens/adminScreens/CheckingOrdersScreen";
 import RoadmapScreen from "./screens/adminScreens/RoadmapScreen";
 import ListDesProduits from "./screens/adminScreens/ListDesProduitsScreen";
+import SnapScreen from "./screens/adminScreens/SnapScreen";
 
 // initialization of the storebasketScreens/
 import { Provider } from "react-redux";
@@ -52,12 +53,13 @@ import {
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
 import user from "./reducers/users"; //thihs is the reducer to be used
+import picture from "./reducers/pictures";
 import productCounter from "./reducers/productCounter";
 import { getLoggedUser } from "./modules/isUserLogged";
 
 //AsyncStorage.clear();
 
-const reducers = combineReducers({ user, productCounter });
+const reducers = combineReducers({ user, productCounter, picture });
 const persistConfig = {
   key: "loggedUser",
   storage: AsyncStorage,
@@ -188,9 +190,9 @@ function TabNavigator() {
             options={
               productCount
                 ? {
-                    tabBarBadge: productCount,
-                    tabBarBadgeStyle: styles.tabBarBadgeStyle,
-                  }
+                  tabBarBadge: productCount,
+                  tabBarBadgeStyle: styles.tabBarBadgeStyle,
+                }
                 : {}
             }
           />
@@ -256,6 +258,7 @@ export default function App() {
             />
             <Stack.Screen name="RoadmapScreen" component={RoadmapScreen} />
             <Stack.Screen name="ListDesProduits" component={ListDesProduits} />
+            <Stack.Screen name="SnapScreen" component={SnapScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

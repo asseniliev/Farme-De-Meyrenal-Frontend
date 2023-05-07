@@ -126,7 +126,7 @@ export default function ListDesProduits({ navigation }) {
 
       {/* New Article Button */}
       <TouchableOpacity
-        onPress={() => console.log("New article")}
+        onPress={() => navigation.navigate("SnapScreen")}
         style={[styles.button, styles.newArticleButton]}
       >
         <Text style={importedStyle.textButton}>
