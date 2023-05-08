@@ -118,7 +118,7 @@ export default function RoadmapScreen({ navigation }) {
   }
 
   // Affiche une information sur le changement de status de la commande
-  function showAlert(id) {
+  function showAlertDelete(id) {
     Alert.alert(
       "Information",
       'Vous venez de réintégrer la commande dans les "à confirmer" ',
@@ -224,7 +224,7 @@ export default function RoadmapScreen({ navigation }) {
                         size={30}
                         color="#ABABAB"
                         onPress={() => {
-                          showAlert(data._id);
+                          showAlertDelete(data._id);
                           makesDisappear(data._id);
                         }}
                       />
@@ -327,7 +327,7 @@ export default function RoadmapScreen({ navigation }) {
               </Text>
               <TruckIcon />
               <Text style={{ fontSize: 40, textAlign: "center" }}>
-                Toutes les livraisons ont été effectuées{"\n"}🤑{" "}
+                Toutes les livraisons ont été effectuées
               </Text>
             </>
           )}
