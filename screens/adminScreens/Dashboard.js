@@ -61,7 +61,6 @@ export default function Dashboard({ navigation }) {
             }
             style={styles.button}
           >
-            <Text style={styles.textButton}>Paniers</Text>
             <Text style={styles.textButton}>
               Paniers
             </Text>
