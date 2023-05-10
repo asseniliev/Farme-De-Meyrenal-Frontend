@@ -71,7 +71,7 @@ export default function Dashboard({ navigation }) {
                 </Text>
                 
             </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
+            <TouchableOpacity onPress={() => navigation.navigate("BasketPrepScreen")} style={styles.button} >
               <Text style={styles.textButton}>Préparer paniers</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >

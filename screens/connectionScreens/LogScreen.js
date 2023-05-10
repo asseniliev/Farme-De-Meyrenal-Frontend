@@ -7,8 +7,8 @@ import {
   TouchableOpacity,
 } from "react-native";
 import Styles from "../../modules/importedStyle";
-//font hook
 import { useFonts } from "expo-font";
+import { AntDesign } from "@expo/vector-icons";
 
 export default function Log({ navigation }) {
   const [fontsLoaded] = useFonts({
@@ -24,9 +24,18 @@ export default function Log({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        <Text style={styles.title}>
-          {"  "}ferme de {"\n"} mereynal
-        </Text>
+        <View style={styles.title1Container}>
+            <AntDesign name="caretleft" size={24} color="#ABABAB" />
+            <Text
+              style={styles.title1}
+              onPress={() => navigation.navigate("OnBoard")}
+            >
+             {"  "}presentation de{"\n"}{"  "}l'application
+            </Text>
+          </View>
+          <Text style={styles.title2}>
+            {/* {"  "}ferme de {"\n"} mereynal */}
+          </Text>
       </View>
       <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
       <TouchableOpacity
@@ -67,7 +76,32 @@ const styles = StyleSheet.create({
     marginBottom: 30,
   },
   header: {
-    marginTop: 30,
+    alignItems: "center",
+    paddingTop: 30,
+    paddingBottom: 3,
+    backgroundColor: "#ffffff",
+    width: "100%",
+    height: 90,
+    borderBottomWidth: 1,
+    borderBottomColor: "#ABABAB",
+    flexDirection: "row",
+    justifyContent: "space-between",
+    paddingHorizontal: 10,
+  },
+  title1Container:{
+    flexDirection: "row", 
+    alignItems: "center",
+  },
+  title1: {
+    fontFamily: "BelweBold",
+    fontSize: 21,
+    color: "#ABABAB",
+    // color: "#3A7D44",
+  },
+  title2: {
+    fontFamily: "BelweBold",
+    fontSize: 21,
+    color: "#3A7D44",
   },
   image: {
     width: "100%",
@@ -78,9 +112,9 @@ const styles = StyleSheet.create({
     height: 1,
     width: "80%",
   },
-  title: {
-    fontFamily: "BelweBold",
-    fontSize: 21,
-    color: "#3A7D44",
-  },
+  // title: {
+  //   fontFamily: "BelweBold",
+  //   fontSize: 21,
+  //   color: "#3A7D44",
+  // },
 });

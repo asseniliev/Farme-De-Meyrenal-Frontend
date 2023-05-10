@@ -42,6 +42,7 @@ import PasswordChangeSuccessScreen from "./screens/profilScreens/PasswordChangeS
 import Dashboard from "./screens/adminScreens/Dashboard";
 import CheckingOrdersScreen from "./screens/adminScreens/CheckingOrdersScreen";
 import RoadmapScreen from "./screens/adminScreens/RoadmapScreen";
+import BasketPrepScreen from "./screens/adminScreens/BasketPrepScreen"
 
 // initialization of the storebasketScreens/
 import { Provider } from "react-redux";
@@ -191,6 +192,8 @@ export default function App() {
       <PersistGate persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
+
+
             <Stack.Screen name="ScreenSelector" component={ScreenSelector} />
             {/* <Stack.Screen name="OnBoard" component={OnBoard} /> */}
             <Stack.Screen name="Log" component={LogScreen} />
@@ -211,6 +214,7 @@ export default function App() {
             {/* Ecrans adimin */}
             <Stack.Screen name="CheckingOrdersScreen" component={CheckingOrdersScreen} />
             <Stack.Screen name="RoadmapScreen" component={RoadmapScreen} />
+            <Stack.Screen name="BasketPrepScreen" component={BasketPrepScreen} />
 
           </Stack.Navigator>
         </NavigationContainer>
