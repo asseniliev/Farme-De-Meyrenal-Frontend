@@ -12,9 +12,7 @@ import { Badge } from "react-native-elements";
 import { useEffect, useState } from "react";
 import { getLoggedUser } from "../../modules/isUserLogged";
 
-
 export default function Dashboard({ navigation }) {
-
   const loggedUser = getLoggedUser();
 
   const [fontsLoaded] = useFonts({
@@ -28,8 +26,8 @@ export default function Dashboard({ navigation }) {
     fetch(`${backendUrl}/orders`)
       .then((response) => response.json())
       .then((data) => {
-         let confirmedCount = 0;
-         let validatedCount = 0;
+        let confirmedCount = 0;
+        let validatedCount = 0;
         data.result.forEach((order) => {
           if (order.status === "created") {
             validatedCount++;
@@ -45,19 +43,24 @@ export default function Dashboard({ navigation }) {
   return (
     <View style={styles.container}>
       <View style={styles.header}>
-        {fontsLoaded && (
-          <Text style={styles.title}>
-            tableau de bord
-          </Text>
-        )}
+        {fontsLoaded && <Text style={styles.title}>tableau de bord</Text>}
       </View>
       <ScrollView style={styles.buttonContainer}>
-       
-          <View style={styles.buttons}>
-            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Liste des produits</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate(validedBasket !== 0 ? "CheckingOrdersScreen" : "RoadmapScreen" )} style={styles.button} >
+        <View style={styles.buttons}>
+          <TouchableOpacity
+            onPress={() => navigation.navigate("ListDesProduits")}
+            style={styles.button}
+          >
+            <Text style={styles.textButton}>Liste des produits</Text>
+          </TouchableOpacity>
+          <TouchableOpacity
+            onPress={() =>
+              navigation.navigate(
+                validedBasket !== 0 ? "CheckingOrdersScreen" : "RoadmapScreen"
+              )
+            }
+            style={styles.button}
+          >
             <Text style={styles.textButton}>
                 Paniers
                 </Text>
@@ -150,7 +153,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 9,
     marginVertical: 5,
   },
-    textButton: {
+  textButton: {
     color: "#ffffff",
     fontWeight: "600",
     fontSize: 16,
