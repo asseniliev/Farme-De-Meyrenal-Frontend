@@ -400,7 +400,7 @@ const styles = StyleSheet.create({
   },
   buttonContainer: {
     alignItems: "center",
-    paddingTop: 70,
+    paddingTop: 30,
   },
   deliveryButton: {
     alignItems: "center",

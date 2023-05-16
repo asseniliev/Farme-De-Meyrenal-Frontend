@@ -10,7 +10,6 @@ import {
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
 import { useEffect, useState } from "react";
-import Order from "../../components/Order";
 import importedStyle from "../../modules/importedStyle";
 
 export default function BasketPrepScreen({ navigation }) {
@@ -20,6 +19,19 @@ export default function BasketPrepScreen({ navigation }) {
   const [isLoading, setIsLoading] = useState(true);
   const [confirmedBasket, setconfirmedBasket] = useState([]);
   const [itemList, setItemList] = useState([]);
+
+  const [isOpen, setIsOpen] = useState(
+    Object.fromEntries(
+      Object.keys(itemList).map((itemName) => [itemName, false])
+    )
+  );
+
+  function toggleItemDetails(item) {
+    setIsOpen((prevToggles) => ({
+      ...prevToggles,
+      [item]: !prevToggles[item],
+    }));
+  }
 
   useEffect(() => {
     fetch(`${backendUrl}/orders`)
@@ -32,13 +44,18 @@ export default function BasketPrepScreen({ navigation }) {
         const clientsByItems = confirmedOrders.reduce((acc, order) => {
           order.items.map((item) => {
             if (item.title) {
-              if (!acc[item.title]) acc[item.title] = [];
-              acc[item.title].push({
-                lastName: order.user ? order.user.lastName : " ",
-                firstName: order.user ? order.user.firstName : " ",
+              if (!acc[item.title])
+                acc[item.title] = {
+                  clients: [],
+                  totalQuantity: 0,
+                };
+              acc[item.title].clients.push({
+                lastName: order.user ? order.user.lastName : "---",
+                firstName: order.user ? order.user.firstName : "---",
                 quantity: item.quantity,
                 priceUnit: item.priceUnit,
               });
+              acc[item.title].totalQuantity += item.quantity;
             }
             return item;
           });
@@ -55,36 +72,40 @@ export default function BasketPrepScreen({ navigation }) {
       });
   }, [navigation]);
 
-  const Items = Object.keys(itemList).map((itemName, i) => (
-    <View key={i}>
-      <Text>{itemName} :</Text>
-      {itemList[itemName].map((user, j) => (
-        <View key={j}>
-          <Text>Nom : {user.lastName}</Text>
-          <Text>Prénom : {user.firstName}</Text>
-          <Text>
-            Quantité : {user.quantity} {user.priceUnit}
+  const Items = Object.entries(itemList).map(([itemName, itemData]) => {
+    const { totalQuantity, clients } = itemData;
+
+    const clientsList = clients.map((client) => {
+      const { lastName, firstName, quantity, priceUnit } = client;
+      const unit = priceUnit ? ` ${priceUnit}` : "";
+      return (
+        <View style={styles.itemsList}>
+          <Text key={`${lastName}-${firstName}`} style={styles.client}>
+            {`${lastName} ${firstName} : ${quantity}${unit}`}
           </Text>
         </View>
-      ))}
-    </View>
-  ))
-  // const Items = itemList.map((item, i) => {
-  //   return (
-  //     <View key={i}>
-  //       <Text>`${Object.keys(item)[0]} :`</Text>
-  //       {item.map((user, j) => {
-  //         <View key={j}>
-  //           <Text>`Nom ${user.lastName}`</Text>
-  //           <Text>`Prénom ${user.firstName}`</Text>
-  //           <Text>
-  //             `Quantité ${user.quantity} ${user.priceUnit}`
-  //           </Text>
-  //         </View>;
-  //       })}
-  //     </View>
-  //   );
-  // });
+      );
+    });
+
+    const unit = clients[0]?.priceUnit ? ` ${clients[0].priceUnit}` : "";
+    return (
+      <View key={itemName} style={styles.item}>
+        <TouchableOpacity
+          onPress={() => toggleItemDetails(itemName)}
+          style={styles.dropDownButton}
+        >
+          <Text style={styles.dropDownButtonText}>
+            <AntDesign name={isOpen[itemName] ? "up" : "right"} size={20} />
+            {itemName}
+          </Text>
+          <Text
+            style={styles.dropDownButtonText}
+          >{`${totalQuantity}${unit}${"\n"}`}</Text>
+        </TouchableOpacity>
+        {isOpen[itemName] && clientsList}
+      </View>
+    );
+  });
 
   if (isLoading) {
     return (
@@ -97,9 +118,6 @@ export default function BasketPrepScreen({ navigation }) {
       </View>
     );
   }
-
-  console.log(itemList);
-  // console.log(confirmedBasket)
 
   return (
     <View style={styles.container}>
@@ -120,9 +138,7 @@ export default function BasketPrepScreen({ navigation }) {
           </>
         )}
       </View>
-      <ScrollView style={styles.ordersList}>
-        {Items}
-      </ScrollView>
+      <ScrollView style={styles.ordersList}>{Items}</ScrollView>
     </View>
   );
 }
@@ -130,7 +146,6 @@ export default function BasketPrepScreen({ navigation }) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-
     backgroundColor: "#F4F5F9",
     justifyContent: "space-between",
   },
@@ -161,25 +176,34 @@ const styles = StyleSheet.create({
     fontSize: 21,
     color: "#F3A712",
   },
-  orderContainerContainer: {
+  ordersList: {
+    borderRadius: 5,
+    paddingHorizontal: 25,
+  },
+  dropDownButton: {
+    height: 40,
+    borderRadius: 10,
     flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
     width: "100%",
-  },
-  orderContainer: {
-    width: 320,
-    paddingLeft: 13,
-    paddingRight: 3,
-    paddingVertical: 13,
-  },
-  buttonContainer: {
-    //justifyContent: "spaceBetween",
-    alignItems: "center",
-
-    paddingTop: 70,
-  },
-  buttonContainerFinal: {
-    alignItems: "center",
+    backgroundColor: "#fff",
+    paddingHorizontal: 15,
     marginTop: 15,
-    marginBottom: 40,
+    paddingTop: 7,
+  },
+  dropDownButtonText: {
+    color: "#3A7D44",
+    height: 30,
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  itemsList: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginLeft: 9,
+    borderLeftColor: "#ABABAB",
+    borderLeftWidth: 1,
+    backgroundColor: "#3A7D4415",
   },
 });

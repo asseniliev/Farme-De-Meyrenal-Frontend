@@ -5,31 +5,37 @@ import importedStyle from "../modules/importedStyle";
 
 export default function Order(props) {
   const [isOpen, setIsOpen] = useState(false);
-
+  function toggleOrderDetails() {
+    setIsOpen(!isOpen);
+  }
+  
   function formatDate(date) {
     const formattedDate = new Date(date).toLocaleDateString("fr-FR");
     return formattedDate;
   }
 
-  function toggleOrderDetails() {
-    setIsOpen(!isOpen);
-  }
-
   return (
     <View style={styles.orderContainer}>
-      <Text style={styles.text}>
+      <Text style={styles.textId}>
         {props.lastName} {props.firstName}
       </Text>
       {props.deliveryAddress ? (
-        <Text style={styles.text}>{props.deliveryAddress}</Text>
+        <Text style={[styles.text, { marginBottom: 5 }]}>
+          {props.deliveryAddress}
+        </Text>
       ) : (
         <></>
       )}
-      <Text style={styles.text}>
-        Date de commande : {formatDate(props.date)}
-      </Text>
-
-      <Text style={styles.text}>Montant total : {props.totalAmount} €</Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <Text style={styles.text}>Total : {props.totalAmount} €</Text>
+        <Text style={styles.text}>{formatDate(props.date)}</Text>
+      </View>
       <View
         style={{
           flexDirection: "row",
@@ -38,31 +44,37 @@ export default function Order(props) {
         }}
       >
         <Text style={styles.text}>Payé : {props.isPaid ? "Oui" : "Non"}</Text>
-        <Text style={styles.text}>Numéro : {props.orderNumber}</Text>
+        <Text style={styles.text}>N° {props.orderNumber}</Text>
       </View>
       <TouchableOpacity
         onPress={() => toggleOrderDetails()}
         style={styles.dropDownButton}
       >
-        <Text style={importedStyle.textButton}>
-          Détails de la commande :{"             "}
-        </Text>
         <Text>
-          <AntDesign name={isOpen ? "up" : "down"} size={24} color="white" />
+          <AntDesign name={isOpen ? "up" : "right"} size={20} />
         </Text>
+        <Text style={styles.text}> Détails de la commande :</Text>
       </TouchableOpacity>
       {isOpen &&
         props.items?.map((item, j) => (
-          <View key={j} style={{ marginBottom: 3 }}>
-            <Text style={styles.text}>
+          <View key={j} style={styles.itemsList}>
+            <Text style={[styles.detailsText, {fontWeight: "bold"}]}>
               {item.title || "Titre du produit non disponible"}
             </Text>
-            <Text style={styles.detailsText}>
-              Quantité : {item.quantity} {item.priceUnit}
-            </Text>
-            <Text style={styles.detailsText}>
-              Prix unitaire : {item.price} €
-            </Text>
+            <View
+              style={{
+                flexDirection: "row",
+                justifyContent: "space-between",
+                width: "100%",
+              }}
+            >
+              <Text style={styles.detailsText}>
+                Quantité : {item.quantity} {item.priceUnit}
+              </Text>
+              <Text style={styles.detailsText}>
+                {item.price} € / {item.priceUnit}
+              </Text>
+            </View>
           </View>
         ))}
     </View>
@@ -77,20 +89,34 @@ const styles = StyleSheet.create({
     marginBottom: 0,
   },
   text: {
-    fontSize: 18,
+    fontSize: 15,
     padding: 2,
   },
+  itemsList: {
+    paddingVertical: 10,
+    paddingHorizontal: 10,
+    marginLeft: 9,
+    borderLeftColor: "#ABABAB",
+    borderLeftWidth: 1,
+    backgroundColor: "#3A7D4415",
+  },
+  textId: {
+    fontSize: 18,
+    paddingTop: 5,
+    paddingLeft: 2,
+    marginVertical: 5,
+    fontWeight: "bold",
+    color: "#3A7D44",
+  },
   dropDownButton: {
-    paddingHorizontal: 9,
-    marginTop: 10,
-    paddingTop: 10,
-    backgroundColor: "#F3A712",
+    marginTop: 0,
+    paddingVertical: 10,
     borderRadius: 10,
     flexDirection: "row",
   },
   detailsText: {
     fontSize: 15,
     padding: 4,
-    color: "#ABABAB",
+    color: "#3A7D44",
   },
 });
