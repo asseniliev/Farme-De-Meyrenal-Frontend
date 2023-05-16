@@ -11,7 +11,7 @@ export default function ArchivedProduct(prop) {
       [
         {
           text: 'OK', onPress: () => {
-            console.log('Delete product ' + prop.id)
+            console.log('Delete product ' + id)
             // makesDisappear(data._id)
             // handleDelete(id)
           }

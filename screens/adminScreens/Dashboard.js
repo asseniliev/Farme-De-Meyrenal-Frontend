@@ -48,7 +48,7 @@ export default function Dashboard({ navigation }) {
       <ScrollView style={styles.buttonContainer}>
         <View style={styles.buttons}>
           <TouchableOpacity
-            onPress={() => navigation.navigate("ListDesProduits")}
+            onPress={() => navigation.navigate("ListOfProducts")}
             style={styles.button}
           >
             <Text style={styles.textButton}>Liste des produits</Text>

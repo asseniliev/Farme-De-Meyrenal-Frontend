@@ -16,7 +16,7 @@ import importedStyle from "../../modules/importedStyle";
 import ArchivedProduct from "../../components/ArchivedProduct";
 import ActiveProduct from "../../components/ActiveProduct";
 
-export default function ListDesProduits({ navigation }) {
+export default function ListOfProducts({ navigation }) {
   const [isOpen, setIsOpen] = useState(false);
   const [productsList, setProductsList] = useState(null);
   const [acrhivedProducts, setArchivedProducts] = useState(null);
@@ -126,7 +126,7 @@ export default function ListDesProduits({ navigation }) {
 
       {/* New Article Button */}
       <TouchableOpacity
-        onPress={() => navigation.navigate("SnapScreen")}
+        onPress={() => navigation.navigate("ProductDetails")}
         style={[styles.button, styles.newArticleButton]}
       >
         <Text style={importedStyle.textButton}>

@@ -42,7 +42,8 @@ import PasswordChangeSuccessScreen from "./screens/profilScreens/PasswordChangeS
 import Dashboard from "./screens/adminScreens/Dashboard";
 import CheckingOrdersScreen from "./screens/adminScreens/CheckingOrdersScreen";
 import RoadmapScreen from "./screens/adminScreens/RoadmapScreen";
-import ListDesProduits from "./screens/adminScreens/ListDesProduitsScreen";
+import ListOfProducts from "./screens/adminScreens/ListOfProductsScreen";
+import ProductDetails from "./screens/adminScreens/ProductDetailsScreen";
 import SnapScreen from "./screens/adminScreens/SnapScreen";
 
 // initialization of the storebasketScreens/
@@ -257,7 +258,8 @@ export default function App() {
               component={CheckingOrdersScreen}
             />
             <Stack.Screen name="RoadmapScreen" component={RoadmapScreen} />
-            <Stack.Screen name="ListDesProduits" component={ListDesProduits} />
+            <Stack.Screen name="ListOfProducts" component={ListOfProducts} />
+            <Stack.Screen name="ProductDetails" component={ProductDetails} />
             <Stack.Screen name="SnapScreen" component={SnapScreen} />
           </Stack.Navigator>
         </NavigationContainer>

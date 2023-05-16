@@ -39,7 +39,7 @@ export default function SnapScreen({ navigation }) {
 
   const storePicture = async () => {
     dispatch(SetPicture(photoUri));
-    navigation.navigate("ListDesProduits");
+    navigation.navigate("ListOfProduits");
   }
 
   const imageContent = (
@@ -81,7 +81,7 @@ export default function SnapScreen({ navigation }) {
       <Camera type={CameraType.back} flashMode={flashMode} ref={(ref) => cameraRef = ref} style={styles.camera}>
         <View style={styles.buttonsContainer}>
           <TouchableOpacity
-            onPress={() => setFlashMode(flashMode === FlashMode.off ? FlashMode.torch : FlashMode.off)}
+            onPress={() => setFlashMode(flashMode === FlashMode.off ? FlashMode.on : FlashMode.off)}
             style={styles.button}
           >
             <FontAwesome name='flash' size={25} color={flashMode === FlashMode.off ? '#ffffff' : '#e8be4b'} />
@@ -146,6 +146,12 @@ const styles = StyleSheet.create({
     justifyContent: 'space-between',
     paddingLeft: 20
   },
+  button: {
+    width: 50,
+    height: 50,
+    justifyContent: "center",
+    alignItems: "center"
+  },
   snapContainer: {
     bottom: 70,
     flexDirection: "row",
@@ -154,7 +160,7 @@ const styles = StyleSheet.create({
   },
   previewContainer: {
     // position: 'relative',
-    backgroundColor: "#3A7D44",
+    backgroundColor: "#3A7D44A0",
     width: '100%',
     height: '100%',
   }
