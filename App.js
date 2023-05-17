@@ -43,7 +43,9 @@ import Dashboard from "./screens/adminScreens/Dashboard";
 import CheckingOrdersScreen from "./screens/adminScreens/CheckingOrdersScreen";
 import RoadmapScreen from "./screens/adminScreens/RoadmapScreen";
 import BasketPrepScreen from "./screens/adminScreens/BasketPrepScreen"
-import ListDesProduits from "./screens/adminScreens/ListDesProduitsScreen";
+import ListOfProducts from "./screens/adminScreens/ListOfProductsScreen";
+import ProductDetails from "./screens/adminScreens/ProductDetailsScreen";
+import SnapScreen from "./screens/adminScreens/SnapScreen";
 
 // initialization of the storebasketScreens/
 import { Provider } from "react-redux";
@@ -53,12 +55,19 @@ import {
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
 import user from "./reducers/users"; //thihs is the reducer to be used
+import prodMgtMode from "./reducers/productManagementMode";
+import picture from "./reducers/pictures";
 import productCounter from "./reducers/productCounter";
 import { getLoggedUser } from "./modules/isUserLogged";
 
 //AsyncStorage.clear();
 
-const reducers = combineReducers({ user, productCounter });
+const reducers = combineReducers({
+  user,
+  productCounter,
+  picture,
+  prodMgtMode,
+});
 const persistConfig = {
   key: "loggedUser",
   storage: AsyncStorage,
@@ -259,9 +268,15 @@ export default function App() {
             {/* Ecrans adimin */}
             <Stack.Screen name="CheckingOrdersScreen" component={CheckingOrdersScreen} />
             <Stack.Screen name="RoadmapScreen" component={RoadmapScreen} />
+<<<<<<< HEAD
             <Stack.Screen name="BasketPrepScreen" component={BasketPrepScreen} />
 
             <Stack.Screen name="ListDesProduits" component={ListDesProduits} />
+=======
+            <Stack.Screen name="ListOfProducts" component={ListOfProducts} />
+            <Stack.Screen name="ProductDetails" component={ProductDetails} />
+            <Stack.Screen name="SnapScreen" component={SnapScreen} />
+>>>>>>> asen
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>
