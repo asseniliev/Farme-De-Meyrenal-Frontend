@@ -54,13 +54,19 @@ import {
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
 import user from "./reducers/users"; //thihs is the reducer to be used
+import prodMgtMode from "./reducers/productManagementMode";
 import picture from "./reducers/pictures";
 import productCounter from "./reducers/productCounter";
 import { getLoggedUser } from "./modules/isUserLogged";
 
 //AsyncStorage.clear();
 
-const reducers = combineReducers({ user, productCounter, picture });
+const reducers = combineReducers({
+  user,
+  productCounter,
+  picture,
+  prodMgtMode,
+});
 const persistConfig = {
   key: "loggedUser",
   storage: AsyncStorage,
@@ -191,9 +197,9 @@ function TabNavigator() {
             options={
               productCount
                 ? {
-                  tabBarBadge: productCount,
-                  tabBarBadgeStyle: styles.tabBarBadgeStyle,
-                }
+                    tabBarBadge: productCount,
+                    tabBarBadgeStyle: styles.tabBarBadgeStyle,
+                  }
                 : {}
             }
           />

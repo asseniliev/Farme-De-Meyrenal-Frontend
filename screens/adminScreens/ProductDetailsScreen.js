@@ -15,6 +15,11 @@ import { AntDesign } from "@expo/vector-icons";
 import ProductFile from "../../components/ProductFile";
 
 export default function ProductDetails({ navigation }) {
+  function GoToSnapshopScreen() {
+    console.log("Go to photo");
+    navigation.navigate("SnapScreen");
+  }
+
   return (
     <View style={styles.container}>
       {/* Page navigation header */}
@@ -34,11 +39,10 @@ export default function ProductDetails({ navigation }) {
 
       {/* Product details */}
       <View style={styles.productContainer}>
-        <ProductFile />
+        <ProductFile gotoPhoto={GoToSnapshopScreen} />
       </View>
-
     </View>
-  )
+  );
 }
 
 const styles = StyleSheet.create({
@@ -78,6 +82,6 @@ const styles = StyleSheet.create({
   productContainer: {
     flex: 0.8,
     width: "90%",
-    marginLeft: "5%"
-  }
-})
+    marginLeft: "5%",
+  },
+});

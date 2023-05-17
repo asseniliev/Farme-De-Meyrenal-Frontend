@@ -1,6 +1,8 @@
 import backendUrl from "../../modules/backendUrl";
 import React from "react";
 import { useEffect, useState } from "react";
+import { useDispatch } from "react-redux";
+import { SetCreationMode } from "../../reducers/productManagementMode";
 import {
   StyleSheet,
   Image,
@@ -22,6 +24,8 @@ export default function ListOfProducts({ navigation }) {
   const [acrhivedProducts, setArchivedProducts] = useState(null);
   const [activeProducts, setActiveProducts] = useState(null);
 
+  const dispatch = useDispatch();
+
   async function fetchProducts() {
     let data = await fetch(`${backendUrl}/products/all`);
     data = await data.json();
@@ -34,8 +38,7 @@ export default function ListOfProducts({ navigation }) {
 
   useEffect(() => {
     if (productsList !== null) {
-
-      let activeProd = productsList.filter(prod => prod.isActive === true);
+      let activeProd = productsList.filter((prod) => prod.isActive === true);
 
       activeProd = activeProd.map((prod, i) => {
         return (
@@ -49,11 +52,11 @@ export default function ListOfProducts({ navigation }) {
             unitScale={prod.unitScale}
             priceUnit={prod.priceUnit}
           />
-        )
-      })
+        );
+      });
       setActiveProducts(activeProd);
 
-      let archivedProd = productsList.filter(prod => prod.isActive === false)
+      let archivedProd = productsList.filter((prod) => prod.isActive === false);
       archivedProd = archivedProd.map((prod, i) => {
         return (
           <ArchivedProduct
@@ -65,20 +68,23 @@ export default function ListOfProducts({ navigation }) {
             title={prod.title}
             unitScale={prod.unitScale}
           />
-        )
-      })
+        );
+      });
       setArchivedProducts(archivedProd);
     }
-
   }, [productsList]);
 
   function toggleArchivedList() {
     setIsOpen(!isOpen);
   }
 
+  function handleOnPressNewArticle() {
+    dispatch(SetCreationMode(true));
+    navigation.navigate("ProductDetails");
+  }
+
   return (
     <View style={styles.container}>
-
       {/* Page navigation header */}
       <View style={styles.header}>
         <View style={styles.titleContainer}>
@@ -92,8 +98,6 @@ export default function ListOfProducts({ navigation }) {
           </Text>
         </View>
         <Text style={styles.title1}>Liste des{"\n"}articles</Text>
-
-
       </View>
 
       {/* Archived products list*/}
@@ -107,42 +111,32 @@ export default function ListOfProducts({ navigation }) {
             Produits archivés :{"             "}
           </Text>
           <Text>
-            <AntDesign
-              name={isOpen ? "up" : "down"}
-              size={24}
-              color="white"
-            />
+            <AntDesign name={isOpen ? "up" : "down"} size={24} color="white" />
           </Text>
         </TouchableOpacity>
         {/* List of archived items */}
         {isOpen && (
           <View style={styles.scrollContainer}>
-            <ScrollView >
-              {acrhivedProducts}
-            </ScrollView>
+            <ScrollView>{acrhivedProducts}</ScrollView>
           </View>
         )}
       </>
 
       {/* New Article Button */}
       <TouchableOpacity
-        onPress={() => navigation.navigate("ProductDetails")}
+        onPress={() => handleOnPressNewArticle()}
         style={[styles.button, styles.newArticleButton]}
       >
-        <Text style={importedStyle.textButton}>
-          + Nouvel Article
-        </Text>
+        <Text style={importedStyle.textButton}>+ Nouvel Article</Text>
       </TouchableOpacity>
 
       {/* Active products list */}
 
       <View style={styles.scrollContainer}>
         <Text style={styles.title3}>Liste des produits actifs</Text>
-        <ScrollView>
-          {activeProducts}
-        </ScrollView>
+        <ScrollView>{activeProducts}</ScrollView>
       </View>
-    </View >
+    </View>
   );
 }
 
@@ -184,7 +178,7 @@ const styles = StyleSheet.create({
     fontFamily: "BelweBold",
     fontSize: 18,
     color: "#3A7D44",
-    alignSelf: "center"
+    alignSelf: "center",
   },
   button: {
     width: "96%",
@@ -203,7 +197,7 @@ const styles = StyleSheet.create({
   newArticleButton: {
     marginTop: 15,
     justifyContent: "center",
-    marginBottom: 20
+    marginBottom: 20,
   },
   scrollContainer: {
     width: "96%",
@@ -214,7 +208,6 @@ const styles = StyleSheet.create({
     borderStyle: "solid",
     borderColor: "#3A7D44",
     backgroundColor: "#3A7D4415",
-    borderRadius: 10
+    borderRadius: 10,
   },
-
 });
