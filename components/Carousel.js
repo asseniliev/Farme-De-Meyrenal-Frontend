@@ -17,10 +17,10 @@ const Carousel = () => {
     {
       id: 2,
       image: require("../assets/fla5.jpg"),
-      text: "Le Blog",
+      text: "Actualités de la ferme",
       style: styles.slide2,
       textStyle: { color: "#fff", fontSize: 24, fontWeight: "bold" },
-      screenName: "Screen2"
+      screenName: "BlogScreen"
     },
     {
       id: 3,

@@ -25,7 +25,6 @@ export default function MyOrders({ navigation }) {
     fetch(`${backendUrl}/orders/?user=${loggedUser.id}`)
       .then((response) => response.json())
       .then((data) => {
-        console.log("data", data);
         if (data.result) setOrderList(data.result);
         setIsLoading(false);
       })

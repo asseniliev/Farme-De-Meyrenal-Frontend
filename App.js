@@ -28,6 +28,7 @@ import UserSignInScreen from "./screens/connectionScreens/UserSignInScreen";
 //homeScreens
 import HomeScreen from "./screens/homeScreens/HomeScreen";
 import PresentationScreen from "./screens/homeScreens/PresentationScreen";
+import BlogScreen from "./screens/homeScreens/BlogScreen";
 
 //profilScreens
 import ContactChoiceScreen from "./screens/profilScreens/ContactChoiceScreen";
@@ -90,6 +91,11 @@ function HomeStackScreen() {
       <HomeStack.Screen
         name="PresentationScreen"
         component={PresentationScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="BlogScreen"
+        component={BlogScreen}
         options={{ headerShown: false }}
       />
     </HomeStack.Navigator>
