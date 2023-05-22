@@ -5,7 +5,6 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
-  Alert,
 } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import { useFonts } from "expo-font";
@@ -18,12 +17,22 @@ export default function BasketPrepScreen({ navigation }) {
   });
   const [isLoading, setIsLoading] = useState(true);
   const [confirmedBasket, setconfirmedBasket] = useState([]);
+  const [isClientListOpen, setIsClientListOpen] = useState(false);
   const [itemList, setItemList] = useState([]);
 
   const [isOpen, setIsOpen] = useState(
     Object.fromEntries(
       Object.keys(itemList).map((itemName) => [itemName, false])
     )
+  );
+
+  const toggleClientList = () => {
+    setIsClientListOpen((prevIsOpen) => !prevIsOpen);
+  };
+
+  const totalClients = confirmedBasket.reduce(
+    (total, order) => total + (order.user ? 1 : 0),
+    0
   );
 
   function toggleItemDetails(item) {
@@ -71,6 +80,38 @@ export default function BasketPrepScreen({ navigation }) {
         setIsLoading(false);
       });
   }, [navigation]);
+
+
+  const clientButton = (
+    <View style={styles.item}>
+      <TouchableOpacity
+        onPress={toggleClientList}
+        style={styles.dropDownButtonClient}
+      >
+        <Text style={styles.dropDownButtonTextClient}>
+          <AntDesign
+            name={isClientListOpen ? "up" : "right"}
+            size={20}
+          />
+          Liste des clients
+        </Text>
+        <Text
+            style={styles.dropDownButtonTextClient}
+          >{totalClients}</Text>
+      </TouchableOpacity>
+      {isClientListOpen && (
+        <View style={styles.itemsList}>
+          {confirmedBasket.map((order, index) => (
+            <Text key={index} style={styles.client}>
+              {order.user
+                ? `${order.user.lastName} ${order.user.firstName}`
+                : "---"}
+            </Text>
+          ))}
+        </View>
+      )}
+    </View>
+  );
 
   const Items = Object.entries(itemList).map(([itemName, itemData]) => {
     const { totalQuantity, clients } = itemData;
@@ -138,7 +179,10 @@ export default function BasketPrepScreen({ navigation }) {
           </>
         )}
       </View>
-      <ScrollView style={styles.ordersList}>{Items}</ScrollView>
+      <ScrollView style={styles.ordersList}>
+        {clientButton}
+        {Items}
+      </ScrollView>
     </View>
   );
 }
@@ -194,6 +238,24 @@ const styles = StyleSheet.create({
   },
   dropDownButtonText: {
     color: "#3A7D44",
+    height: 30,
+    fontWeight: "600",
+    fontSize: 16,
+  },
+  dropDownButtonClient: {
+    height: 40,
+    borderRadius: 10,
+    flexDirection: "row",
+    justifyContent: "space-between",
+    alignItems: "center",
+    width: "100%",
+    backgroundColor: "#3A7D44",
+    paddingHorizontal: 15,
+    marginTop: 15,
+    paddingTop: 7,
+  },
+  dropDownButtonTextClient: {
+    color: "#fff",
     height: 30,
     fontWeight: "600",
     fontSize: 16,
