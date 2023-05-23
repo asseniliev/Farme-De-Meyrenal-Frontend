@@ -20,18 +20,14 @@ export default function BasketPrepScreen({ navigation }) {
   const [isClientListOpen, setIsClientListOpen] = useState(false);
   const [itemList, setItemList] = useState([]);
 
-  const [isOpen, setIsOpen] = useState(
-    Object.fromEntries(
-      Object.keys(itemList).map((itemName) => [itemName, false])
-    )
-  );
+  const [isOpen, setIsOpen] = useState({});
 
   const toggleClientList = () => {
     setIsClientListOpen((prevIsOpen) => !prevIsOpen);
   };
 
   const totalClients = confirmedBasket.reduce(
-    (total, order) => total + (order.user ? 1 : 0),
+    (total, order) => total + 1,
     0
   );
 
@@ -40,6 +36,16 @@ export default function BasketPrepScreen({ navigation }) {
       ...prevToggles,
       [item]: !prevToggles[item],
     }));
+  }
+
+  function toggleAllItemDetails(){
+    setIsOpen((prevToggles) => {
+      const newToggles = {};
+      for (const itemName in prevToggles) {
+        newToggles[itemName] = !prevToggles[itemName];
+      }
+      return newToggles;
+    });
   }
 
   useEffect(() => {
@@ -73,6 +79,10 @@ export default function BasketPrepScreen({ navigation }) {
 
         setconfirmedBasket(confirmedOrders);
         setItemList(clientsByItems);
+
+        // Initialiser isOpen avec les clés de clientsByItems
+        setIsOpen(Object.fromEntries(Object.keys(clientsByItems).map((itemName) => [itemName, false])));
+
         setIsLoading(false);
       })
       .catch((error) => {
@@ -81,7 +91,6 @@ export default function BasketPrepScreen({ navigation }) {
       });
   }, [navigation]);
 
-
   const clientButton = (
     <View style={styles.item}>
       <TouchableOpacity
@@ -89,15 +98,10 @@ export default function BasketPrepScreen({ navigation }) {
         style={styles.dropDownButtonClient}
       >
         <Text style={styles.dropDownButtonTextClient}>
-          <AntDesign
-            name={isClientListOpen ? "up" : "right"}
-            size={20}
-          />
+          <AntDesign name={isClientListOpen ? "up" : "right"} size={20} />
           Liste des clients
         </Text>
-        <Text
-            style={styles.dropDownButtonTextClient}
-          >{totalClients}</Text>
+        <Text style={styles.dropDownButtonTextClient}>{totalClients}</Text>
       </TouchableOpacity>
       {isClientListOpen && (
         <View style={styles.itemsList}>
@@ -182,7 +186,18 @@ export default function BasketPrepScreen({ navigation }) {
       <ScrollView style={styles.ordersList}>
         {clientButton}
         {Items}
+        <View style={{height: 80}}></View>
       </ScrollView>
+      <TouchableOpacity style={styles.overlayButton}>
+        <Text style={{ transform: [{ rotate: "90deg" }] }}>
+          <AntDesign
+            name={"doubleright"}
+            size={40}
+            color={"#fff"}
+            onPress={() => toggleAllItemDetails()}
+          />
+        </Text>
+      </TouchableOpacity>
     </View>
   );
 }
@@ -223,6 +238,7 @@ const styles = StyleSheet.create({
   ordersList: {
     borderRadius: 5,
     paddingHorizontal: 25,
+    paddingBottom: 50,
   },
   dropDownButton: {
     height: 40,
@@ -267,5 +283,16 @@ const styles = StyleSheet.create({
     borderLeftColor: "#ABABAB",
     borderLeftWidth: 1,
     backgroundColor: "#3A7D4415",
+  },
+  overlayButton: {
+    position: "absolute",
+    right: 30,
+    bottom: 20,
+    borderRadius: 50,
+    backgroundColor: "#F3A712",
+    height: 60,
+    width: 60,
+    alignItems: "center",
+    justifyContent: "center",
   },
 });
