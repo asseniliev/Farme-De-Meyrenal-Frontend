@@ -1,8 +1,27 @@
 import React from "react";
-import { View, Text, StyleSheet, Image, TouchableOpacity, } from "react-native";
+import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
 export default function ActiveProduct(prop) {
+
+  function showAlert(id) {
+    Alert.alert(
+      'Attention !',
+      'Êtes-vous sur de vouloir archiver ce produit ?',
+      [
+        {
+          text: 'OK', onPress: () => {
+            console.log('Archive product ' + prop.id)
+            // makesDisappear(data._id)
+            // handleDelete(id)
+          }
+        },
+        { text: 'Annuler', onPress: () => console.log('Annuler appuyé'), style: 'cancel' }
+      ],
+      { cancelable: false }
+    );
+  };
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
@@ -17,7 +36,7 @@ export default function ActiveProduct(prop) {
           source={{ uri: prop.imageUrl }}
         ></Image>
       </View>
-      <TouchableOpacity onPress={() => console.log("Archive")}>
+      <TouchableOpacity onPress={() => showAlert()}>
         <FontAwesome name="archive" size={24} color={"#3A7D44"} />
       </TouchableOpacity>
     </View>

@@ -20,6 +20,7 @@ export default function Home({ navigation }) {
   const [fontsLoaded] = useFonts({
     BelweBold: require("../../assets/fonts/BelweBold.otf"),
   });
+  const [isLoading, setIsLoading] = useState(true);
 
   const loggedUser = getLoggedUser();
 
@@ -28,6 +29,7 @@ export default function Home({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         setProductList(data.result);
+        setIsLoading(false);
       });
   }, []);
 
@@ -44,6 +46,18 @@ export default function Home({ navigation }) {
       />
     );
   });
+
+  if (isLoading) {
+    return (
+      <View style={styles.container}>
+        <Text style={styles.text}>
+          {"\n"}
+          {"\n"}
+          {"\n"} Chargement en cours...
+        </Text>
+      </View>
+    );
+  }
 
   return (
     <View style={styles.container}>

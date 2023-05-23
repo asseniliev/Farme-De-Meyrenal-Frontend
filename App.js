@@ -28,6 +28,7 @@ import UserSignInScreen from "./screens/connectionScreens/UserSignInScreen";
 //homeScreens
 import HomeScreen from "./screens/homeScreens/HomeScreen";
 import PresentationScreen from "./screens/homeScreens/PresentationScreen";
+import BlogScreen from "./screens/homeScreens/BlogScreen";
 
 //profilScreens
 import ContactChoiceScreen from "./screens/profilScreens/ContactChoiceScreen";
@@ -42,8 +43,10 @@ import PasswordChangeSuccessScreen from "./screens/profilScreens/PasswordChangeS
 import Dashboard from "./screens/adminScreens/Dashboard";
 import CheckingOrdersScreen from "./screens/adminScreens/CheckingOrdersScreen";
 import RoadmapScreen from "./screens/adminScreens/RoadmapScreen";
-import BasketPrepScreen from "./screens/adminScreens/BasketPrepScreen"
-import ListDesProduits from "./screens/adminScreens/ListDesProduitsScreen";
+import BasketPrepScreen from "./screens/adminScreens/BasketPrepScreen";
+import ListOfProducts from "./screens/adminScreens/ListOfProductsScreen";
+import ProductDetails from "./screens/adminScreens/ProductDetailsScreen";
+import SnapScreen from "./screens/adminScreens/SnapScreen";
 
 // initialization of the storebasketScreens/
 import { Provider } from "react-redux";
@@ -53,12 +56,19 @@ import {
   getDefaultMiddleware,
 } from "@reduxjs/toolkit";
 import user from "./reducers/users"; //thihs is the reducer to be used
+import prodMgtMode from "./reducers/productManagementMode";
+import picture from "./reducers/pictures";
 import productCounter from "./reducers/productCounter";
 import { getLoggedUser } from "./modules/isUserLogged";
 
 //AsyncStorage.clear();
 
-const reducers = combineReducers({ user, productCounter });
+const reducers = combineReducers({
+  user,
+  productCounter,
+  picture,
+  prodMgtMode,
+});
 const persistConfig = {
   key: "loggedUser",
   storage: AsyncStorage,
@@ -90,6 +100,11 @@ function HomeStackScreen() {
       <HomeStack.Screen
         name="PresentationScreen"
         component={PresentationScreen}
+        options={{ headerShown: false }}
+      />
+      <HomeStack.Screen
+        name="BlogScreen"
+        component={BlogScreen}
         options={{ headerShown: false }}
       />
     </HomeStack.Navigator>
@@ -135,7 +150,6 @@ function AccountStackScreen() {
     </AccountStack.Navigator>
   );
 }
-
 
 function TabNavigator() {
   const activeColor = "#3a7d44";
@@ -190,9 +204,9 @@ function TabNavigator() {
             options={
               productCount
                 ? {
-                  tabBarBadge: productCount,
-                  tabBarBadgeStyle: styles.tabBarBadgeStyle,
-                }
+                    tabBarBadge: productCount,
+                    tabBarBadgeStyle: styles.tabBarBadgeStyle,
+                  }
                 : {}
             }
           />
@@ -210,9 +224,13 @@ function ScreenSelector() {
   if (loggedUser.isAdmin === true) {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="Dashboard" component={Dashboard} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="Dashboard"
+          component={Dashboard}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
-    )
+    );
   }
   if (loggedUser.accesstoken !== null) {
     // if (loggedUser.isAdmin === false) {
@@ -220,22 +238,22 @@ function ScreenSelector() {
   } else {
     return (
       <Stack.Navigator>
-        <Stack.Screen name="OnBoard" component={OnBoard} options={{ headerShown: false }} />
+        <Stack.Screen
+          name="OnBoard"
+          component={OnBoard}
+          options={{ headerShown: false }}
+        />
       </Stack.Navigator>
-    )
+    );
   }
-
 }
 
 export default function App() {
-
   return (
     <Provider store={store}>
       <PersistGate persistor={persistor}>
         <NavigationContainer>
           <Stack.Navigator screenOptions={{ headerShown: false }}>
-
-
             <Stack.Screen name="ScreenSelector" component={ScreenSelector} />
             {/* <Stack.Screen name="OnBoard" component={OnBoard} /> */}
             <Stack.Screen name="Log" component={LogScreen} />
@@ -248,20 +266,49 @@ export default function App() {
               component={AccessDetailsScreen}
             />
             <Stack.Screen name="UserCreation" component={UserCreationScreen} />
-            <Stack.Screen name="UserModification" component={UserModificationScreen} />
+            <Stack.Screen
+              name="UserModification"
+              component={UserModificationScreen}
+            />
             <Stack.Screen name="UserSignIn" component={UserSignInScreen} />
-            <Stack.Screen name="NotificationSent" component={NotificationSentScreen} />
-            <Stack.Screen name="NotificationFail" component={NotificationFailScreen} />
-            <Stack.Screen name="ContactChoice" component={ContactChoiceScreen} />
-            <Stack.Screen name="UnderConstruction" component={UnderConstructionScreen} />
-            <Stack.Screen name="PasswordChange" component={PasswordChangeScreen} />
-            <Stack.Screen name="PasswordChangeSuccess" component={PasswordChangeSuccessScreen} />
+            <Stack.Screen
+              name="NotificationSent"
+              component={NotificationSentScreen}
+            />
+            <Stack.Screen
+              name="NotificationFail"
+              component={NotificationFailScreen}
+            />
+            <Stack.Screen
+              name="ContactChoice"
+              component={ContactChoiceScreen}
+            />
+            <Stack.Screen
+              name="UnderConstruction"
+              component={UnderConstructionScreen}
+            />
+            <Stack.Screen
+              name="PasswordChange"
+              component={PasswordChangeScreen}
+            />
+            <Stack.Screen
+              name="PasswordChangeSuccess"
+              component={PasswordChangeSuccessScreen}
+            />
             {/* Ecrans adimin */}
-            <Stack.Screen name="CheckingOrdersScreen" component={CheckingOrdersScreen} />
+            <Stack.Screen
+              name="CheckingOrdersScreen"
+              component={CheckingOrdersScreen}
+            />
             <Stack.Screen name="RoadmapScreen" component={RoadmapScreen} />
-            <Stack.Screen name="BasketPrepScreen" component={BasketPrepScreen} />
+            <Stack.Screen
+              name="BasketPrepScreen"
+              component={BasketPrepScreen}
+            />
 
-            <Stack.Screen name="ListDesProduits" component={ListDesProduits} />
+            <Stack.Screen name="ListOfProducts" component={ListOfProducts} />
+            <Stack.Screen name="ProductDetails" component={ProductDetails} />
+            <Stack.Screen name="SnapScreen" component={SnapScreen} />
           </Stack.Navigator>
         </NavigationContainer>
       </PersistGate>

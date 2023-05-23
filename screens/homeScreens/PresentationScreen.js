@@ -12,7 +12,7 @@ export default function Presentation({ navigation }) {
     <View style={styles.container}>
       <View style={styles.header}>
         <View style={styles.title1Container}>
-      <AntDesign name="caretleft" size={24} color="#3A7D44" />
+      <AntDesign name="caretleft" size={24} color="#F3A712" />
         <Text
           style={styles.title1}
           onPress={() => navigation.navigate("HomeScreen")}
@@ -122,12 +122,13 @@ const styles = StyleSheet.create({
   title1: {
     fontFamily: "BelweBold",
     fontSize: 21,
-    color: "#3A7D44",
+    color: "#F3A712",
+
   },
   title2: {
     fontFamily: "BelweBold",
     fontSize: 21,
-    color: "#F3A712",
+    color: "#3A7D44",
   },
   image: {
     width: "100%",

@@ -8,7 +8,7 @@ import { useDispatch, useSelector } from "react-redux";
 
 export default function UserCreationScreen({ navigation }) {
   const [message, setMessage] = useState(
-    "New Account is in process of creation"
+    "Veuillez patienter votre compte est en cours de création..."
   );
 
   const user = useSelector((state) => state.user.value);
@@ -22,10 +22,10 @@ export default function UserCreationScreen({ navigation }) {
       .then((response) => response.json())
       .then((data) => {
         if (data.result) {
-          let message = "New account is almost created.\n";
-          message += `A mail was sent to mailbox ${data.user.email} :\n`;
+          let message = "Votre compte est presque créé.\n";
+          message += `Un message vous a été envoyé par e-mail ${data.user.email} :\n`;
           message +=
-            "You must click on the provided link to finalize the account activation.";
+            "Vous devez cliquer sur le lien fourni pour finaliser l'activation du compte.";
           setMessage(message);
         } else {
           setMessage(data.error);
