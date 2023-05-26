@@ -15,13 +15,10 @@ export const userSlice = createSlice({
       console.log("uri = " + state.value.uri);
     },
     ClearPicture: (state) => {
-      state.uri = null;
+      state.value.uri = null;
     },
   },
 });
 
-export const {
-  SetPicture,
-  ClearPicture,
-} = userSlice.actions;
+export const { SetPicture, ClearPicture } = userSlice.actions;
 export default userSlice.reducer;

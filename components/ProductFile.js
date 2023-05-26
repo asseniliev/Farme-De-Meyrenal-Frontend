@@ -1,3 +1,4 @@
+import backendUrl from "../modules/backendUrl";
 import React, { useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
@@ -14,6 +15,8 @@ import {
 import { SelectList } from "react-native-dropdown-select-list";
 import DropDownPicker from "react-native-dropdown-picker";
 import { FontAwesome } from "@expo/vector-icons";
+import { Button } from "react-native-paper";
+import { ClearPicture } from "../reducers/pictures";
 
 export default function ProductFile(props) {
   //props.isCreateMode = if true, then we can modify the form
@@ -26,6 +29,8 @@ export default function ProductFile(props) {
   const [description, setDescription] = useState(props.description);
   const [remainingChars, setRemainingChars] = useState(descriptionMaxLength);
   const [screenShift, setScreenShift] = useState(0);
+
+  const dispatch = useDispatch();
 
   const isCreateMode = useSelector(
     (state) => state.prodMgtMode.value.isCreateMode
@@ -54,6 +59,37 @@ export default function ProductFile(props) {
     setRemainingChars(descriptionMaxLength - value.length);
   }
 
+  async function saveChanged() {
+    const formData = new FormData();
+    const url = `${backendUrl}/products`;
+
+    formData.append("productPhoto", {
+      uri: photoUri,
+      name: photoUri.split("/Camera/")[1],
+      type: "image/jpeg",
+    });
+
+    const productData = {
+      title: name,
+      description: description,
+      price: price,
+      unitScale: scale,
+      priceUnit: unit,
+    };
+
+    formData.append("productData", JSON.stringify(productData));
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: { "Content-Type": "multipart/form-data" },
+      body: formData,
+    });
+
+    const data = await response.json();
+
+    dispatch(ClearPicture());
+  }
+
   function ImageContent() {
     if (photoUri)
       return (
@@ -78,7 +114,7 @@ export default function ProductFile(props) {
             placeholder="nom de l'article"
             onChangeText={(value) => setName(value)}
             value={name}
-            editable={false}
+            editable={isCreateMode}
             selectTextOnFocus={props.isCreateMode}
           />
         </View>
@@ -152,6 +188,12 @@ export default function ProductFile(props) {
           onBlur={() => setScreenShift(0)}
         ></TextInput>
         <Text>{remainingChars} caractères restent disponibles</Text>
+        <TouchableOpacity
+          onPress={() => saveChanged()}
+          style={styles.buttonFull}
+        >
+          <Text style={styles.textButton}>Enregistrer</Text>
+        </TouchableOpacity>
       </View>
     </TouchableWithoutFeedback>
   );
@@ -245,5 +287,20 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     textAlignVertical: "top",
+  },
+  buttonFull: {
+    backgroundColor: "#3A7D44",
+    marginLeft: "2%",
+    marginTop: "5%",
+    borderRadius: 10,
+    paddingHorizontal: 15,
+    paddingVertical: 5,
+    marginBottom: "5%",
+    width: "90%",
+    alignItems: "center",
+  },
+  textButton: {
+    color: "#FFFFFF",
+    fontSize: 20,
   },
 });
