@@ -40,7 +40,7 @@ import PasswordChangeScreen from "./screens/profilScreens/PasswordChangeScreen";
 import PasswordChangeSuccessScreen from "./screens/profilScreens/PasswordChangeSuccessScreen";
 
 // adminScreens
-import Dashboard from "./screens/adminScreens/Dashboard";
+import DashboardScreen from "./screens/adminScreens/Dashboard";
 import CheckingOrdersScreen from "./screens/adminScreens/CheckingOrdersScreen";
 import RoadmapScreen from "./screens/adminScreens/RoadmapScreen";
 import BasketPrepScreen from "./screens/adminScreens/BasketPrepScreen";
@@ -204,9 +204,9 @@ function TabNavigator() {
             options={
               productCount
                 ? {
-                    tabBarBadge: productCount,
-                    tabBarBadgeStyle: styles.tabBarBadgeStyle,
-                  }
+                  tabBarBadge: productCount,
+                  tabBarBadgeStyle: styles.tabBarBadgeStyle,
+                }
                 : {}
             }
           />
@@ -307,6 +307,7 @@ export default function App() {
             />
 
             <Stack.Screen name="ListOfProducts" component={ListOfProducts} />
+            <Stack.Screen name="Dashboard" component={DashboardScreen} />
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
             <Stack.Screen name="SnapScreen" component={SnapScreen} />
           </Stack.Navigator>

@@ -12,7 +12,6 @@ import { FontAwesome } from '@expo/vector-icons';
 
 export default function Product(props) {
 
-  console.log(props.imageUrl);
   const navigation = useNavigation();
   const [visible, setVisible] = useState(false);
   const toggleOverlay = () => setVisible(!visible);
@@ -37,7 +36,7 @@ export default function Product(props) {
     );
   };
   const decrementBtn = () => dispatch(decrement({ id: props.id, title: props.title }));
-  
+
   return (
     <View style={styles.product1}>
       <View style={styles.bigContent}>

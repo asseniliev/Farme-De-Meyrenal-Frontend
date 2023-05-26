@@ -50,6 +50,14 @@ export default function ProductFile(props) {
     { key: "2", value: "pièce" },
   ];
 
+  function clearProductScreen() {
+    setName('');
+    setScale('1');
+    setPrice('');
+    setUnit('kg');
+    setDescription('');
+  }
+
   function handleOnPhotoChange() {
     props.gotoPhoto();
   }
@@ -73,7 +81,7 @@ export default function ProductFile(props) {
       title: name,
       description: description,
       price: price,
-      unitScale: scale,
+      unitScale: scale !== undefined ? scale : '1',
       priceUnit: unit,
     };
 
@@ -87,8 +95,14 @@ export default function ProductFile(props) {
 
     const data = await response.json();
 
-    dispatch(ClearPicture());
+    if (data.result) {
+      clearProductScreen();
+      dispatch(ClearPicture());
+    }
+
   }
+
+
 
   function ImageContent() {
     if (photoUri)
@@ -148,6 +162,7 @@ export default function ProductFile(props) {
               data={units}
               save="value"
               boxStyles={styles.selectList}
+              dropdownStyles={styles.selectList}
             />
             {/* <DropDownPicker
               open={open}
@@ -211,6 +226,8 @@ const styles = StyleSheet.create({
   },
   text26px: {
     fontSize: 26,
+    fontFamily: "BelweBold",
+    color: '#3A7D44'
   },
   nameInput: {
     backgroundColor: "#D9D9D9",
@@ -218,13 +235,17 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: '#3A7D44',
+    color: '#3A7D44',
+    backgroundColor: '#F3A71290'
   },
   priceBlock: {
     height: "15%",
     flexDirection: "row",
-    alignItems: "center",
+    alignItems: "flex-start",
     justifyContent: "flex-start",
+    marginTop: "7%",
+    zIndex: 1
   },
   priceComponent: {
     maxHeight: "100%",
@@ -232,6 +253,8 @@ const styles = StyleSheet.create({
   },
   text20px: {
     fontSize: 20,
+    fontFamily: "BelweBold",
+    color: '#3A7D44'
   },
   priceInput: {
     backgroundColor: "#D9D9D9",
@@ -239,7 +262,9 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: "black",
+    borderColor: '#3A7D44',
+    color: '#3A7D44',
+    backgroundColor: '#F3A71290'
   },
   scaleComponent: {
     marginRight: "5%",
@@ -249,19 +274,21 @@ const styles = StyleSheet.create({
     justifyContent: "flex-start",
   },
   selectList: {
-    maxHeight: "100%",
-    alignSelf: "center",
-    padding: 0,
+    alignSelf: "auto",
+    borderColor: '#3A7D44',
+    color: '#3A7D44',
+    backgroundColor: '#F3A71290'
   },
   photoBlock: {
     flexDirection: "row",
     justifyContent: "flex-start",
     marginTop: 5,
+    zIndex: 0
   },
   photoContainer: {
     width: "70%",
     aspectRatio: 1,
-    backgroundColor: "#ABABAB",
+    backgroundColor: "#F3A71290",
     borderWidth: 1,
     borderColor: "#000000",
     borderStyle: "solid",
@@ -287,6 +314,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     textAlignVertical: "top",
+    borderColor: '#3A7D44',
+    color: '#3A7D44',
+    backgroundColor: '#F3A71290'
   },
   buttonFull: {
     backgroundColor: "#3A7D44",

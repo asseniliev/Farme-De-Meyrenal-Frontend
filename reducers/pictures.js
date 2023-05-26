@@ -12,7 +12,6 @@ export const userSlice = createSlice({
   reducers: {
     SetPicture: (state, action) => {
       state.value.uri = action.payload;
-      console.log("uri = " + state.value.uri);
     },
     ClearPicture: (state) => {
       state.value.uri = null;
