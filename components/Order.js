@@ -1,14 +1,18 @@
 import React, { useState } from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, StyleSheet, TouchableOpacity, Switch } from "react-native";
 import { AntDesign } from "@expo/vector-icons";
 import importedStyle from "../modules/importedStyle";
 
 export default function Order(props) {
   const [isOpen, setIsOpen] = useState(false);
+
+  const [isEnabled, setIsEnabled] = useState(false);
+  const toggleSwitch = () => setIsEnabled((previousState) => !previousState);
+
   function toggleOrderDetails() {
     setIsOpen(!isOpen);
   }
-  
+
   function formatDate(date) {
     const formattedDate = new Date(date).toLocaleDateString("fr-FR");
     return formattedDate;
@@ -16,9 +20,18 @@ export default function Order(props) {
 
   return (
     <View style={styles.orderContainer}>
-      <Text style={styles.textId}>
-        {props.lastName} {props.firstName}
-      </Text>
+      <View
+        style={{
+          flexDirection: "row",
+          justifyContent: "space-between",
+          width: "100%",
+        }}
+      >
+        <Text style={styles.textId}>
+          {props.lastName} {props.firstName}
+        </Text>
+        <Text style={styles.text}>{props.orderNumber}</Text>
+      </View>
       {props.deliveryAddress ? (
         <Text style={[styles.text, { marginBottom: 5 }]}>
           {props.deliveryAddress}
@@ -34,7 +47,17 @@ export default function Order(props) {
         }}
       >
         <Text style={styles.text}>Total : {props.totalAmount} €</Text>
-        <Text style={styles.text}>{formatDate(props.date)}</Text>
+        <Text
+          style={[
+            styles.text,
+            {
+              fontWeight: props.isPaid ? "normal" : "bold",
+              color: props.isPaid ? "#ABABAB" : "red",
+            },
+          ]}
+        >
+          {props.isPaid ? "Payé    " : "Non payé"}
+        </Text>
       </View>
       <View
         style={{
@@ -43,8 +66,18 @@ export default function Order(props) {
           width: "100%",
         }}
       >
-        <Text style={styles.text}>Payé : {props.isPaid ? "Oui" : "Non"}</Text>
-        <Text style={styles.text}>N° {props.orderNumber}</Text>
+        <Text style={styles.text}>{formatDate(props.date)}</Text>
+        <Switch
+          trackColor={{ false: "#fff", true: "#F4F5F9" }}
+          thumbColor={isEnabled ? "#fff" : "red"}
+          ios_backgroundColor="#3e3e3e"
+          onValueChange={toggleSwitch}
+          value={isEnabled}
+          style={{
+            transform: [{ scaleX: 0.6 }, { scaleY: 0.6 }],
+            marginRight: 10,
+          }}
+        />
       </View>
       <TouchableOpacity
         onPress={() => toggleOrderDetails()}
@@ -58,7 +91,7 @@ export default function Order(props) {
       {isOpen &&
         props.items?.map((item, j) => (
           <View key={j} style={styles.itemsList}>
-            <Text style={[styles.detailsText, {fontWeight: "bold"}]}>
+            <Text style={[styles.detailsText, { fontWeight: "bold" }]}>
               {item.title || "Titre du produit non disponible"}
             </Text>
             <View
