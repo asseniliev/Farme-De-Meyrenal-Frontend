@@ -46,6 +46,7 @@ import RoadmapScreen from "./screens/adminScreens/RoadmapScreen";
 import BasketPrepScreen from "./screens/adminScreens/BasketPrepScreen";
 import ListOfProducts from "./screens/adminScreens/ListOfProductsScreen";
 import ProductDetails from "./screens/adminScreens/ProductDetailsScreen";
+import ProductCreated from "./screens/adminScreens/ProductCreatedScreen";
 import SnapScreen from "./screens/adminScreens/SnapScreen";
 
 // initialization of the storebasketScreens/
@@ -57,6 +58,7 @@ import {
 } from "@reduxjs/toolkit";
 import user from "./reducers/users"; //thihs is the reducer to be used
 import prodMgtMode from "./reducers/productManagementMode";
+import prodData from "./reducers/productData";
 import picture from "./reducers/pictures";
 import productCounter from "./reducers/productCounter";
 import { getLoggedUser } from "./modules/isUserLogged";
@@ -68,6 +70,7 @@ const reducers = combineReducers({
   productCounter,
   picture,
   prodMgtMode,
+  prodData,
 });
 const persistConfig = {
   key: "loggedUser",
@@ -204,9 +207,9 @@ function TabNavigator() {
             options={
               productCount
                 ? {
-                  tabBarBadge: productCount,
-                  tabBarBadgeStyle: styles.tabBarBadgeStyle,
-                }
+                    tabBarBadge: productCount,
+                    tabBarBadgeStyle: styles.tabBarBadgeStyle,
+                  }
                 : {}
             }
           />
@@ -309,6 +312,7 @@ export default function App() {
             <Stack.Screen name="ListOfProducts" component={ListOfProducts} />
             <Stack.Screen name="Dashboard" component={DashboardScreen} />
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
+            <Stack.Screen name="ProductCreated" component={ProductCreated} />
             <Stack.Screen name="SnapScreen" component={SnapScreen} />
           </Stack.Navigator>
         </NavigationContainer>

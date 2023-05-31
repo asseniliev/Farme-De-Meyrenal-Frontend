@@ -17,6 +17,7 @@ import DropDownPicker from "react-native-dropdown-picker";
 import { FontAwesome } from "@expo/vector-icons";
 import { Button } from "react-native-paper";
 import { ClearPicture } from "../reducers/pictures";
+import { StoreProductData } from "../reducers/productData";
 
 export default function ProductFile(props) {
   //props.isCreateMode = if true, then we can modify the form
@@ -51,11 +52,11 @@ export default function ProductFile(props) {
   ];
 
   function clearProductScreen() {
-    setName('');
-    setScale('1');
-    setPrice('');
-    setUnit('kg');
-    setDescription('');
+    setName("");
+    setScale("1");
+    setPrice("");
+    setUnit("kg");
+    setDescription("");
   }
 
   function handleOnPhotoChange() {
@@ -81,7 +82,7 @@ export default function ProductFile(props) {
       title: name,
       description: description,
       price: price,
-      unitScale: scale !== undefined ? scale : '1',
+      unitScale: scale !== undefined ? scale : "1",
       priceUnit: unit,
     };
 
@@ -96,13 +97,20 @@ export default function ProductFile(props) {
     const data = await response.json();
 
     if (data.result) {
+      const newProduct = {
+        title: data.product.title,
+        description: data.product.description,
+        imageUrl: data.product.imageUrl,
+        price: data.product.price,
+        unitScale: data.product.unitScale,
+        priceUnit: data.product.priceUnit,
+      };
       clearProductScreen();
       dispatch(ClearPicture());
+      dispatch(StoreProductData(newProduct));
+      props.gotoCreated();
     }
-
   }
-
-
 
   function ImageContent() {
     if (photoUri)
@@ -227,7 +235,7 @@ const styles = StyleSheet.create({
   text26px: {
     fontSize: 26,
     fontFamily: "BelweBold",
-    color: '#3A7D44'
+    color: "#3A7D44",
   },
   nameInput: {
     backgroundColor: "#D9D9D9",
@@ -235,9 +243,9 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#3A7D44',
-    color: '#3A7D44',
-    backgroundColor: '#F3A71290'
+    borderColor: "#3A7D44",
+    color: "#3A7D44",
+    backgroundColor: "#F3A71290",
   },
   priceBlock: {
     height: "15%",
@@ -245,7 +253,7 @@ const styles = StyleSheet.create({
     alignItems: "flex-start",
     justifyContent: "flex-start",
     marginTop: "7%",
-    zIndex: 1
+    zIndex: 1,
   },
   priceComponent: {
     maxHeight: "100%",
@@ -254,7 +262,7 @@ const styles = StyleSheet.create({
   text20px: {
     fontSize: 20,
     fontFamily: "BelweBold",
-    color: '#3A7D44'
+    color: "#3A7D44",
   },
   priceInput: {
     backgroundColor: "#D9D9D9",
@@ -262,9 +270,9 @@ const styles = StyleSheet.create({
     paddingLeft: 5,
     borderRadius: 8,
     borderWidth: 1,
-    borderColor: '#3A7D44',
-    color: '#3A7D44',
-    backgroundColor: '#F3A71290'
+    borderColor: "#3A7D44",
+    color: "#3A7D44",
+    backgroundColor: "#F3A71290",
   },
   scaleComponent: {
     marginRight: "5%",
@@ -275,15 +283,15 @@ const styles = StyleSheet.create({
   },
   selectList: {
     alignSelf: "auto",
-    borderColor: '#3A7D44',
-    color: '#3A7D44',
-    backgroundColor: '#F3A71290'
+    borderColor: "#3A7D44",
+    color: "#3A7D44",
+    backgroundColor: "#F3A71290",
   },
   photoBlock: {
     flexDirection: "row",
     justifyContent: "flex-start",
     marginTop: 5,
-    zIndex: 0
+    zIndex: 0,
   },
   photoContainer: {
     width: "70%",
@@ -314,9 +322,9 @@ const styles = StyleSheet.create({
     borderWidth: 1,
     padding: 10,
     textAlignVertical: "top",
-    borderColor: '#3A7D44',
-    color: '#3A7D44',
-    backgroundColor: '#F3A71290'
+    borderColor: "#3A7D44",
+    color: "#3A7D44",
+    backgroundColor: "#F3A71290",
   },
   buttonFull: {
     backgroundColor: "#3A7D44",
