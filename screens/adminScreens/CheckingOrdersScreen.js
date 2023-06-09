@@ -141,7 +141,7 @@ export default function CheckingOrders({ navigation }) {
               date={data.date}
               orderNumber={data.orderNumber}
               totalAmount={data.totalAmount}
-              isPaid={data.isPaid}
+              leftToPay={data.leftToPay}
               items={data.items}
               id={data._id}
             />

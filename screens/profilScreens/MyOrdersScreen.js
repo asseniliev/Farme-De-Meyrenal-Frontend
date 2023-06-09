@@ -100,7 +100,7 @@ export default function MyOrders({ navigation }) {
                       Montant total : {order.totalAmount}
                     </Text>
                     <Text style={styles.text}>
-                      Payé : {order.isPaid ? "Oui" : "Non"}
+                      Payé : {order.leftToPay <= 0 ? "Oui" : "Non"}
                     </Text>
                     <TouchableOpacity
                       onPress={() => toggleOrderDetails(i)}

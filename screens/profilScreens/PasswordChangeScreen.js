@@ -22,7 +22,7 @@ export default function UserSignInScreen({ navigation }) {
   const [password, setPassword] = useState("");
   const [repeatPassword, setRepeatPassword] = useState("");
 
-  const loggedUser = useSelector(state => state.user.value);
+  const loggedUser = useSelector((state) => state.user.value);
 
   function handleOnSave() {
     if (password === "") {
@@ -35,8 +35,8 @@ export default function UserSignInScreen({ navigation }) {
       //console.log(loggedUser);
       const url = `${backendUrl}/users/${loggedUser.id}`;
       const body = {
-        password: password
-      }
+        password: password,
+      };
       fetch(url, {
         method: "PUT",
         headers: { "Content-Type": "application/json" },
@@ -61,7 +61,10 @@ export default function UserSignInScreen({ navigation }) {
             <FontAwesome name="arrow-left" size={24} color="#000000" />
             {"      "} Modifier mot de pass
           </Text>
-          <Image source={require("../../assets/fla1.jpg")} style={styles.image} />
+          <Image
+            source={require("../../assets/fla1.jpg")}
+            style={styles.image}
+          />
         </View>
         <View style={styles.middleSection}>
           <TextInput
