@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   ScrollView,
   Alert,
+  ActivityIndicator,
 } from "react-native";
 import { Badge } from "react-native-elements";
 import { AntDesign } from "@expo/vector-icons";
@@ -196,7 +197,7 @@ export default function RoadmapScreen({ navigation }) {
                       date={data.date}
                       orderNumber={data.orderNumber}
                       totalAmount={data.totalAmount}
-                      isPaid={data.isPaid}
+                      leftToPay={data.leftToPay}
                       items={data.items}
                       deliveryAddress={deliveryAddress}
                       id={data._id}
@@ -239,12 +240,13 @@ export default function RoadmapScreen({ navigation }) {
 
   if (isLoading) {
     return (
-      <View style={styles.container}>
+      <View>
         <Text style={styles.text}>
           {"\n"}
           {"\n"}
-          {"\n"} Chargement en cours...
+          {"\n"} Chargement en cours....
         </Text>
+        <View style={styles.chargingIndicator}></View><ActivityIndicator size="large" />
       </View>
     );
   }
@@ -406,5 +408,10 @@ const styles = StyleSheet.create({
     alignItems: "center",
     width: "100%",
     marginVertical: 30,
+  },
+  chargingIndicator: {
+    //alignItems: "center",
+    //justifyContent: "center",
+    paddingTop: 250,
   },
 });
