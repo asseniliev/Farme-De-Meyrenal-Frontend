@@ -41,13 +41,14 @@ export default function ProductDetails({ navigation }) {
       </View>
 
       {/* Product details */}
-      <View style={styles.productContainer}>
+      <ScrollView style={styles.productContainer}>
         <ProductFile
           gotoPhoto={GoToSnapshopScreen}
           gotoCreated={GoToProductCreatedScreen}
           style={{ zIndex: 0 }}
         />
-      </View>
+        <View style={{height: 200}}></View>
+      </ScrollView>
     </View>
   );
 }

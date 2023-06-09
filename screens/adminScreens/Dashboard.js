@@ -21,6 +21,7 @@ export default function Dashboard({ navigation }) {
 
   const [confirmedBasket, setConfirmedBasket] = useState(0);
   const [validedBasket, setValidedBasket] = useState(0);
+  const [indebted, setIndebted] = useState(0);
 
   useEffect(() => {
     fetch(`${backendUrl}/orders`)
@@ -28,15 +29,22 @@ export default function Dashboard({ navigation }) {
       .then((data) => {
         let confirmedCount = 0;
         let validatedCount = 0;
+        let indebtedCount = 0
+        
         data.result.forEach((order) => {
           if (order.status === "created") {
             validatedCount++;
           } else if (order.status === "confirmed") {
             confirmedCount++;
           }
+          if (order.leftToPay > 0) {
+            indebtedCount++;
+          }
         });
         setConfirmedBasket(confirmedCount);
         setValidedBasket(validatedCount);
+        setIndebted(indebtedCount)
+        console.log(indebted)
       });
   }, []);
 
@@ -47,12 +55,6 @@ export default function Dashboard({ navigation }) {
       </View>
       <ScrollView style={styles.buttonContainer}>
         <View style={styles.buttons}>
-          <TouchableOpacity
-            onPress={() => navigation.navigate("ListOfProducts")}
-            style={styles.button}
-          >
-            <Text style={styles.textButton}>Liste des produits</Text>
-          </TouchableOpacity>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate(
@@ -69,7 +71,7 @@ export default function Dashboard({ navigation }) {
                 <Badge value={validedBasket} badgeStyle={{ backgroundColor: "red" }}/>
                 </Text>
               <Text style={styles.textButton}>
-                Confirmés :{"  "}
+                À livrer :{"  "}
                 <Badge value={confirmedBasket} />
                 </Text>
                 
@@ -77,30 +79,34 @@ export default function Dashboard({ navigation }) {
             <TouchableOpacity onPress={() => navigation.navigate("BasketPrepScreen")} style={styles.button} >
               <Text style={styles.textButton}>Préparer paniers</Text>
             </TouchableOpacity>
+            <TouchableOpacity
+            onPress={() => navigation.navigate("ListOfProducts")} style={styles.button} >
+            <Text style={styles.textButton}>Liste des produits</Text>
+          </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Blog</Text>
+              <Text /*style={styles.textButton}*/>Blog</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Map et marchés</Text>
+              <Text /*style={styles.textButton}*/>Map et marchés</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Le manifest</Text>
+              <Text /*style={styles.textButton}*/>Le manifest</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("DebtScreen")} style={styles.button} >
+              <Text style={styles.textButton}>Dette client</Text>
+              <Badge value={indebted} containerStyle={{ position: "absolute", top: -4, right: -4, }} badgeStyle={{ backgroundColor: "red" }}/>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
+                <Text /* style={styles.textButton} */ >Statistiques</Text>  
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
+              <Text /*style={styles.textButton}*/>Modification{"\n"}commande</Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
+              <Text /*style={styles.textButton}*/>Gestion des{"\n"}utilisateurs</Text>
             </TouchableOpacity>
             <TouchableOpacity onPress={() => navigation.navigate("HomeTab")} style={styles.button} >
               <Text style={styles.textButton}>User view</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Dette client</Text>
-              <Badge value={0} containerStyle={{ position: "absolute", top: -4, right: -4, }} badgeStyle={{ backgroundColor: "red" }}/>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Statistiques</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Modification{"\n"}commande</Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => navigation.navigate("Panier")} style={styles.button} >
-              <Text style={styles.textButton}>Gestion des{"\n"}utilisateurs</Text>
             </TouchableOpacity>
           </View>
         

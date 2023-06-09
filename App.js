@@ -41,6 +41,7 @@ import PasswordChangeSuccessScreen from "./screens/profilScreens/PasswordChangeS
 
 // adminScreens
 import Dashboard from "./screens/adminScreens/Dashboard";
+import DebtScreen from "./screens/adminScreens/DebtScreen";
 import CheckingOrdersScreen from "./screens/adminScreens/CheckingOrdersScreen";
 import RoadmapScreen from "./screens/adminScreens/RoadmapScreen";
 import BasketPrepScreen from "./screens/adminScreens/BasketPrepScreen";
@@ -311,6 +312,7 @@ export default function App() {
 
             <Stack.Screen name="ListOfProducts" component={ListOfProducts} />
             <Stack.Screen name="Dashboard" component={Dashboard} />
+            <Stack.Screen name="DebtScreen" component={DebtScreen} />
             <Stack.Screen name="ProductDetails" component={ProductDetails} />
             <Stack.Screen name="ProductCreated" component={ProductCreated} />
             <Stack.Screen name="SnapScreen" component={SnapScreen} />
