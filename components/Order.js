@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -21,11 +21,6 @@ export default function Order(props) {
   const [isModalValidating, setIsModalValidating] = useState(false);
   const [amountValue, setAmountValue] = useState(props.leftToPay);
   const [isEnabled, setIsEnabled] = useState(props.leftToPay <= 0);
-
-  // useEffect(() => {
-  //   setIsEnabled(props.leftToPay <= 0);
-  // }, [props.leftToPay]);
-
 
   function toggleOrderDetails() {
     setIsOpen(!isOpen);
@@ -50,13 +45,9 @@ export default function Order(props) {
   }
 
   function handlePaymentValidation() {
-    setIsModalValidating(true);
-    setTimeout(() => {
-      handlePaymentConfirmed(props.id);
-      setIsModalValidating(false);
-      setIsModalPaiementFalseOpen(false);
-      setSelectedPayment("");
-    }, 2000);
+    handlePaymentConfirmed(props.id);
+    setIsModalPaiementFalseOpen(false);
+    setSelectedPayment("");
   }
 
   function handlePaymentConfirmed(id) {
@@ -75,10 +66,11 @@ export default function Order(props) {
       .then((data) => {
         if (data) {
           console.log(data.message);
-          if (props.leftToPay > 0) toggleSwitch();
+          props.leftToPay = data.order.leftToPay;
+          console.log(data.order.leftToPay);
+          if (data.order.leftToPay <= 0) toggleSwitch();
         } else {
           console.log("erreur : Paiement non validé");
-          toggleSwitch();
         }
       });
   }
@@ -96,19 +88,18 @@ export default function Order(props) {
             })
               .then((response) => response.json())
               .then((data) => {
+                console.log(data.message);
+                toggleSwitch();
                 if (data.result) console.log(data.result);
               })
               .catch((error) => {
                 console.log("error", error);
-                toggleSwitch();
               });
-            console.log("Oui appuyé");
           },
         },
         {
           text: "Annuler",
           onPress: () => {
-            toggleSwitch()
             console.log("Annuler appuyé");
           },
           style: "cancel",
@@ -151,7 +142,7 @@ export default function Order(props) {
           style={[
             styles.text,
             {
-              fontWeight: isEnabled? "normal" : "bold",
+              fontWeight: isEnabled ? "normal" : "bold",
               color: isEnabled ? "#ABABAB" : "red",
             },
           ]}
@@ -167,12 +158,18 @@ export default function Order(props) {
         }}
       >
         <Text style={styles.text}>{formatDate(props.date)}</Text>
-        <TouchableOpacity onPress={() => { toggleSwitch(); toggleSwitchModal(); }}>
+        <TouchableOpacity
+          onPress={() => {
+            toggleSwitchModal();
+          }}
+        >
           <Switch
             trackColor={{ false: "#fff", true: "#F4F5F9" }}
             thumbColor={isEnabled ? "#fff" : "red"}
             ios_backgroundColor="#3e3e3e"
-            onValueChange={() => { toggleSwitch(); toggleSwitchModal(); }}
+            onValueChange={() => {
+              toggleSwitchModal();
+            }}
             value={isEnabled}
             style={{
               transform: [{ scaleX: 0.6 }, { scaleY: 0.6 }],
@@ -234,9 +231,7 @@ export default function Order(props) {
                   onPress={handlePaymentValidation}
                   disabled={!selectedPayment || isModalValidating}
                 >
-                  <Text style={styles.buttonText}>
-                    {isModalValidating ? "Validation en cours..." : "Valider"}
-                  </Text>
+                  <Text style={styles.buttonText}>Valider</Text>
                 </TouchableOpacity>
               </View>
             </View>
