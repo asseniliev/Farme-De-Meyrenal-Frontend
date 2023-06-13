@@ -12,13 +12,13 @@ import {
 import { Picker } from "@react-native-picker/picker";
 import { AntDesign } from "@expo/vector-icons";
 import backendUrl from "../modules/backendUrl";
+import EditOrder from "./EditOrder";
 
 export default function Order(props) {
   const [isOpen, setIsOpen] = useState(false);
   const [isModalPaiementFalseOpen, setIsModalPaiementFalseOpen] =
     useState(false);
   const [selectedPayment, setSelectedPayment] = useState("");
-  const [isModalValidating, setIsModalValidating] = useState(false);
   const [amountValue, setAmountValue] = useState(props.leftToPay);
   const [isEnabled, setIsEnabled] = useState(props.leftToPay <= 0);
 
@@ -98,7 +98,7 @@ export default function Order(props) {
           },
         },
         {
-          text: "Annuler",
+          text: "Non",
           onPress: () => {
             console.log("Annuler appuyé");
           },
@@ -122,6 +122,18 @@ export default function Order(props) {
           {props.lastName} {props.firstName}
         </Text>
         <Text style={styles.text}>{props.orderNumber}</Text>
+        <TouchableOpacity
+          style={{
+            position: "absolute",
+            top: 2,
+            right: 32,
+          }}
+          onPress={
+            <EditOrder {...props} />
+          }
+        >
+          <AntDesign name="edit" size={20} color="#ABABAB" />
+        </TouchableOpacity>
       </View>
       {props.deliveryAddress ? (
         <Text style={[styles.text, { marginBottom: 5 }]}>
@@ -229,7 +241,7 @@ export default function Order(props) {
                 <TouchableOpacity
                   style={styles.validateButton}
                   onPress={handlePaymentValidation}
-                  disabled={!selectedPayment || isModalValidating}
+                  disabled={!selectedPayment}
                 >
                   <Text style={styles.buttonText}>Valider</Text>
                 </TouchableOpacity>
