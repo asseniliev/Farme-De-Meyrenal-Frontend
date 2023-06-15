@@ -6,6 +6,7 @@ import {
   View,
   TouchableOpacity,
   ScrollView,
+  ActivityIndicator,
 } from "react-native";
 import { useFonts } from "expo-font";
 import Product from "../../components/Product";
@@ -55,6 +56,7 @@ export default function Home({ navigation }) {
           {"\n"}
           {"\n"} Chargement en cours...
         </Text>
+        <View style={styles.chargingIndicator}></View><ActivityIndicator size="large" />
       </View>
     );
   }
@@ -140,5 +142,8 @@ const styles = StyleSheet.create({
     width: "100%",
     alignItems: "center",
     paddingVertical: 10,
+  },
+  chargingIndicator: {
+    paddingTop: 250,
   },
 });
