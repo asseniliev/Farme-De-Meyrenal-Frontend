@@ -15,8 +15,6 @@ import { FontAwesome } from "@expo/vector-icons";
 
 export default function ProductCreatedScreen({ navigation }) {
   const newProduct = useSelector((state) => state.prodData.value);
-  console.log(newProduct);
-
   return (
     <View style={styles.container}>
       <Text style={styles.text26px}>Nouveau produit créé</Text>

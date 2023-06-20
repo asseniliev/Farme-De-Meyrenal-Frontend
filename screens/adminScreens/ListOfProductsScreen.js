@@ -3,6 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SetCreationMode } from "../../reducers/productManagementMode";
+import { useIsFocused } from '@react-navigation/native'
 import {
   StyleSheet,
   Image,
@@ -32,11 +33,22 @@ export default function ListOfProducts({ navigation }) {
     setProductsList(data.result);
   }
 
-  useEffect(() => {
-    fetchProducts();
-  }, []);
+  const isFocused = useIsFocused()
 
   useEffect(() => {
+    if (isFocused) {
+      console.log("useEffect[isFocused]");
+      fetchProducts();
+    }
+
+  }, [isFocused]);
+
+  function GoToProductListScreen() {
+    navigation.navigate("ListOfProducts");
+  }
+
+  useEffect(() => {
+    console.log("useEffect[productsList]");
     if (productsList !== null) {
       let activeProd = productsList.filter((prod) => prod.isActive === true);
 
@@ -51,6 +63,7 @@ export default function ListOfProducts({ navigation }) {
             title={prod.title}
             unitScale={prod.unitScale}
             priceUnit={prod.priceUnit}
+
           />
         );
       });

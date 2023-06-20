@@ -123,6 +123,7 @@ export default function ProductFile(props) {
   return (
     <TouchableWithoutFeedback onPress={Keyboard.dismiss} accessible={false}>
       <View
+        //style={styles.container}
         style={{
           ...styles.container,
           transform: [{ translateY: screenShift }],
@@ -146,6 +147,7 @@ export default function ProductFile(props) {
             <Text style={styles.text20px}>Prix €</Text>
             <TextInput
               style={styles.priceInput}
+              keyboardType="numeric"
               placeholder="..."
               onChangeText={(value) => setPrice(value)}
               value={price}
@@ -155,6 +157,7 @@ export default function ProductFile(props) {
             <Text style={styles.text20px}>Scale</Text>
             <TextInput
               style={styles.priceInput}
+              keyboardType="numeric"
               placeholder="1"
               onChangeText={(value) => setScale(value)}
               value={scale}
@@ -165,22 +168,14 @@ export default function ProductFile(props) {
           <View style={styles.unitComponent}>
             <Text style={styles.text20px}>Unité</Text>
             <SelectList
+
               setSelected={(val) => setUnit(val)}
               placeholder={"..."}
               data={units}
               save="value"
-              boxStyles={styles.selectList}
+              boxStyles={styles.unitsList}
               dropdownStyles={styles.selectList}
             />
-            {/* <DropDownPicker
-              open={open}
-              value={value}
-              items={items}
-              setOpen={setOpen}
-              setValue={setValue}
-              setItems={setItems}
-              containerProps={{ height: 30, stickyHeader: true }}
-            /> */}
           </View>
         </View>
         {/* Photo section */}
@@ -223,13 +218,9 @@ export default function ProductFile(props) {
 }
 
 const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    justifyContent: "space-between",
-  },
   nameBlock: {
     marginTop: "5%",
-    height: "13%",
+    height: "8%",
     justifyContent: "space-between",
   },
   text26px: {
@@ -238,7 +229,6 @@ const styles = StyleSheet.create({
     color: "#3A7D44",
   },
   nameInput: {
-    backgroundColor: "#D9D9D9",
     fontSize: 26,
     paddingLeft: 5,
     borderRadius: 8,
@@ -248,7 +238,7 @@ const styles = StyleSheet.create({
     backgroundColor: "#F3A71290",
   },
   priceBlock: {
-    height: "15%",
+    height: "10%",
     flexDirection: "row",
     alignItems: "flex-start",
     justifyContent: "flex-start",
@@ -281,11 +271,15 @@ const styles = StyleSheet.create({
     maxHeight: "100%",
     justifyContent: "flex-start",
   },
+  unitsList: {
+    backgroundColor: "#F3A71290",
+    borderColor: "#3A7D44",
+  },
   selectList: {
     alignSelf: "auto",
     borderColor: "#3A7D44",
     color: "#3A7D44",
-    backgroundColor: "#F3A71290",
+    backgroundColor: "#F3A712",
   },
   photoBlock: {
     flexDirection: "row",
@@ -317,7 +311,7 @@ const styles = StyleSheet.create({
   },
   productDetails: {
     marginTop: "2%",
-    height: "20%",
+    height: "15%",
     borderColor: "gray",
     borderWidth: 1,
     padding: 10,
