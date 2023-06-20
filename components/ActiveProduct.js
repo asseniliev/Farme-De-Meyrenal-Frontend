@@ -12,7 +12,6 @@ export default function ActiveProduct(props) {
       [
         {
           text: 'Oui', onPress: () => {
-            console.log('Archive product ' + props.id);
             archiveProduct();
             // makesDisappear(data._id)
             // handleDelete(id)
@@ -41,7 +40,9 @@ export default function ActiveProduct(props) {
     });
 
     const data = await response.json();
-    props.GoToProductListScreen();
+    console.log(data);
+    //props.goToProductListScreen();
+    props.fetchProducts();
   }
 
   return (

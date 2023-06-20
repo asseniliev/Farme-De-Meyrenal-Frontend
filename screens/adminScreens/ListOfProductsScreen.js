@@ -3,6 +3,7 @@ import React from "react";
 import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SetCreationMode } from "../../reducers/productManagementMode";
+import { StoreProductData } from "../../reducers/productData";
 import { useIsFocused } from '@react-navigation/native'
 import {
   StyleSheet,
@@ -37,18 +38,12 @@ export default function ListOfProducts({ navigation }) {
 
   useEffect(() => {
     if (isFocused) {
-      console.log("useEffect[isFocused]");
       fetchProducts();
     }
-
   }, [isFocused]);
 
-  function GoToProductListScreen() {
-    navigation.navigate("ListOfProducts");
-  }
 
   useEffect(() => {
-    console.log("useEffect[productsList]");
     if (productsList !== null) {
       let activeProd = productsList.filter((prod) => prod.isActive === true);
 
@@ -63,7 +58,9 @@ export default function ListOfProducts({ navigation }) {
             title={prod.title}
             unitScale={prod.unitScale}
             priceUnit={prod.priceUnit}
-
+            //goToProductListScreen={GoToProductListScreen}
+            fetchProducts={fetchProducts}
+            changeProduct={handleOnPressChangeArticle}
           />
         );
       });
@@ -80,6 +77,9 @@ export default function ListOfProducts({ navigation }) {
             price={prod.price}
             title={prod.title}
             unitScale={prod.unitScale}
+            fetchProducts={fetchProducts}
+            changeProduct={handleOnPressChangeArticle}
+            closeList={closeArchivedList}
           />
         );
       });
@@ -91,10 +91,22 @@ export default function ListOfProducts({ navigation }) {
     setIsOpen(!isOpen);
   }
 
+  function closeArchivedList() {
+    setIsOpen(false);
+  }
+
   function handleOnPressNewArticle() {
     dispatch(SetCreationMode(true));
     navigation.navigate("ProductDetails");
   }
+
+  function handleOnPressChangeArticle(id) {
+    console.log(`Change prodict ${id}`);
+    dispatch(SetCreationMode(false));
+    dispatch(StoreProductData(id));
+    navigation.navigate("ProductDetails");
+  }
+
 
   return (
     <View style={styles.container}>

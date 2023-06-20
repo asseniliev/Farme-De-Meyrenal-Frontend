@@ -1,5 +1,5 @@
 import backendUrl from "../modules/backendUrl";
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useDispatch, useSelector } from "react-redux";
 import {
   KeyboardAvoidingView,
@@ -23,20 +23,25 @@ export default function ProductFile(props) {
   //props.isCreateMode = if true, then we can modify the form
   const descriptionMaxLength = 500;
 
-  const [name, setName] = useState(props.name);
-  const [scale, setScale] = useState(props.scale);
-  const [price, setPrice] = useState(props.price);
-  const [unit, setUnit] = useState(props.unit);
-  const [description, setDescription] = useState(props.description);
-  const [remainingChars, setRemainingChars] = useState(descriptionMaxLength);
+  const [id, setId] = useState();
+  const [title, setTitle] = useState();
+  const [scale, setScale] = useState();
+  const [price, setPrice] = useState();
+  const [unit, setUnit] = useState("...");
+  const [unitScale, setUnitScale] = useState("1");
+  const [imageUrl, setImageUrl] = useState();
+  const [isActive, setIsActive] = useState(true);
+  const [description, setDescription] = useState();
+  const [remainingChars, setRemainingChars] = useState();
   const [screenShift, setScreenShift] = useState(0);
 
   const dispatch = useDispatch();
 
   const isCreateMode = useSelector(
-    (state) => state.prodMgtMode.value.isCreateMode
+    (state) => state.prodMgtMode.value
   );
 
+  const productId = useSelector((state) => state.prodData.value);
   const photoUri = useSelector((state) => state.picture.value.uri);
 
   const [open, setOpen] = useState(false);
@@ -50,6 +55,32 @@ export default function ProductFile(props) {
     { key: "1", value: "kg" },
     { key: "2", value: "pièce" },
   ];
+
+  //console.log(`isCreateMode = ${isCreateMode}`);
+  useEffect(() => {
+    if (!isCreateMode) {
+      fetchProduct()
+    }
+  }, [price]);
+
+  async function fetchProduct() {
+    let response = await fetch(`${backendUrl}/products/${productId}`);
+    response = await response.json();
+
+    // console.log(`Prize = ${response.data.price}`);
+    // console.log(`Titul = ${response.data.price}`);
+
+    setId(productId);
+    setTitle(response.data.title);
+    setScale(response.data.unitScale);
+    setPrice(response.data.price.toString());
+    setUnit(response.data.priceUnit);
+    setUnitScale(response.data.unitScale);
+    setDescription(response.data.description);
+    setImageUrl(response.data.imageUrl);
+    setIsActive(response.data.isActive);
+    setUnitScale(response.data.unitScale);
+  }
 
   function clearProductScreen() {
     setName("");
@@ -112,10 +143,10 @@ export default function ProductFile(props) {
     }
   }
 
-  function ImageContent() {
-    if (photoUri)
+  function ImageContent(props) {
+    if (imageUrl)
       return (
-        <Image style={styles.previewImage} source={{ uri: photoUri }}></Image>
+        <Image style={styles.previewImage} source={{ uri: props.imageUrl }}></Image>
       );
     else return <FontAwesome name="image" size={38} color={"#3A7D44"} />;
   }
@@ -136,7 +167,7 @@ export default function ProductFile(props) {
             style={styles.nameInput}
             placeholder="nom de l'article"
             onChangeText={(value) => setName(value)}
-            value={name}
+            value={title}
             editable={isCreateMode}
             selectTextOnFocus={props.isCreateMode}
           />
@@ -148,7 +179,7 @@ export default function ProductFile(props) {
             <TextInput
               style={styles.priceInput}
               keyboardType="numeric"
-              placeholder="..."
+              //placeholder="..."
               onChangeText={(value) => setPrice(value)}
               value={price}
             />
@@ -160,7 +191,7 @@ export default function ProductFile(props) {
               keyboardType="numeric"
               placeholder="1"
               onChangeText={(value) => setScale(value)}
-              value={scale}
+              value={unitScale.toString()}
               editable={props.isCreateMode}
               selectTextOnFocus={props.isCreateMode}
             />
@@ -168,9 +199,8 @@ export default function ProductFile(props) {
           <View style={styles.unitComponent}>
             <Text style={styles.text20px}>Unité</Text>
             <SelectList
-
               setSelected={(val) => setUnit(val)}
-              placeholder={"..."}
+              placeholder={unit}
               data={units}
               save="value"
               boxStyles={styles.unitsList}
@@ -182,7 +212,9 @@ export default function ProductFile(props) {
         <Text style={styles.text26px}>Gérer la photo</Text>
         <View style={styles.photoBlock}>
           <View style={styles.photoContainer}>
-            <ImageContent />
+            <ImageContent
+              imageUrl={imageUrl}
+            />
           </View>
           <TouchableOpacity onPress={() => handleOnPhotoChange()}>
             <FontAwesome name="edit" size={38} color={"#3A7D44"} />

@@ -9,12 +9,22 @@ import {
   Keyboard,
 } from "react-native";
 
-import { useSelector } from "react-redux";
+import { useDispatch, useSelector } from "react-redux";
+import { ClearProductData } from "../../reducers/productData";
 
 import { FontAwesome } from "@expo/vector-icons";
 
+
+
 export default function ProductCreatedScreen({ navigation }) {
   const newProduct = useSelector((state) => state.prodData.value);
+  const dispatch = useDispatch();
+
+  function handleOnCreationEnd() {
+    dispatch(ClearProductData());
+    navigation.navigate("ListOfProducts")
+  }
+
   return (
     <View style={styles.container}>
       <Text style={styles.text26px}>Nouveau produit créé</Text>
@@ -80,7 +90,7 @@ export default function ProductCreatedScreen({ navigation }) {
         editable={false}
       ></TextInput>
       <TouchableOpacity
-        onPress={() => navigation.navigate("ListOfProducts")}
+        onPress={() => handleOnCreationEnd()}
         style={styles.buttonFull}
       >
         <Text style={styles.textButton}>Vers le liste des produits</Text>

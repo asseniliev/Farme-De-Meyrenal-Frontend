@@ -1,38 +1,55 @@
+import backendUrl from "../modules/backendUrl";
 import React from "react";
 import { View, Text, StyleSheet, Image, TouchableOpacity, Alert } from "react-native";
 import { FontAwesome } from "@expo/vector-icons";
 
-export default function ArchivedProduct(prop) {
+export default function ArchivedProduct(props) {
 
-  function showAlert(id) {
+  function showAlert() {
     Alert.alert(
       'Attention !',
       'Êtes-vous sur de vouloir supprimer ce produit ?',
       [
         {
-          text: 'OK', onPress: () => {
-            console.log('Delete product ' + id)
+          text: 'Oui', onPress: () => {
+            deleteProduct();
             // makesDisappear(data._id)
             // handleDelete(id)
           }
         },
-        { text: 'Annuler', onPress: () => console.log('Annuler appuyé'), style: 'cancel' }
+        { text: 'Non', style: 'cancel' }
       ],
       { cancelable: false }
     );
   };
 
+  async function deleteProduct() {
+    const url = `${backendUrl}/products/${props.id}`;
+
+    const response = await fetch(url, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      //body: JSON.stringify(productData),
+    });
+
+    const data = await response.json();
+    //console.log(data);
+    //props.goToProductListScreen();
+    props.fetchProducts();
+    props.closeList();
+  }
+
   return (
     <View style={styles.container}>
       <TouchableOpacity
         style={styles.textContainer}
-        onPress={() => toggleArchivedList()}>
-        <Text style={styles.text}>{prop.title}</Text>
+        onPress={() => props.changeProduct(props.id)}>
+        <Text style={styles.text}>{props.title}</Text>
       </TouchableOpacity>
       <View style={styles.imageContainer}>
         <Image
           style={styles.image}
-          source={{ uri: prop.imageUrl }}
+          source={{ uri: props.imageUrl }}
         ></Image>
       </View>
       <TouchableOpacity onPress={() => showAlert()}>

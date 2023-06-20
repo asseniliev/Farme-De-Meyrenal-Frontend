@@ -1,9 +1,7 @@
 import { createSlice } from "@reduxjs/toolkit";
 
 const initialState = {
-  value: {
-    isCreateMode: null,
-  },
+  value: null
 };
 
 export const userSlice = createSlice({
@@ -11,7 +9,8 @@ export const userSlice = createSlice({
   initialState,
   reducers: {
     SetCreationMode: (state, action) => {
-      state.value.isCreateMode = action.payload;
+      state.value = action.payload;
+      console.log(`Reducer's mode = ${state.value.toString()}`);
     },
   },
 });
