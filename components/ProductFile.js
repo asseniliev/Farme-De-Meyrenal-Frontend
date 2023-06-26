@@ -25,7 +25,7 @@ export default function ProductFile(props) {
 
   const [id, setId] = useState();
   const [title, setTitle] = useState();
-  const [scale, setScale] = useState();
+  //const [scale, setScale] = useState("1");
   const [price, setPrice] = useState();
   const [unit, setUnit] = useState("...");
   const [unitScale, setUnitScale] = useState("1");
@@ -37,10 +37,7 @@ export default function ProductFile(props) {
 
   const dispatch = useDispatch();
 
-  const isCreateMode = useSelector(
-    (state) => state.prodMgtMode.value
-  );
-
+  const isCreateMode = useSelector((state) => state.prodMgtMode.value);
   const productId = useSelector((state) => state.prodData.value);
   const photoUri = useSelector((state) => state.picture.value.uri);
 
@@ -59,9 +56,9 @@ export default function ProductFile(props) {
   //console.log(`isCreateMode = ${isCreateMode}`);
   useEffect(() => {
     if (!isCreateMode) {
-      fetchProduct()
+      fetchProduct();
     }
-  }, [price]);
+  }, []);
 
   async function fetchProduct() {
     let response = await fetch(`${backendUrl}/products/${productId}`);
@@ -72,19 +69,18 @@ export default function ProductFile(props) {
 
     setId(productId);
     setTitle(response.data.title);
-    setScale(response.data.unitScale);
+    //setScale(response.data.scale);
     setPrice(response.data.price.toString());
     setUnit(response.data.priceUnit);
     setUnitScale(response.data.unitScale);
     setDescription(response.data.description);
     setImageUrl(response.data.imageUrl);
     setIsActive(response.data.isActive);
-    setUnitScale(response.data.unitScale);
   }
 
   function clearProductScreen() {
-    setName("");
-    setScale("1");
+    setTitle("");
+    setUnitScale("1");
     setPrice("");
     setUnit("kg");
     setDescription("");
@@ -101,26 +97,34 @@ export default function ProductFile(props) {
 
   async function saveChanged() {
     const formData = new FormData();
-    const url = `${backendUrl}/products`;
+    let url = `${backendUrl}/products`;
+    let method = "POST";
 
-    formData.append("productPhoto", {
-      uri: photoUri,
-      name: photoUri.split("/Camera/")[1],
-      type: "image/jpeg",
-    });
+    if (!isCreateMode) {
+      url += `/${productId}`;
+      method = "PUT";
+    }
+
+    if (photoUri) {
+      formData.append("productPhoto", {
+        uri: photoUri,
+        name: photoUri.split("/Camera/")[1],
+        type: "image/jpeg",
+      });
+    }
 
     const productData = {
-      title: name,
+      title: title,
       description: description,
       price: price,
-      unitScale: scale !== undefined ? scale : "1",
+      unitScale: unitScale !== undefined ? unitScale : "1",
       priceUnit: unit,
     };
 
     formData.append("productData", JSON.stringify(productData));
 
     const response = await fetch(url, {
-      method: "POST",
+      method: method,
       headers: { "Content-Type": "multipart/form-data" },
       body: formData,
     });
@@ -136,6 +140,10 @@ export default function ProductFile(props) {
         unitScale: data.product.unitScale,
         priceUnit: data.product.priceUnit,
       };
+
+      console.log("New product");
+      console.log(newProduct);
+
       clearProductScreen();
       dispatch(ClearPicture());
       dispatch(StoreProductData(newProduct));
@@ -144,9 +152,16 @@ export default function ProductFile(props) {
   }
 
   function ImageContent(props) {
-    if (imageUrl)
+    if (photoUri) {
       return (
-        <Image style={styles.previewImage} source={{ uri: props.imageUrl }}></Image>
+        <Image style={styles.previewImage} source={{ uri: photoUri }}></Image>
+      );
+    } else if (imageUrl)
+      return (
+        <Image
+          style={styles.previewImage}
+          source={{ uri: props.imageUrl }}
+        ></Image>
       );
     else return <FontAwesome name="image" size={38} color={"#3A7D44"} />;
   }
@@ -166,7 +181,7 @@ export default function ProductFile(props) {
           <TextInput
             style={styles.nameInput}
             placeholder="nom de l'article"
-            onChangeText={(value) => setName(value)}
+            onChangeText={(value) => setTitle(value)}
             value={title}
             editable={isCreateMode}
             selectTextOnFocus={props.isCreateMode}
@@ -190,7 +205,7 @@ export default function ProductFile(props) {
               style={styles.priceInput}
               keyboardType="numeric"
               placeholder="1"
-              onChangeText={(value) => setScale(value)}
+              onChangeText={(value) => setUnitScale(value)}
               value={unitScale.toString()}
               editable={props.isCreateMode}
               selectTextOnFocus={props.isCreateMode}
@@ -212,9 +227,7 @@ export default function ProductFile(props) {
         <Text style={styles.text26px}>Gérer la photo</Text>
         <View style={styles.photoBlock}>
           <View style={styles.photoContainer}>
-            <ImageContent
-              imageUrl={imageUrl}
-            />
+            <ImageContent imageUrl={imageUrl} />
           </View>
           <TouchableOpacity onPress={() => handleOnPhotoChange()}>
             <FontAwesome name="edit" size={38} color={"#3A7D44"} />

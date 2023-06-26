@@ -4,7 +4,8 @@ import { useEffect, useState } from "react";
 import { useDispatch } from "react-redux";
 import { SetCreationMode } from "../../reducers/productManagementMode";
 import { StoreProductData } from "../../reducers/productData";
-import { useIsFocused } from '@react-navigation/native'
+import { useIsFocused } from "@react-navigation/native";
+import { ClearPicture } from "../../reducers/pictures";
 import {
   StyleSheet,
   Image,
@@ -34,14 +35,14 @@ export default function ListOfProducts({ navigation }) {
     setProductsList(data.result);
   }
 
-  const isFocused = useIsFocused()
+  const isFocused = useIsFocused();
 
   useEffect(() => {
     if (isFocused) {
       fetchProducts();
+      dispatch(ClearPicture());
     }
   }, [isFocused]);
-
 
   useEffect(() => {
     if (productsList !== null) {
@@ -106,7 +107,6 @@ export default function ListOfProducts({ navigation }) {
     dispatch(StoreProductData(id));
     navigation.navigate("ProductDetails");
   }
-
 
   return (
     <View style={styles.container}>
